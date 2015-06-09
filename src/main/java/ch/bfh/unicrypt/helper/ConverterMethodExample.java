@@ -47,8 +47,8 @@ import ch.bfh.unicrypt.helper.bytetree.ByteTree;
 import ch.bfh.unicrypt.helper.converter.classes.ConvertMethod;
 import ch.bfh.unicrypt.helper.converter.classes.bytearray.BigIntegerToByteArray;
 import ch.bfh.unicrypt.helper.converter.classes.bytearray.StringToByteArray;
-import ch.bfh.unicrypt.helper.hash.HashMethod;
-import ch.bfh.unicrypt.helper.hash.HashMethod.Mode;
+import ch.bfh.unicrypt.helper.hash.ElementHashMethod;
+import ch.bfh.unicrypt.helper.hash.ElementHashMethod.Mode;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringElement;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringMonoid;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZMod;
@@ -194,20 +194,20 @@ public class ConverterMethodExample {
 		// Computing hash values
 		Example.printLabelLine("HASH VALUES");
 
-		Example.printLine(tuple.getHashValue(HashMethod.getInstance()));
-		Example.printLine(tuple.getHashValue(HashMethod.getInstance(Mode.BYTEARRAY)));
-		Example.printLine(tuple.getHashValue(HashMethod.getInstance(Mode.BYTETREE)));
-		Example.printLine(tuple.getHashValue(HashMethod.getInstance(Mode.RECURSIVE)));
+		Example.printLine(tuple.getHashValue(ElementHashMethod.getInstance()));
+		Example.printLine(tuple.getHashValue(ElementHashMethod.getInstance(Mode.BYTEARRAY)));
+		Example.printLine(tuple.getHashValue(ElementHashMethod.getInstance(Mode.BYTETREE)));
+		Example.printLine(tuple.getHashValue(ElementHashMethod.getInstance(Mode.RECURSIVE)));
 
-		Example.printLine(tuple.getHashValue(HashMethod.getInstance(convertMethod1)));
-		Example.printLine(tuple.getHashValue(HashMethod.getInstance(convertMethod1, Mode.BYTEARRAY)));
-		Example.printLine(tuple.getHashValue(HashMethod.getInstance(convertMethod1, Mode.BYTETREE)));
-		Example.printLine(tuple.getHashValue(HashMethod.getInstance(convertMethod1, Mode.RECURSIVE)));
+		Example.printLine(tuple.getHashValue(ElementHashMethod.getInstance(convertMethod1)));
+		Example.printLine(tuple.getHashValue(ElementHashMethod.getInstance(convertMethod1, Mode.BYTEARRAY)));
+		Example.printLine(tuple.getHashValue(ElementHashMethod.getInstance(convertMethod1, Mode.BYTETREE)));
+		Example.printLine(tuple.getHashValue(ElementHashMethod.getInstance(convertMethod1, Mode.RECURSIVE)));
 
-		Example.printLine(tuple.getHashValue(HashMethod.getInstance(convertMethod2)));
-		Example.printLine(tuple.getHashValue(HashMethod.getInstance(convertMethod2, Mode.BYTEARRAY)));
-		Example.printLine(tuple.getHashValue(HashMethod.getInstance(convertMethod2, Mode.BYTETREE)));
-		Example.printLine(tuple.getHashValue(HashMethod.getInstance(convertMethod2, Mode.RECURSIVE)));
+		Example.printLine(tuple.getHashValue(ElementHashMethod.getInstance(convertMethod2)));
+		Example.printLine(tuple.getHashValue(ElementHashMethod.getInstance(convertMethod2, Mode.BYTEARRAY)));
+		Example.printLine(tuple.getHashValue(ElementHashMethod.getInstance(convertMethod2, Mode.BYTETREE)));
+		Example.printLine(tuple.getHashValue(ElementHashMethod.getInstance(convertMethod2, Mode.RECURSIVE)));
 	}
 
 	public static void main(final String[] args) {
