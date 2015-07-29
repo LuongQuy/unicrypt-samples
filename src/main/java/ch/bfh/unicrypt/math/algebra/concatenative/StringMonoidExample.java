@@ -42,7 +42,7 @@
 package ch.bfh.unicrypt.math.algebra.concatenative;
 
 import ch.bfh.unicrypt.Example;
-import ch.bfh.unicrypt.helper.Alphabet;
+import ch.bfh.unicrypt.helper.math.Alphabet;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringMonoid;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
 

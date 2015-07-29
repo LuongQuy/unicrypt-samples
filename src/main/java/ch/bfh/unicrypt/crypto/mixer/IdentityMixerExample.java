@@ -43,6 +43,7 @@ package ch.bfh.unicrypt.crypto.mixer;
 
 import ch.bfh.unicrypt.Example;
 import ch.bfh.unicrypt.crypto.mixer.classes.IdentityMixer;
+import ch.bfh.unicrypt.helper.factorization.SafePrime;
 import ch.bfh.unicrypt.math.algebra.general.classes.PermutationElement;
 import ch.bfh.unicrypt.math.algebra.general.classes.ProductGroup;
 import ch.bfh.unicrypt.math.algebra.general.classes.Tuple;
@@ -59,7 +60,7 @@ public class IdentityMixerExample {
 	public static void example1() {
 
 		// Create cyclic group (modulo 20 bits)
-		CyclicGroup G_q = GStarModSafePrime.getRandomInstance(20);
+		CyclicGroup G_q = GStarModSafePrime.getInstance(SafePrime.getRandomInstance(20));
 
 		// Set size
 		int size = 10;
@@ -78,7 +79,7 @@ public class IdentityMixerExample {
 	public static void example2() {
 
 		// Create cyclic group (modulo 20 bits)
-		CyclicGroup G_q = GStarModSafePrime.getRandomInstance(20);
+		CyclicGroup G_q = GStarModSafePrime.getInstance(SafePrime.getRandomInstance(20));
 
 		// Set size
 		int size = 10;

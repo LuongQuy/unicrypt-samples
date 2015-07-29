@@ -45,6 +45,7 @@ import ch.bfh.unicrypt.Example;
 import ch.bfh.unicrypt.crypto.mixer.classes.ReEncryptionMixer;
 import ch.bfh.unicrypt.crypto.mixer.interfaces.Mixer;
 import ch.bfh.unicrypt.crypto.schemes.encryption.classes.ElGamalEncryptionScheme;
+import ch.bfh.unicrypt.helper.factorization.SafePrime;
 import ch.bfh.unicrypt.math.algebra.general.classes.Pair;
 import ch.bfh.unicrypt.math.algebra.general.classes.PermutationElement;
 import ch.bfh.unicrypt.math.algebra.general.classes.ProductGroup;
@@ -64,7 +65,7 @@ public class ReEncryptionMixerExample {
 		// P R E P A R E
 		//---------------
 		// Create cyclic group (modulo 20 bits) and get default generator
-		CyclicGroup cyclicGroup = GStarModSafePrime.getRandomInstance(20);
+		CyclicGroup cyclicGroup = GStarModSafePrime.getInstance(SafePrime.getRandomInstance(20));
 		Element generator = cyclicGroup.getDefaultGenerator();
 
 		// Set size
@@ -108,7 +109,7 @@ public class ReEncryptionMixerExample {
 		// P R E P A R E
 		//---------------
 		// Create cyclic group (modulo 20 bits) and get default generator
-		CyclicGroup cyclicGroup = GStarModSafePrime.getRandomInstance(20);
+		CyclicGroup cyclicGroup = GStarModSafePrime.getInstance(SafePrime.getRandomInstance(20));
 		Element generator = cyclicGroup.getDefaultGenerator();
 
 		// Set size

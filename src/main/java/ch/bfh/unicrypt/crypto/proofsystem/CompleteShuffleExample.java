@@ -49,7 +49,8 @@ import ch.bfh.unicrypt.crypto.proofsystem.classes.PermutationCommitmentProofSyst
 import ch.bfh.unicrypt.crypto.proofsystem.classes.ReEncryptionShuffleProofSystem;
 import ch.bfh.unicrypt.crypto.schemes.commitment.classes.PermutationCommitmentScheme;
 import ch.bfh.unicrypt.crypto.schemes.encryption.classes.ElGamalEncryptionScheme;
-import ch.bfh.unicrypt.helper.Alphabet;
+import ch.bfh.unicrypt.helper.factorization.SafePrime;
+import ch.bfh.unicrypt.helper.math.Alphabet;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringMonoid;
 import ch.bfh.unicrypt.math.algebra.general.classes.Pair;
 import ch.bfh.unicrypt.math.algebra.general.classes.PermutationElement;
@@ -78,11 +79,11 @@ public class CompleteShuffleExample {
 		// P R E P A R E
 		//---------------
 		// Create cyclic group and get generator
-		final CyclicGroup G_q = GStarModSafePrime.getRandomInstance(160);
+		final CyclicGroup G_q = GStarModSafePrime.getInstance(SafePrime.getRandomInstance(160));
 		final Element g = G_q.getIndependentGenerator(0, ReferenceRandomByteSequence.getInstance());
 
 		// Set size
-		final int size = 10;
+		final int size = 100000;
 
 		// Create ElGamal keys and encryption system
 		ElGamalEncryptionScheme es = ElGamalEncryptionScheme.getInstance(g);
@@ -167,7 +168,7 @@ public class CompleteShuffleExample {
 		final ReferenceRandomByteSequence rrs = ReferenceRandomByteSequence.getInstance();
 
 		// Create cyclic group and get generator
-		final CyclicGroup G_q = GStarModSafePrime.getRandomInstance(160);
+		final CyclicGroup G_q = GStarModSafePrime.getInstance(SafePrime.getRandomInstance(160));
 		final Element g = G_q.getIndependentGenerator(0, rrs);
 
 		// Set size, prover-id and security parameters

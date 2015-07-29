@@ -54,25 +54,48 @@ public class GStarModSafePrimeExample {
 
 	public static void example1() {
 
-		GStarModSafePrime g11 = GStarModSafePrime.getInstance(23);
+		GStarModSafePrime group = GStarModSafePrime.getInstance(59);
 
-		// Compute order (23-1)/2 = 11
-		BigInteger order = g11.getOrder();
+		// Compute order (59-1)/2 = 29
+		BigInteger order = group.getOrder();
 
-		// Multiply two group elements: 3*9 mod 23 = 4
-		Element e1 = g11.getElement(3);
-		Element e2 = g11.getElement(9);
-		Element e12 = g11.multiply(e1, e2);
+		// Multiply two group elements: 3*27 mod 59 = 22
+		Element e1 = group.getElement(3);
+		Element e2 = group.getElement(27);
+		Element e12 = group.multiply(e1, e2);
 
 		// Select and apply default generator
-		Element generator = g11.getDefaultGenerator();
-		Element result = g11.power(generator, 5);
+		Element generator = group.getDefaultGenerator();
+		Element result = group.power(generator, 5);
 
-		Example.printLine("Group", g11);
+		Example.printLine("Group", group);
 		Example.printLine("Order", order);
-		Example.printLines("All Elements", g11);
-		Example.printLines("Elements 3, 9, 3*9", e1, e2, e12);
+		Example.printLines("Elements 3, 27, 3*27", e1, e2, e12);
 		Example.printLines("Generator and power", generator, result);
+
+		Example.printLine("All Elements:");
+		for (Element element : group.getElements()) {
+			Example.printLine(element);
+		}
+
+	}
+
+	public static void example2() {
+
+		int bitLength = 128;
+
+		// Create random groups
+		GStarModSafePrime group = GStarModSafePrime.getFirstInstance(bitLength);
+
+		// Get order
+		BigInteger order = group.getOrder();
+
+		// Select default generator
+		Element generator = group.getDefaultGenerator();
+
+		Example.printLine("Group", group);
+		Example.printLine("Order", order);
+		Example.printLines("Generator", generator);
 
 	}
 

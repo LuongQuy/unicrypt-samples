@@ -53,7 +53,8 @@ import ch.bfh.unicrypt.crypto.proofsystem.classes.PlainPreimageProofSystem;
 import ch.bfh.unicrypt.crypto.proofsystem.classes.ReEncryptionShuffleProofSystem;
 import ch.bfh.unicrypt.crypto.schemes.commitment.classes.PermutationCommitmentScheme;
 import ch.bfh.unicrypt.crypto.schemes.encryption.classes.ElGamalEncryptionScheme;
-import ch.bfh.unicrypt.helper.Alphabet;
+import ch.bfh.unicrypt.helper.factorization.SafePrime;
+import ch.bfh.unicrypt.helper.math.Alphabet;
 import ch.bfh.unicrypt.math.algebra.additive.classes.ECZModPrime;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringMonoid;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZModElement;
@@ -217,7 +218,7 @@ public class MixAndProofExample {
 		// S E T U P
 		//-----------
 		// Create cyclic group
-		final CyclicGroup G_q = GStarModSafePrime.getRandomInstance(160);
+		final CyclicGroup G_q = GStarModSafePrime.getInstance(SafePrime.getRandomInstance(160));
 		// Create generator based on the default reference random byte sequence (-> independent generators)
 		final Element g = G_q.getIndependentGenerator(0, ReferenceRandomByteSequence.getInstance());
 
@@ -312,7 +313,7 @@ public class MixAndProofExample {
 		final Tuple independentGenerators = G_q_Com.getIndependentGenerators(size, rrs);
 
 		// Create cyclic group for encryption scheme
-		final CyclicGroup G_q_Enc = GStarModSafePrime.getRandomInstance(160);
+		final CyclicGroup G_q_Enc = GStarModSafePrime.getInstance(SafePrime.getRandomInstance(160));
 
 		// Create ElGamal encryption scheme
 		ElGamalEncryptionScheme elGamalES = ElGamalEncryptionScheme.getInstance(G_q_Enc);

@@ -42,9 +42,10 @@
 package ch.bfh.unicrypt.general;
 
 import ch.bfh.unicrypt.Example;
-import ch.bfh.unicrypt.helper.Alphabet;
 import ch.bfh.unicrypt.helper.array.classes.ByteArray;
-import ch.bfh.unicrypt.helper.bytetree.ByteTree;
+import ch.bfh.unicrypt.helper.converter.classes.ConvertMethod;
+import ch.bfh.unicrypt.helper.math.Alphabet;
+import ch.bfh.unicrypt.helper.tree.Tree;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringMonoid;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.N;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.Z;
@@ -86,10 +87,10 @@ public class MathExample {
 
 		// Compute BigInteger, byte array, hash value, byte tree
 		String v = e1.getValue();
-		BigInteger i = e1.getBigInteger();
-		ByteArray a = e1.getByteArray();
+		BigInteger i = e1.convertToBigInteger();
+		ByteArray a = e1.convertToByteArray();
 		ByteArray h = e1.getHashValue();
-		ByteTree t = e1.getByteTree();
+		Tree<ByteArray> t = e1.convertTo(ConvertMethod.getInstance());
 
 		// Print results
 		Example.printLine("Set", fss);
@@ -100,7 +101,6 @@ public class MathExample {
 		Example.printLine("ByteArray", a);
 		Example.printLine("Hash", h);
 		Example.printLine("ByteTree", t);
-		Example.printLine("ByteTreeArray", t.getByteArray());
 	}
 
 	public static void example2() {
@@ -189,10 +189,10 @@ public class MathExample {
 
 		// Generate tuple for s6 and convert it
 		Tuple t6 = t5_1.add(s3.getElement("hello"));
-		BigInteger i = t6.getBigInteger();
-		ByteArray a = t6.getByteArray();
+		BigInteger i = t6.convertToBigInteger();
+		ByteArray a = t6.convertToByteArray();
 		ByteArray h = t6.getHashValue();
-		ByteTree t = t6.getByteTree();
+		Tree<ByteArray> t = t6.convertTo(ConvertMethod.getInstance());
 
 		// Print results
 		Example.printLines("Atomic sets", s1, s2, s3);
@@ -202,7 +202,6 @@ public class MathExample {
 		Example.printLine("ByteArray", a);
 		Example.printLine("Hash", h);
 		Example.printLine("ByteTree", t);
-		Example.printLine("ByteTreeArray", t.getByteArray());
 	}
 
 	public static void example5() {

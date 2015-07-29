@@ -46,10 +46,10 @@ import ch.bfh.unicrypt.crypto.proofsystem.classes.EqualityPreimageProofSystem;
 import ch.bfh.unicrypt.crypto.proofsystem.classes.PolynomialMembershipProofSystem;
 import ch.bfh.unicrypt.crypto.schemes.commitment.classes.GeneralizedPedersenCommitmentScheme;
 import ch.bfh.unicrypt.crypto.schemes.commitment.classes.PedersenCommitmentScheme;
-import ch.bfh.unicrypt.helper.Alphabet;
-import ch.bfh.unicrypt.helper.MathUtil;
-import ch.bfh.unicrypt.helper.Polynomial;
 import ch.bfh.unicrypt.helper.array.classes.ByteArray;
+import ch.bfh.unicrypt.helper.math.Alphabet;
+import ch.bfh.unicrypt.helper.math.MathUtil;
+import ch.bfh.unicrypt.helper.math.Polynomial;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringMonoid;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.PolynomialElement;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.PolynomialSemiRing;
@@ -188,7 +188,7 @@ public class MemProofBasedVoting {
 
 			// pi_1
 			long time = System.currentTimeMillis();
-			Element uInZp = this.G_p.getZModOrder().getElement(this.u.getBigInteger());
+			Element uInZp = this.G_p.getZModOrder().getElement(this.u.convertToBigInteger());
 			Element r = this.G_p.getZModOrder().getRandomElement(randomGenerator);
 			Element cu = this.BB.getComP().commit(uInZp, r);
 
@@ -320,11 +320,11 @@ public class MemProofBasedVoting {
 			if (credential == null || !credential.getSet().isEquivalent(this.G_q)) {
 				throw new IllegalArgumentException();
 			}
-			this.credentials.add(this.Z_p.getElement(credential.getBigInteger()));
+			this.credentials.add(this.Z_p.getElement(credential.convertToBigInteger()));
 
 			DualisticElement zero = this.Z_p.getZeroElement();
 			DualisticElement one = this.Z_p.getOneElement();
-			Polynomial newRoot = Polynomial.getInstance(new DualisticElement[]{(DualisticElement) this.Z_p.getElement(credential.getBigInteger()).invert(), one}, zero, one);
+			Polynomial newRoot = Polynomial.getInstance(new DualisticElement[]{(DualisticElement) this.Z_p.getElement(credential.convertToBigInteger()).invert(), one}, zero, one);
 			this.credentialPolynomial = this.credentialPolynomial.multiply(PolynomialSemiRing.getInstance(this.Z_p).getElement(newRoot));
 		}
 

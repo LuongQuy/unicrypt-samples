@@ -42,11 +42,11 @@
 package ch.bfh.unicrypt.math.algebra.dualistic;
 
 import ch.bfh.unicrypt.Example;
+import ch.bfh.unicrypt.helper.math.Alphabet;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringMonoid;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZMod;
 import ch.bfh.unicrypt.math.algebra.general.classes.ProductSet;
 import ch.bfh.unicrypt.math.algebra.general.classes.Tuple;
-import ch.bfh.unicrypt.helper.Alphabet;
 
 /**
  *

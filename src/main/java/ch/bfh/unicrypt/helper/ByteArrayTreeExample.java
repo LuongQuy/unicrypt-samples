@@ -42,8 +42,10 @@
 package ch.bfh.unicrypt.helper;
 
 import ch.bfh.unicrypt.Example;
+import ch.bfh.unicrypt.helper.aggregator.classes.ByteArrayAggregator;
 import ch.bfh.unicrypt.helper.array.classes.ByteArray;
-import ch.bfh.unicrypt.helper.bytetree.ByteTree;
+import ch.bfh.unicrypt.helper.converter.classes.ConvertMethod;
+import ch.bfh.unicrypt.helper.tree.Tree;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.N;
 import ch.bfh.unicrypt.math.algebra.general.classes.Pair;
 import ch.bfh.unicrypt.math.algebra.general.classes.PermutationGroup;
@@ -55,79 +57,79 @@ import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
  *
  * @author Reto E. Koenig <reto.koenig@bfh.ch>
  */
-public class ByteTreeExample {
+public class ByteArrayTreeExample {
 
 	public static void example1() {
 
 		// Define multiple byte tree leaves
-		ByteTree l1 = ByteTree.getInstance(ByteArray.getInstance(1));
-		ByteTree l2 = ByteTree.getInstance(ByteArray.getInstance(2));
-		ByteTree l3 = ByteTree.getInstance(ByteArray.getInstance(3));
-		ByteTree l4 = ByteTree.getInstance(ByteArray.getInstance(4));
-		ByteTree l5 = ByteTree.getInstance(ByteArray.getInstance(1, 0));
+		Tree<ByteArray> l1 = Tree.getInstance(ByteArray.getInstance(1));
+		Tree<ByteArray> l2 = Tree.getInstance(ByteArray.getInstance(2));
+		Tree<ByteArray> l3 = Tree.getInstance(ByteArray.getInstance(3));
+		Tree<ByteArray> l4 = Tree.getInstance(ByteArray.getInstance(4));
+		Tree<ByteArray> l5 = Tree.getInstance(ByteArray.getInstance(1, 0));
 
 		// Combine l1 to l3
-		ByteTree n1 = ByteTree.getInstance(l1, l2, l3);
+		Tree<ByteArray> n1 = Tree.getInstance(l1, l2, l3);
 
 		// Combine l4 and l5
-		ByteTree n2 = ByteTree.getInstance(l4, l5);
+		Tree<ByteArray> n2 = Tree.getInstance(l4, l5);
 
 		// Combine n1 and n2
-		ByteTree byteTree = ByteTree.getInstance(n1, n2);
-		ByteArray byteArray = byteTree.getByteArray();
+		Tree<ByteArray> tree = Tree.getInstance(n1, n2);
+		ByteArray byteArray = tree.aggregate(ByteArrayAggregator.getInstance());
 
 		Example.printLines("Leaves", l1, l2, l3, l4, l5);
 		Example.printLines("Nodes", n1, n2);
-		Example.printLines("ByteTree/ByteArray", byteTree, byteArray);
+		Example.printLines("Tree/ByteArray", tree, byteArray);
 	}
 
 	public static void example2() {
 
 		// The same as Example 1, but using UniCrypt elements
-		N nSet = N.getInstance();
+		N naturalNumbers = N.getInstance();
 
 		// Define multiple natural numbers
-		Element e1 = nSet.getElement(1);
-		Element e2 = nSet.getElement(2);
-		Element e3 = nSet.getElement(3);
-		Element e4 = nSet.getElement(4);
-		Element e5 = nSet.getElement(256);
+		Element e1 = naturalNumbers.getElement(1);
+		Element e2 = naturalNumbers.getElement(2);
+		Element e3 = naturalNumbers.getElement(3);
+		Element e4 = naturalNumbers.getElement(4);
+		Element e5 = naturalNumbers.getElement(256);
 
 		// Combine e1 to e3
 		Tuple t1 = Tuple.getInstance(e1, e2, e3);
-		ByteTree n1 = t1.getByteTree();
+		Tree<ByteArray> tree1 = t1.convertTo(ConvertMethod.getInstance());
 
 		// Combine e4 and e5
 		Tuple t2 = Tuple.getInstance(e4, e5);
-		ByteTree n2 = t2.getByteTree();
+		Tree<ByteArray> tree2 = t2.convertTo(ConvertMethod.getInstance());
 
 		// Combine t1 and t2
 		Tuple tuple = Tuple.getInstance(t1, t2);
-		ByteTree byteTree = tuple.getByteTree();
-		ByteArray byteArray = byteTree.getByteArray();
+		Tree<ByteArray> tree = tuple.convertTo(ConvertMethod.getInstance());
+		ByteArray byteArray = tree.aggregate(ByteArrayAggregator.getInstance());
 
 		Example.printLines("Elements", e1, e2, e3, e4, e5);
-		Example.printLines("Tuples/Nodes", t1, n1, t2, n2);
-		Example.printLines("Tuple/ByteTree/ByteArray", tuple, byteTree, byteArray);
+		Example.printLines("Tuples/Nodes", t1, tree1, t2, tree2);
+		Example.printLines("Tuple/Tree/ByteArray", tuple, tree, byteArray);
 	}
 
 	public static void example3() {
 
 		// Same as Example 1
-		ByteTree l1 = ByteTree.getInstance(ByteArray.getInstance(1));
-		ByteTree l2 = ByteTree.getInstance(ByteArray.getInstance(2));
-		ByteTree l3 = ByteTree.getInstance(ByteArray.getInstance(3));
-		ByteTree l4 = ByteTree.getInstance(ByteArray.getInstance(4));
-		ByteTree l5 = ByteTree.getInstance(ByteArray.getInstance(1, 0));
-		ByteTree n1 = ByteTree.getInstance(l1, l2, l3);
-		ByteTree n2 = ByteTree.getInstance(l4, l5);
-		ByteTree byteTree = ByteTree.getInstance(n1, n2);
-		ByteArray byteArray = byteTree.getByteArray();
+		Tree<ByteArray> l1 = Tree.getInstance(ByteArray.getInstance(1));
+		Tree<ByteArray> l2 = Tree.getInstance(ByteArray.getInstance(2));
+		Tree<ByteArray> l3 = Tree.getInstance(ByteArray.getInstance(3));
+		Tree<ByteArray> l4 = Tree.getInstance(ByteArray.getInstance(4));
+		Tree<ByteArray> l5 = Tree.getInstance(ByteArray.getInstance(1, 0));
+		Tree<ByteArray> n1 = Tree.getInstance(l1, l2, l3);
+		Tree<ByteArray> n2 = Tree.getInstance(l4, l5);
+		Tree<ByteArray> tree = Tree.getInstance(n1, n2);
+		ByteArray byteArray = tree.aggregate(ByteArrayAggregator.getInstance());
 
 		// Reconstruct byte tree from byte array
-		ByteTree result = ByteTree.getInstanceFrom(byteArray);
+		Tree<ByteArray> result = Tree.getInstance(byteArray, ByteArrayAggregator.getInstance());
 
-		Example.printLine("ByteTree", byteTree);
+		Example.printLine("Tree", tree);
 		Example.printLine("ByteArray", byteArray);
 		Example.printLine("Result", result);
 	}
@@ -144,16 +146,16 @@ public class ByteTreeExample {
 		Tuple t1 = Tuple.getInstance(e1, e2, e3);
 		Tuple t2 = Tuple.getInstance(e4, e5);
 		Tuple tuple = Tuple.getInstance(t1, t2);
-		ByteTree byteTree = tuple.getByteTree();
-		ByteArray byteArray = byteTree.getByteArray();
+		Tree<ByteArray> tree = tuple.convertTo(ConvertMethod.getInstance());
+		ByteArray byteArray = tree.aggregate(ByteArrayAggregator.getInstance());
 
 		// Reconstruct tuple from byte array
 		ProductSet set = tuple.getSet();
-		ByteTree recByteTree = ByteTree.getInstanceFrom(byteArray);
-		Tuple recTuple = set.getElementFrom(recByteTree);
+		Tree<ByteArray> recTree = Tree.getInstance(byteArray, ByteArrayAggregator.getInstance());
+		Tuple recTuple = set.getElementFrom(recTree, ConvertMethod.getInstance());
 
 		Example.printLines("Tuples", tuple, recTuple);
-		Example.printLines("ByteTrees", byteTree, recByteTree);
+		Example.printLines("Trees", tree, recTree);
 	}
 
 	public static void example5() {
@@ -165,17 +167,17 @@ public class ByteTreeExample {
 
 		// Construct pair (p1,p2) and convert to byte tree
 		Pair pair = Pair.getInstance(p1, p2);
-		ByteTree byteTree = pair.getByteTree();
-		ByteArray byteArray = byteTree.getByteArray();
+		Tree<ByteArray> tree = pair.convertTo(ConvertMethod.getInstance());
+		ByteArray byteArray = tree.aggregate(ByteArrayAggregator.getInstance());
 
 		// Reconstruct tuple from byte array
 		ProductSet set = pair.getSet();
-		ByteTree recByteTree = ByteTree.getInstanceFrom(byteArray);
-		Tuple recPair = set.getElementFrom(recByteTree);
+		Tree<ByteArray> recTree = Tree.getInstance(byteArray, ByteArrayAggregator.getInstance());
+		Tuple recPair = set.getElementFrom(recTree, ConvertMethod.getInstance());
 
 		Example.printLine("Pair", pair);
-		Example.printLines("ByteTree/ByteArray", byteTree, byteArray);
-		Example.printLines("Recovered ByteTree/Pair", recByteTree, recPair);
+		Example.printLines("Tree/ByteArray", tree, byteArray);
+		Example.printLines("Recovered Tree/Pair", recTree, recPair);
 	}
 
 	public static void main(String[] args) {

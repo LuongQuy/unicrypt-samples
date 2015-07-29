@@ -45,6 +45,7 @@ import ch.bfh.unicrypt.Example;
 import ch.bfh.unicrypt.crypto.encoder.classes.ZModToGStarModSafePrimeEncoder;
 import ch.bfh.unicrypt.crypto.encoder.interfaces.Encoder;
 import ch.bfh.unicrypt.crypto.schemes.encryption.classes.ElGamalEncryptionScheme;
+import ch.bfh.unicrypt.helper.factorization.SafePrime;
 import ch.bfh.unicrypt.math.algebra.general.classes.Pair;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.CyclicGroup;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
@@ -59,7 +60,7 @@ public class ElGamalEncryptionExample {
 	public static void example1() {
 
 		// Create cyclic group G_q (modulo 20 bits) and get default generator
-		CyclicGroup cyclicGroup = GStarModSafePrime.getRandomInstance(20);
+		CyclicGroup cyclicGroup = GStarModSafePrime.getInstance(SafePrime.getRandomInstance(20));
 		Element generator = cyclicGroup.getDefaultGenerator();
 
 		// Create ElGamal encryption scheme
@@ -90,7 +91,7 @@ public class ElGamalEncryptionExample {
 	public static void example2() {
 
 		// Create cyclic group G_q (modulo 20 bits) and get default generator
-		GStarModSafePrime cyclicGroup = GStarModSafePrime.getRandomInstance(20);
+		GStarModSafePrime cyclicGroup = GStarModSafePrime.getInstance(SafePrime.getRandomInstance(20));
 		Element generator = cyclicGroup.getDefaultGenerator();
 
 		// Create ElGamal encryption scheme

@@ -72,7 +72,7 @@ public class PermutationExample {
 		Element p1 = pg.getRandomElement();
 
 		// Convert it to BigInteger
-		BigInteger x = p1.getBigInteger();
+		BigInteger x = p1.convertToBigInteger();
 
 		// Convert it back to PermutationElement
 		Element p2 = pg.getElementFrom(x);

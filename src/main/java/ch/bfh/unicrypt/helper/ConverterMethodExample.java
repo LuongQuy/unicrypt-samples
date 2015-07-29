@@ -42,13 +42,15 @@
 package ch.bfh.unicrypt.helper;
 
 import ch.bfh.unicrypt.Example;
+import ch.bfh.unicrypt.helper.aggregator.classes.ByteArrayAggregator;
+import ch.bfh.unicrypt.helper.aggregator.interfaces.Aggregator;
 import ch.bfh.unicrypt.helper.array.classes.ByteArray;
-import ch.bfh.unicrypt.helper.bytetree.ByteTree;
 import ch.bfh.unicrypt.helper.converter.classes.ConvertMethod;
 import ch.bfh.unicrypt.helper.converter.classes.bytearray.BigIntegerToByteArray;
 import ch.bfh.unicrypt.helper.converter.classes.bytearray.StringToByteArray;
-import ch.bfh.unicrypt.helper.hash.ElementHashMethod;
-import ch.bfh.unicrypt.helper.hash.ElementHashMethod.Mode;
+import ch.bfh.unicrypt.helper.math.Alphabet;
+import ch.bfh.unicrypt.helper.math.Permutation;
+import ch.bfh.unicrypt.helper.tree.Tree;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringElement;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringMonoid;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZMod;
@@ -74,11 +76,14 @@ public class ConverterMethodExample {
 		// BigIntegerToByteArray
 		BigIntegerToByteArray bigIntegerConverter = BigIntegerToByteArray.getInstance(ByteOrder.LITTLE_ENDIAN);
 
-		// Two ConvertMethods
-		ConvertMethod convertMethod1 = ConvertMethod.getInstance();
-		ConvertMethod convertMethod2 = ConvertMethod.getInstance(bigIntegerConverter);
-		ConvertMethod convertMethod3 = ConvertMethod.getInstance(stringConverter);
-		ConvertMethod convertMethod4 = ConvertMethod.getInstance(stringConverter, bigIntegerConverter);
+		// Three convert methods
+		ConvertMethod<ByteArray> convertMethod1 = ConvertMethod.getInstance();
+		ConvertMethod<ByteArray> convertMethod2 = ConvertMethod.getInstance(bigIntegerConverter);
+		ConvertMethod<ByteArray> convertMethod3 = ConvertMethod.getInstance(stringConverter);
+		ConvertMethod<ByteArray> convertMethod4 = ConvertMethod.getInstance(stringConverter, bigIntegerConverter);
+
+		// Aggregator
+		Aggregator<ByteArray> aggregator = ByteArrayAggregator.getInstance();
 
 		// String monoid
 		StringMonoid set = StringMonoid.getInstance(Alphabet.DECIMAL);
@@ -89,51 +94,51 @@ public class ConverterMethodExample {
 		Example.printLine(set);
 		Example.printLine(element);
 
-		Example.printLine("BigInteger", element.getBigInteger());
+		Example.printLine("BigInteger", element.convertToBigInteger());
 
 		// Converting the element to byte array (forth and back)
 		Example.printLabelLine("CONVERSION TO BYTE ARRAY");
 
 		ByteArray byteArray;
-		byteArray = element.getByteArray();
+		byteArray = element.convertToByteArray();
 		Example.printLine(set.getElementFrom(byteArray), byteArray);
 
-		byteArray = element.getByteArray(stringConverter);
+		byteArray = element.convertTo(stringConverter);
 		Example.printLine(set.getElementFrom(byteArray, stringConverter), byteArray);
 
-		byteArray = element.getByteArray(convertMethod1);
-		Example.printLine(set.getElementFrom(byteArray, convertMethod1), byteArray);
+		byteArray = element.convertTo(convertMethod1, aggregator);
+		Example.printLine(set.getElementFrom(byteArray, convertMethod1, aggregator), byteArray);
 
-		byteArray = element.getByteArray(convertMethod2);
-		Example.printLine(set.getElementFrom(byteArray, convertMethod2), byteArray);
+		byteArray = element.convertTo(convertMethod2, aggregator);
+		Example.printLine(set.getElementFrom(byteArray, convertMethod2, aggregator), byteArray);
 
-		byteArray = element.getByteArray(convertMethod3);
-		Example.printLine(set.getElementFrom(byteArray, convertMethod3), byteArray);
+		byteArray = element.convertTo(convertMethod3, aggregator);
+		Example.printLine(set.getElementFrom(byteArray, convertMethod3, aggregator), byteArray);
 
-		byteArray = element.getByteArray(convertMethod4);
-		Example.printLine(set.getElementFrom(byteArray, convertMethod4), byteArray);
+		byteArray = element.convertTo(convertMethod4, aggregator);
+		Example.printLine(set.getElementFrom(byteArray, convertMethod4, aggregator), byteArray);
 
 		// Converting the element to byte tree (forth and back)
 		Example.printLabelLine("CONVERSION TO BYTE TREE");
 
-		ByteTree byteTree;
-		byteTree = element.getByteTree();
-		Example.printLine(set.getElementFrom(byteTree), byteTree);
+		Tree<ByteArray> tree;
+		tree = element.convertTo(ConvertMethod.getInstance());
+		Example.printLine(set.getElementFrom(tree, ConvertMethod.getInstance()), tree);
 
-		byteTree = element.getByteTree(stringConverter);
-		Example.printLine(set.getElementFrom(byteTree, stringConverter), byteTree);
+		byteArray = element.convertTo(stringConverter);
+		Example.printLine(set.getElementFrom(byteArray, stringConverter), byteArray);
 
-		byteTree = element.getByteTree(convertMethod1);
-		Example.printLine(set.getElementFrom(byteTree, convertMethod1), byteTree);
+		tree = element.convertTo(convertMethod1);
+		Example.printLine(set.getElementFrom(tree, convertMethod1), tree);
 
-		byteTree = element.getByteTree(convertMethod2);
-		Example.printLine(set.getElementFrom(byteTree, convertMethod2), byteTree);
+		tree = element.convertTo(convertMethod2);
+		Example.printLine(set.getElementFrom(tree, convertMethod2), tree);
 
-		byteTree = element.getByteTree(convertMethod3);
-		Example.printLine(set.getElementFrom(byteTree, convertMethod3), byteTree);
+		tree = element.convertTo(convertMethod3);
+		Example.printLine(set.getElementFrom(tree, convertMethod3), tree);
 
-		byteTree = element.getByteTree(convertMethod4);
-		Example.printLine(set.getElementFrom(byteTree, convertMethod4), byteTree);
+		tree = element.convertTo(convertMethod4);
+		Example.printLine(set.getElementFrom(tree, convertMethod4), tree);
 	}
 
 	public static void example2() {
@@ -163,51 +168,34 @@ public class ConverterMethodExample {
 		Example.printLine(e1, e2, e3);
 		Example.printLine(tuple);
 
-		Example.printLine("BigInteger", tuple.getBigInteger());
+		Example.printLine("BigInteger", tuple.convertToBigInteger());
 
 		// Converting the tuple to byte array forth and back
 		Example.printLabelLine("CONVERSION TO BYTE ARRAY");
 
 		ByteArray byteArray;
-		byteArray = tuple.getByteArray();
+		byteArray = tuple.convertToByteArray();
 		Example.printLine(productSet.getElementFrom(byteArray), byteArray);
 
-		byteArray = tuple.getByteArray(convertMethod1);
-		Example.printLine(productSet.getElementFrom(byteArray, convertMethod1), byteArray);
+		byteArray = tuple.convertTo(convertMethod1, ByteArrayAggregator.getInstance());
+		Example.printLine(productSet.getElementFrom(byteArray, convertMethod1, ByteArrayAggregator.getInstance()), byteArray);
 
-		byteArray = tuple.getByteArray(convertMethod2);
-		Example.printLine(productSet.getElementFrom(byteArray, convertMethod2), byteArray);
+		byteArray = tuple.convertTo(convertMethod2, ByteArrayAggregator.getInstance());
+		Example.printLine(productSet.getElementFrom(byteArray, convertMethod2, ByteArrayAggregator.getInstance()), byteArray);
 
 		// Converting the tuple to byte tree forth and back
 		Example.printLabelLine("CONVERSION TO BYTE TREE");
 
-		ByteTree byteTree;
-		byteTree = tuple.getByteTree();
-		Example.printLine(productSet.getElementFrom(byteTree), byteTree);
+		Tree<ByteArray> byteTree;
+		byteTree = tuple.convertTo(ConvertMethod.getInstance());
+		Example.printLine(productSet.getElementFrom(byteTree, ConvertMethod.getInstance()), byteTree);
 
-		byteTree = tuple.getByteTree(convertMethod1);
+		byteTree = tuple.convertTo(convertMethod1);
 		Example.printLine(productSet.getElementFrom(byteTree, convertMethod1), byteTree);
 
-		byteTree = tuple.getByteTree(convertMethod2);
+		byteTree = tuple.convertTo(convertMethod2);
 		Example.printLine(productSet.getElementFrom(byteTree, convertMethod2), byteTree);
 
-		// Computing hash values
-		Example.printLabelLine("HASH VALUES");
-
-		Example.printLine(tuple.getHashValue(ElementHashMethod.getInstance()));
-		Example.printLine(tuple.getHashValue(ElementHashMethod.getInstance(Mode.BYTEARRAY)));
-		Example.printLine(tuple.getHashValue(ElementHashMethod.getInstance(Mode.BYTETREE)));
-		Example.printLine(tuple.getHashValue(ElementHashMethod.getInstance(Mode.RECURSIVE)));
-
-		Example.printLine(tuple.getHashValue(ElementHashMethod.getInstance(convertMethod1)));
-		Example.printLine(tuple.getHashValue(ElementHashMethod.getInstance(convertMethod1, Mode.BYTEARRAY)));
-		Example.printLine(tuple.getHashValue(ElementHashMethod.getInstance(convertMethod1, Mode.BYTETREE)));
-		Example.printLine(tuple.getHashValue(ElementHashMethod.getInstance(convertMethod1, Mode.RECURSIVE)));
-
-		Example.printLine(tuple.getHashValue(ElementHashMethod.getInstance(convertMethod2)));
-		Example.printLine(tuple.getHashValue(ElementHashMethod.getInstance(convertMethod2, Mode.BYTEARRAY)));
-		Example.printLine(tuple.getHashValue(ElementHashMethod.getInstance(convertMethod2, Mode.BYTETREE)));
-		Example.printLine(tuple.getHashValue(ElementHashMethod.getInstance(convertMethod2, Mode.RECURSIVE)));
 	}
 
 	public static void main(final String[] args) {

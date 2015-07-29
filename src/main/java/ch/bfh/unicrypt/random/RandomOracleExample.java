@@ -67,7 +67,6 @@ public class RandomOracleExample {
 			System.out.println("Get a ByteArray: " + referenceString.getNextByteArray(32));
 			System.out.println("Get a boolean via RandomNumberGenerator " + referenceString.getRandomNumberGenerator().nextBoolean());
 			System.out.println("Get a BigInteger via RandomNumberGenerator " + referenceString.getRandomNumberGenerator().nextBigInteger(42));
-			System.out.println("Get a savePrime via RandomNumberGenerator " + referenceString.getRandomNumberGenerator().nextSavePrime(10));
 		}
 		System.out.println("");
 		System.out.println("Doing the same thing again...");
@@ -84,8 +83,6 @@ public class RandomOracleExample {
 			System.out.println("Get a ByteArray: " + referenceString.getNextByteArray(32));
 			System.out.println("Get a boolean via RandomNumberGenerator " + referenceString.getRandomNumberGenerator().nextBoolean());
 			System.out.println("Get a BigInteger via RandomNumberGenerator " + referenceString.getRandomNumberGenerator().nextBigInteger(42));
-			System.out.println("Get a savePrime via RandomNumberGenerator " + referenceString.getRandomNumberGenerator().nextSavePrime(10));
-
 		}
 	}
 
@@ -104,7 +101,6 @@ public class RandomOracleExample {
 			System.out.println("Get a ByteArray: " + referenceString.getNextByteArray(32));
 			System.out.println("Get a boolean via RandomNumberGenerator " + referenceString.getRandomNumberGenerator().nextBoolean());
 			System.out.println("Get a BigInteger via RandomNumberGenerator " + referenceString.getRandomNumberGenerator().nextBigInteger(42));
-			System.out.println("Get a savePrime via RandomNumberGenerator " + referenceString.getRandomNumberGenerator().nextSavePrime(10));
 		}
 		System.out.println("");
 		System.out.println("Doing the same thing again...");
@@ -123,8 +119,6 @@ public class RandomOracleExample {
 			System.out.println("Get a ByteArray: " + referenceString.getNextByteArray(32));
 			System.out.println("Get a boolean via RandomNumberGenerator " + referenceString.getRandomNumberGenerator().nextBoolean());
 			System.out.println("Get a BigInteger via RandomNumberGenerator " + referenceString.getRandomNumberGenerator().nextBigInteger(42));
-			System.out.println("Get a savePrime via RandomNumberGenerator " + referenceString.getRandomNumberGenerator().nextSavePrime(10));
-
 		}
 	}
 
@@ -142,7 +136,6 @@ public class RandomOracleExample {
 			System.out.println("Get a ByteArray: " + referenceString.getNextByteArray(32));
 			System.out.println("Get a boolean via RandomNumberGenerator " + referenceString.getRandomNumberGenerator().nextBoolean());
 			System.out.println("Get a BigInteger via RandomNumberGenerator " + referenceString.getRandomNumberGenerator().nextBigInteger(42));
-			System.out.println("Get a savePrime via RandomNumberGenerator " + referenceString.getRandomNumberGenerator().nextSavePrime(10));
 		}
 		System.out.println("");
 		System.out.println("Doing the same thing again...");
@@ -160,8 +153,6 @@ public class RandomOracleExample {
 			System.out.println("Get a ByteArray: " + referenceString.getNextByteArray(32));
 			System.out.println("Get a boolean via RandomNumberGenerator " + referenceString.getRandomNumberGenerator().nextBoolean());
 			System.out.println("Get a BigInteger via RandomNumberGenerator " + referenceString.getRandomNumberGenerator().nextBigInteger(42));
-			System.out.println("Get a savePrime via RandomNumberGenerator " + referenceString.getRandomNumberGenerator().nextSavePrime(10));
-
 		}
 	}
 

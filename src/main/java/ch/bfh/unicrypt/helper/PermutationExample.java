@@ -42,6 +42,8 @@
 package ch.bfh.unicrypt.helper;
 
 import ch.bfh.unicrypt.Example;
+import ch.bfh.unicrypt.helper.math.MathUtil;
+import ch.bfh.unicrypt.helper.math.Permutation;
 import java.math.BigInteger;
 
 /**

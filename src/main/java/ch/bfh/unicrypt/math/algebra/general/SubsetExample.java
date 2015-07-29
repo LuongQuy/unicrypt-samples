@@ -68,7 +68,7 @@ public class SubsetExample {
 		Example.printLine(subset.getOrder());
 		Example.printLine(e1.getSet());
 		Example.printLine(e1.getValue());
-		Example.printLine(e1.getBigInteger());
+		Example.printLine(e1.convertToBigInteger());
 	}
 
 	public static void main(final String[] args) {

@@ -49,7 +49,8 @@ import ch.bfh.unicrypt.crypto.encoder.interfaces.Encoder;
 import ch.bfh.unicrypt.crypto.keygenerator.interfaces.KeyPairGenerator;
 import ch.bfh.unicrypt.crypto.schemes.encryption.classes.ElGamalEncryptionScheme;
 import ch.bfh.unicrypt.crypto.schemes.sharing.classes.ShamirSecretSharingScheme;
-import ch.bfh.unicrypt.helper.Alphabet;
+import ch.bfh.unicrypt.helper.factorization.SafePrime;
+import ch.bfh.unicrypt.helper.math.Alphabet;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZMod;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZModPrime;
 import ch.bfh.unicrypt.math.algebra.general.classes.Tuple;
@@ -131,7 +132,7 @@ public class CryptoExample {
 	public static void example3() {
 
 		// Define underlying groups (64 bits)
-		GStarModSafePrime group = GStarModSafePrime.getRandomInstance(64);
+		GStarModSafePrime group = GStarModSafePrime.getInstance(SafePrime.getRandomInstance(64));
 		ZMod zMod = group.getZModOrder();
 
 		// Create encoders

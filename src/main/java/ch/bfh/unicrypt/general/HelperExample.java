@@ -42,9 +42,10 @@
 package ch.bfh.unicrypt.general;
 
 import ch.bfh.unicrypt.Example;
+import ch.bfh.unicrypt.helper.aggregator.classes.ByteArrayAggregator;
 import ch.bfh.unicrypt.helper.array.classes.ByteArray;
-import ch.bfh.unicrypt.helper.bytetree.ByteTree;
 import ch.bfh.unicrypt.helper.hash.HashAlgorithm;
+import ch.bfh.unicrypt.helper.tree.Tree;
 
 /**
  *
@@ -56,7 +57,7 @@ public class HelperExample {
 
 		// Define byte arrays
 		ByteArray b1 = ByteArray.getInstance("F1|62|23|C4|25|86|A7");
-		ByteArray b2 = ByteArray.getInstance(10, 254, 120);
+		ByteArray b2 = ByteArray.getInstance(10, -54, 120);
 		ByteArray b3 = ByteArray.getRandomInstance(7);
 
 		// Perform operations
@@ -71,37 +72,37 @@ public class HelperExample {
 		// Print results
 		Example.printLines("ByteArrays", b1, b2, b3);
 		Example.printLine("Extract", b4);
-		Example.printLine("Concatenate", b5);
-		Example.printLine("XOR", b6);
+		Example.printLine("Append ", b5);
+		Example.printLine("XOR    ", b6);
 		Example.printLine("SHA-256", b7);
-		Example.printLine("MD5", b8);
+		Example.printLine("MD5    ", b8);
 	}
 
 	public static void example2() {
 
 		// Define multiple byte tree leaves
-		ByteTree bt1 = ByteTree.getInstance(ByteArray.getInstance("1A|43"));
-		ByteTree bt2 = ByteTree.getInstance(ByteArray.getInstance("71|B2|29"));
-		ByteTree bt3 = ByteTree.getInstance(ByteArray.getInstance("2F"));
-		ByteTree bt4 = ByteTree.getInstance(ByteArray.getInstance("C4|B2"));
+		Tree<ByteArray> t1 = Tree.getInstance(ByteArray.getInstance("1A|43"));
+		Tree<ByteArray> t2 = Tree.getInstance(ByteArray.getInstance("71|B2|29"));
+		Tree<ByteArray> t3 = Tree.getInstance(ByteArray.getInstance("2F"));
+		Tree<ByteArray> t4 = Tree.getInstance(ByteArray.getInstance("C4|B2"));
 
 		// Combine bt3, bt4
-		ByteTree bt5 = ByteTree.getInstance(bt3, bt4);
+		Tree<ByteArray> t5 = Tree.getInstance(t3, t4);
 
 		// Combine bt1, bt2, bt5
-		ByteTree byteTree = ByteTree.getInstance(bt1, bt2, bt5);
+		Tree<ByteArray> tree = Tree.getInstance(t1, t2, t5);
 
-		// Convert ByteTree to ByteArray
-		ByteArray byteArray = byteTree.getByteArray();
+		// Convert ByteArrayTree to ByteArray
+		ByteArray byteArray = tree.aggregate(ByteArrayAggregator.getInstance());
 
 		// Convert ByteArray to ByteTree
-		ByteTree recoveredByteTree = ByteTree.getInstanceFrom(byteArray);
+		Tree<ByteArray> recoveredTree = Tree.getInstance(byteArray, ByteArrayAggregator.getInstance());
 
 		// Print results
-		Example.printLines("Nodes", bt1, bt2, bt3, bt4, bt5);
-		Example.printLine("ByteTree ", byteTree);
+		Example.printLines("Nodes", t1, t2, t3, t4, t5);
+		Example.printLine("Tree     ", tree);
 		Example.printLine("ByteArray", byteArray);
-		Example.printLine("Recovered", recoveredByteTree);
+		Example.printLine("Recovered", recoveredTree);
 	}
 
 	public static void main(final String[] args) {

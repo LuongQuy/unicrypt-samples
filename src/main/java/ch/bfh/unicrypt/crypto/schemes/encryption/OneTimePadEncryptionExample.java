@@ -44,9 +44,9 @@ package ch.bfh.unicrypt.crypto.schemes.encryption;
 import ch.bfh.unicrypt.Example;
 import ch.bfh.unicrypt.crypto.encoder.classes.FiniteStringToFiniteByteArrayEncoder;
 import ch.bfh.unicrypt.crypto.schemes.encryption.classes.OneTimePadEncryptionScheme;
+import ch.bfh.unicrypt.helper.math.Alphabet;
 import ch.bfh.unicrypt.math.algebra.general.classes.FiniteStringSet;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
-import ch.bfh.unicrypt.helper.Alphabet;
 
 /**
  *

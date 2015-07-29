@@ -42,11 +42,11 @@
 package ch.bfh.unicrypt.math;
 
 import ch.bfh.unicrypt.Example;
-import ch.bfh.unicrypt.helper.Alphabet;
+import ch.bfh.unicrypt.helper.array.classes.ByteArray;
 import ch.bfh.unicrypt.helper.converter.classes.bytearray.BigIntegerToByteArray;
 import ch.bfh.unicrypt.helper.converter.classes.string.BigIntegerToString;
-import ch.bfh.unicrypt.helper.converter.interfaces.ByteArrayConverter;
-import ch.bfh.unicrypt.helper.converter.interfaces.StringConverter;
+import ch.bfh.unicrypt.helper.converter.interfaces.Converter;
+import ch.bfh.unicrypt.helper.math.Alphabet;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringElement;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringMonoid;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.Z;
@@ -64,10 +64,10 @@ public class ConverterExample {
 
 	public static void example1() {
 
-		StringConverter hexConverter = BigIntegerToString.getInstance(16);
-		StringConverter binConverter = BigIntegerToString.getInstance(2);
-		ByteArrayConverter bigEndian = BigIntegerToByteArray.getInstance(ByteOrder.BIG_ENDIAN);
-		ByteArrayConverter littleEndian = BigIntegerToByteArray.getInstance(ByteOrder.LITTLE_ENDIAN);
+		Converter<BigInteger, String> hexConverter = BigIntegerToString.getInstance(16);
+		Converter<BigInteger, String> binConverter = BigIntegerToString.getInstance(2);
+		Converter<BigInteger, ByteArray> bigEndian = BigIntegerToByteArray.getInstance(ByteOrder.BIG_ENDIAN);
+		Converter<BigInteger, ByteArray> littleEndian = BigIntegerToByteArray.getInstance(ByteOrder.LITTLE_ENDIAN);
 
 		Z z = Z.getInstance();
 
@@ -84,13 +84,13 @@ public class ConverterExample {
 		zElements.add(z.getElementFrom("-1111101000", binConverter));
 		for (ZElement zElement : zElements) {
 			Example.printLine(zElement,
-							  zElement.getBigInteger(),
-							  zElement.getString(),
-							  zElement.getString(hexConverter),
-							  zElement.getString(binConverter),
-							  zElement.getByteArray(),
-							  zElement.getByteArray(bigEndian),
-							  zElement.getByteArray(littleEndian));
+							  zElement.convertToBigInteger(),
+							  zElement.convertToString(),
+							  zElement.convertTo(hexConverter),
+							  zElement.convertTo(binConverter),
+							  zElement.convertToByteArray(),
+							  zElement.convertTo(bigEndian),
+							  zElement.convertTo(littleEndian));
 		}
 	}
 
