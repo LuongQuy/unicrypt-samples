@@ -53,8 +53,8 @@ public class GroupPrinter {
 
 	public static void example1() {
 
-		Set<BigInteger> cyclic = new HashSet<BigInteger>();
-		cyclic = new TreeSet<BigInteger>(cyclic);
+		Set<BigInteger> cyclic = new HashSet<>();
+		cyclic = new TreeSet<>(cyclic);
 
 		final boolean doubling = false;
 
@@ -74,7 +74,7 @@ public class GroupPrinter {
 		List<BigInteger> set;
 
 		for (final BigInteger bi : cyclic) {
-			set = new ArrayList<BigInteger>();
+			set = new ArrayList<>();
 			for (int j = 1; j < bi.intValue(); j++) {
 				final BigInteger bj = BigInteger.valueOf(j);
 				if (bi.gcd(bj).equals(BigInteger.ONE)) {
@@ -99,11 +99,11 @@ public class GroupPrinter {
 				if (BigInteger.valueOf(j).gcd(BigInteger.valueOf(order)).equals(BigInteger.valueOf(j))) {
 					System.out.print("k=" + j + ": ");
 					@SuppressWarnings("unused")
-					Set<BigInteger> candSet = new HashSet<BigInteger>();
+					Set<BigInteger> candSet = new HashSet<>();
 					for (final BigInteger alpha : set) {
 						candSet.add(alpha.modPow(BigInteger.valueOf(j), bi));
 					}
-					candSet = new TreeSet<BigInteger>(candSet);
+					candSet = new TreeSet<>(candSet);
 					System.out.println(candSet);
 				}
 			}

@@ -148,7 +148,7 @@ public class MathExample {
 		Example.printLine(h.toString(16));
 
 		//Read bits and create a BigInteger ArrayList
-		ArrayList<BigInteger> arrayBigInteger = new ArrayList<BigInteger>();
+		ArrayList<BigInteger> arrayBigInteger = new ArrayList<>();
 		for (Character s : h.toString(2).toCharArray()) {
 			arrayBigInteger.add(new BigInteger(s.toString()));
 
