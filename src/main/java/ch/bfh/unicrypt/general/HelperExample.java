@@ -67,7 +67,7 @@ public class HelperExample {
 
 		// Compute hash values
 		ByteArray b7 = b1.getHashValue();
-		ByteArray b8 = b1.getHashValue(HashAlgorithm.MD5);
+		ByteArray b8 = b1.getHashValue(HashAlgorithm.SHA256);
 
 		// Print results
 		Example.printLines("ByteArrays", b1, b2, b3);
