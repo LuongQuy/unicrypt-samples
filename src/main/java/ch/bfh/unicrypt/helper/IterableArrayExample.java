@@ -42,7 +42,7 @@
 package ch.bfh.unicrypt.helper;
 
 import ch.bfh.unicrypt.Example;
-import ch.bfh.unicrypt.helper.iterable.IterableArray;
+import ch.bfh.unicrypt.helper.sequence.classes.ArraySequence;
 
 /**
  *
@@ -52,7 +52,7 @@ public class IterableArrayExample {
 
 	public static void example1() {
 		String[] strings = new String[]{"One", "Two", "Three", "Four"};
-		IterableArray<String> iterableStrings = IterableArray.getInstance(strings);
+		Iterable<String> iterableStrings = ArraySequence.getInstance(strings);
 
 		for (String string : iterableStrings) {
 			System.out.println(string);
