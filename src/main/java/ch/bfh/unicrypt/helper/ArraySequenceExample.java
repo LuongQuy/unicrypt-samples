@@ -42,19 +42,20 @@
 package ch.bfh.unicrypt.helper;
 
 import ch.bfh.unicrypt.Example;
-import ch.bfh.unicrypt.helper.sequence.classes.ArraySequence;
+import ch.bfh.unicrypt.helper.sequence.Sequence;
+import ch.bfh.unicrypt.helper.sequence.Sequence;
 
 /**
  *
  * @author Rolf Haenni <rolf.haenni@bfh.ch>
  */
-public class IterableArrayExample {
+public class ArraySequenceExample {
 
 	public static void example1() {
 		String[] strings = new String[]{"One", "Two", "Three", "Four"};
-		Iterable<String> iterableStrings = ArraySequence.getInstance(strings);
+		Sequence<String> stringSequence = Sequence.getInstance(strings);
 
-		for (String string : iterableStrings) {
+		for (String string : stringSequence) {
 			System.out.println(string);
 		}
 	}
