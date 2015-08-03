@@ -42,7 +42,7 @@
 package ch.bfh.unicrypt.crypto.schemes.encryption;
 
 import ch.bfh.unicrypt.Example;
-import ch.bfh.unicrypt.crypto.encoder.classes.ZModToGStarModSafePrimeEncoder;
+import ch.bfh.unicrypt.crypto.encoder.classes.ZModPrimeToGStarModSafePrime;
 import ch.bfh.unicrypt.crypto.encoder.interfaces.Encoder;
 import ch.bfh.unicrypt.crypto.schemes.encryption.classes.ElGamalEncryptionScheme;
 import ch.bfh.unicrypt.helper.factorization.SafePrime;
@@ -98,7 +98,7 @@ public class ElGamalEncryptionExample {
 		ElGamalEncryptionScheme elGamal = ElGamalEncryptionScheme.getInstance(generator);
 
 		// Create encoder from Z_q to G_q
-		Encoder encoder = ZModToGStarModSafePrimeEncoder.getInstance(cyclicGroup);
+		Encoder encoder = ZModPrimeToGStarModSafePrime.getInstance(cyclicGroup);
 
 		// Create keys
 		Pair keyPair = elGamal.getKeyPairGenerator().generateKeyPair();

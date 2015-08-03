@@ -42,12 +42,14 @@
 package ch.bfh.unicrypt.crypto.schemes.encryption;
 
 import ch.bfh.unicrypt.Example;
+import ch.bfh.unicrypt.crypto.encoder.classes.GeneralEncoder;
 import ch.bfh.unicrypt.crypto.encoder.classes.StringToByteArrayEncoder;
 import ch.bfh.unicrypt.crypto.encoder.interfaces.Encoder;
 import ch.bfh.unicrypt.crypto.schemes.encryption.classes.AESEncryptionScheme;
 import ch.bfh.unicrypt.crypto.schemes.padding.classes.ANSIPaddingScheme;
 import ch.bfh.unicrypt.crypto.schemes.padding.classes.PKCSPaddingScheme;
 import ch.bfh.unicrypt.crypto.schemes.padding.interfaces.ReversiblePaddingScheme;
+import ch.bfh.unicrypt.helper.converter.classes.bytearray.StringToByteArray;
 import ch.bfh.unicrypt.helper.math.Alphabet;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.ByteArrayMonoid;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringMonoid;
@@ -112,7 +114,8 @@ public class AESEncryptionExample {
 		// Define alphabet, string monoid, encoder, padding
 		Alphabet alphabet = Alphabet.ALPHANUMERIC;
 		StringMonoid stringMonoid = StringMonoid.getInstance(alphabet);
-		Encoder encoder = StringToByteArrayEncoder.getInstance(stringMonoid);
+		ByteArrayMonoid byteArrayMonoid = ByteArrayMonoid.getInstance();
+		Encoder encoder = GeneralEncoder.getInstance(stringMonoid, byteArrayMonoid, StringToByteArray.getInstance());
 		ReversiblePaddingScheme ansi = ANSIPaddingScheme.getInstance(16);
 
 		// Define encryption scheme and key
@@ -120,7 +123,7 @@ public class AESEncryptionExample {
 		Element key = aes.generateSecretKey();
 
 		// Define string message to encrypt
-		Element message = stringMonoid.getElement("HalloWorld");
+		Element message = stringMonoid.getElement("HelloWorld");
 
 		// Perform the encoding, padding, and encryption
 		Element encodedMessage = encoder.encode(message);

@@ -42,9 +42,12 @@
 package ch.bfh.unicrypt.crypto.schemes.encryption;
 
 import ch.bfh.unicrypt.Example;
-import ch.bfh.unicrypt.crypto.encoder.classes.FiniteStringToFiniteByteArrayEncoder;
+import ch.bfh.unicrypt.crypto.encoder.classes.GeneralEncoder;
+import ch.bfh.unicrypt.crypto.encoder.interfaces.Encoder;
 import ch.bfh.unicrypt.crypto.schemes.encryption.classes.OneTimePadEncryptionScheme;
+import ch.bfh.unicrypt.helper.converter.classes.bytearray.StringToByteArray;
 import ch.bfh.unicrypt.helper.math.Alphabet;
+import ch.bfh.unicrypt.math.algebra.general.classes.FiniteByteArraySet;
 import ch.bfh.unicrypt.math.algebra.general.classes.FiniteStringSet;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
 
@@ -82,16 +85,21 @@ public class OneTimePadEncryptionExample {
 		// Define alphabet and encoder
 		Alphabet alphabet = Alphabet.ALPHANUMERIC;
 		FiniteStringSet stringSet = FiniteStringSet.getInstance(alphabet, 20);
-		FiniteStringToFiniteByteArrayEncoder encoder = FiniteStringToFiniteByteArrayEncoder.getInstance(stringSet);
+
+		// Define large enough ByteArray set
+		FiniteByteArraySet byteArraySet = FiniteByteArraySet.getInstance(stringSet.getOrder());
+
+		// Define encoder
+		Encoder encoder = GeneralEncoder.getInstance(stringSet, byteArraySet, StringToByteArray.getInstance());
 
 		// Create one time pad (length = 20 bytes)
-		OneTimePadEncryptionScheme oneTimePad = OneTimePadEncryptionScheme.getInstance(encoder.getFiniteByteArraySet());
+		OneTimePadEncryptionScheme oneTimePad = OneTimePadEncryptionScheme.getInstance(byteArraySet);
 
 		// Create random key (length = 20 bytes)
 		Element key = oneTimePad.getSecretKeyGenerator().generateSecretKey();
 
 		// Create, encode, and encrypt message
-		Element message = stringSet.getElement("HalloWorld");
+		Element message = stringSet.getElement("HelloWorld");
 		Element encodedMessage = encoder.encode(message);
 		Element encryptedMessage = oneTimePad.encrypt(key, encodedMessage);
 
