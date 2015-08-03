@@ -199,7 +199,7 @@ public class MemProofBasedVoting {
 			// pi_2
 			time = System.currentTimeMillis();
 			Element s = this.G_q.getZModOrder().getRandomElement();
-			Tuple m = this.betas.insertAt(0, this.alpha);
+			Tuple m = this.betas.insert(this.alpha);
 			Element cab = this.BB.getComQ().commit(m, s);
 			DoubleDiscreteLogProofSystem ddlps = DoubleDiscreteLogProofSystem.getInstance(this.BB.getComP(), this.BB.getComQ(), SECURITY_FACTOR);
 			Triple pi2 = ddlps.generate(Tuple.getInstance(uInZp, r, s, m), Pair.getInstance(cu, cab));

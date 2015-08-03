@@ -43,13 +43,12 @@ package ch.bfh.unicrypt.helper;
 
 import ch.bfh.unicrypt.Example;
 import ch.bfh.unicrypt.helper.sequence.Sequence;
-import ch.bfh.unicrypt.helper.sequence.Sequence;
 
 /**
  *
  * @author Rolf Haenni <rolf.haenni@bfh.ch>
  */
-public class ArraySequenceExample {
+public class SequenceExample {
 
 	public static void example1() {
 		String[] strings = new String[]{"One", "Two", "Three", "Four"};

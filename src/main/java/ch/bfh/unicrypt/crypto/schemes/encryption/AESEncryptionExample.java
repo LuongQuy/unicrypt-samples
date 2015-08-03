@@ -167,6 +167,7 @@ public class AESEncryptionExample {
 	}
 
 	public static void main(final String[] args) {
+		example3();
 		Example.runExamples();
 	}
 
