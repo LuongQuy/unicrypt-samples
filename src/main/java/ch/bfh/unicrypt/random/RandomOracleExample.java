@@ -60,7 +60,7 @@ public class RandomOracleExample {
 			RandomOracle oracle = PseudoRandomOracle.getInstance();
 
 			System.out.println("Request the default common random reference 'string' ");
-			ReferenceRandomByteSequence referenceString = oracle.getReferenceRandomByteSequence();
+			ReferenceRandomByteSequence referenceString = oracle.query();
 			System.out.println("The query in use as ByteArray: " + referenceString.getSeed());
 
 			System.out.println("Get a single Byte: " + referenceString.getNextByte());
@@ -76,7 +76,7 @@ public class RandomOracleExample {
 			RandomOracle oracle = PseudoRandomOracle.getInstance();
 
 			System.out.println("Request the default common random reference 'string' ");
-			ReferenceRandomByteSequence referenceString = oracle.getReferenceRandomByteSequence();
+			ReferenceRandomByteSequence referenceString = oracle.query();
 			System.out.println("The query in use as ByteArray: " + referenceString.getSeed());
 
 			System.out.println("Get a single Byte: " + referenceString.getNextByte());
@@ -94,7 +94,7 @@ public class RandomOracleExample {
 			System.out.println("Request the common random reference 'string' using a common ByteArray query");
 			ByteArray commonQuery = ByteArray.getInstance("This is the common query".getBytes());
 			System.out.println("The query to be used as ByteArray: " + commonQuery);
-			ReferenceRandomByteSequence referenceString = oracle.getReferenceRandomByteSequence(commonQuery);
+			ReferenceRandomByteSequence referenceString = oracle.query(commonQuery);
 			System.out.println("The query in use as ByteArray: " + referenceString.getSeed());
 
 			System.out.println("Get a single Byte: " + referenceString.getNextByte());
@@ -112,7 +112,7 @@ public class RandomOracleExample {
 			System.out.println("Request the common random reference 'string' using a common ByteArray query");
 			ByteArray commonQuery = ByteArray.getInstance("This is the common query".getBytes());
 			System.out.println("The query to be used as ByteArray: " + commonQuery);
-			ReferenceRandomByteSequence referenceString = oracle.getReferenceRandomByteSequence(commonQuery);
+			ReferenceRandomByteSequence referenceString = oracle.query(commonQuery);
 			System.out.println("The query in use as ByteArray: " + referenceString.getSeed());
 
 			System.out.println("Get a single Byte: " + referenceString.getNextByte());
@@ -129,7 +129,7 @@ public class RandomOracleExample {
 
 			System.out.println("Request the common random reference 'string' using a common BigInteger query");
 			BigInteger commonQuery = new BigInteger("123456789012345678901234567890");
-			ReferenceRandomByteSequence referenceString = oracle.getReferenceRandomByteSequence(commonQuery);
+			ReferenceRandomByteSequence referenceString = oracle.query(commonQuery);
 			System.out.println("The query in use as ByteArray: " + referenceString.getSeed());
 
 			System.out.println("Get a single Byte: " + referenceString.getNextByte());
@@ -146,7 +146,7 @@ public class RandomOracleExample {
 
 			System.out.println("Request the common random reference 'string' using a common BigInteger query");
 			BigInteger commonQuery = new BigInteger("123456789012345678901234567890");
-			ReferenceRandomByteSequence referenceString = oracle.getReferenceRandomByteSequence(commonQuery);
+			ReferenceRandomByteSequence referenceString = oracle.query(commonQuery);
 			System.out.println("The query in use as ByteArray: " + referenceString.getSeed());
 
 			System.out.println("Get a single Byte: " + referenceString.getNextByte());
