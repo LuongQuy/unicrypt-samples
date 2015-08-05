@@ -164,7 +164,7 @@ public class CompleteShuffleExample {
 		// P R E P A R E
 		//---------------
 		// Create random oracle and random reference string
-		final RandomOracle ro = PseudoRandomOracle.DEFAULT;
+		final RandomOracle ro = PseudoRandomOracle.getInstance();
 		final ReferenceRandomByteSequence rrs = ReferenceRandomByteSequence.getInstance();
 
 		// Create cyclic group and get generator

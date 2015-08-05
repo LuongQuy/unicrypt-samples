@@ -95,7 +95,7 @@ public class ShuffleProofSystemECExample {
 
 	public void proofOfShuffle(int size, CyclicGroup G_q, ReEncryptionScheme encryptionScheme, Element encryptionPK, PermutationElement pi, Tuple uV, Tuple uPrimeV, Tuple rV) {
 
-		final RandomOracle ro = PseudoRandomOracle.DEFAULT;
+		final RandomOracle ro = PseudoRandomOracle.getInstance();
 		final ReferenceRandomByteSequence rrs = ReferenceRandomByteSequence.getInstance();
 		final Element proverId = StringMonoid.getInstance(Alphabet.BASE64).getElement("Shuffler");
 		final int ke = 60;

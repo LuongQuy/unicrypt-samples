@@ -43,16 +43,18 @@ package ch.bfh.unicrypt.general;
 
 import ch.bfh.unicrypt.Example;
 import ch.bfh.unicrypt.crypto.encoder.classes.CompositeEncoder;
-import ch.bfh.unicrypt.crypto.encoder.classes.FiniteStringToZModEncoder;
-import ch.bfh.unicrypt.crypto.encoder.classes.ZModToGStarModSafePrimeEncoder;
+import ch.bfh.unicrypt.crypto.encoder.classes.ConvertEncoder;
+import ch.bfh.unicrypt.crypto.encoder.classes.ZModPrimeToGStarModSafePrime;
 import ch.bfh.unicrypt.crypto.encoder.interfaces.Encoder;
 import ch.bfh.unicrypt.crypto.keygenerator.interfaces.KeyPairGenerator;
 import ch.bfh.unicrypt.crypto.schemes.encryption.classes.ElGamalEncryptionScheme;
 import ch.bfh.unicrypt.crypto.schemes.sharing.classes.ShamirSecretSharingScheme;
+import ch.bfh.unicrypt.helper.converter.classes.biginteger.StringToBigInteger;
 import ch.bfh.unicrypt.helper.factorization.SafePrime;
 import ch.bfh.unicrypt.helper.math.Alphabet;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZMod;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZModPrime;
+import ch.bfh.unicrypt.math.algebra.general.classes.FiniteStringSet;
 import ch.bfh.unicrypt.math.algebra.general.classes.Tuple;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.CyclicGroup;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
@@ -134,10 +136,11 @@ public class CryptoExample {
 		// Define underlying groups (64 bits)
 		GStarModSafePrime group = GStarModSafePrime.getInstance(SafePrime.getRandomInstance(64));
 		ZMod zMod = group.getZModOrder();
+		FiniteStringSet stringSet = FiniteStringSet.getInstance(Alphabet.LOWER_CASE, zMod.getOrder());
 
 		// Create encoders
-		Encoder encoder1 = FiniteStringToZModEncoder.getInstance(zMod, Alphabet.LOWER_CASE);
-		Encoder encoder2 = ZModToGStarModSafePrimeEncoder.getInstance(group);
+		Encoder encoder1 = ConvertEncoder.getInstance(stringSet, zMod, StringToBigInteger.getInstance(Alphabet.LOWER_CASE));
+		Encoder encoder2 = ZModPrimeToGStarModSafePrime.getInstance(group);
 		Encoder encoder12 = CompositeEncoder.getInstance(encoder1, encoder2);
 
 		// Define message
@@ -148,7 +151,7 @@ public class CryptoExample {
 		Element encodedMessage = encoder12.encode(message);
 		Element decodedMessage = encoder12.decode(encodedMessage);
 
-		Example.printLines("Groups", group, zMod);
+		Example.printLines("Groups", group, zMod, stringSet);
 		Example.printLine("MessageSpace", messageSpace);
 		Example.printLines("Encoders", encoder1, encoder2, encoder12);
 		Example.printLines("Messages", message, encodedMessage, decodedMessage);
