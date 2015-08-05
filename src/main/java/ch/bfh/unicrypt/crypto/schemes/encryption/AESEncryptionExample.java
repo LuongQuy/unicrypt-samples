@@ -42,8 +42,7 @@
 package ch.bfh.unicrypt.crypto.schemes.encryption;
 
 import ch.bfh.unicrypt.Example;
-import ch.bfh.unicrypt.crypto.encoder.classes.GeneralEncoder;
-import ch.bfh.unicrypt.crypto.encoder.classes.StringToByteArrayEncoder;
+import ch.bfh.unicrypt.crypto.encoder.classes.ConvertEncoder;
 import ch.bfh.unicrypt.crypto.encoder.interfaces.Encoder;
 import ch.bfh.unicrypt.crypto.schemes.encryption.classes.AESEncryptionScheme;
 import ch.bfh.unicrypt.crypto.schemes.padding.classes.ANSIPaddingScheme;
@@ -115,7 +114,7 @@ public class AESEncryptionExample {
 		Alphabet alphabet = Alphabet.ALPHANUMERIC;
 		StringMonoid stringMonoid = StringMonoid.getInstance(alphabet);
 		ByteArrayMonoid byteArrayMonoid = ByteArrayMonoid.getInstance();
-		Encoder encoder = GeneralEncoder.getInstance(stringMonoid, byteArrayMonoid, StringToByteArray.getInstance());
+		Encoder encoder = ConvertEncoder.getInstance(stringMonoid, byteArrayMonoid, StringToByteArray.getInstance());
 		ReversiblePaddingScheme ansi = ANSIPaddingScheme.getInstance(16);
 
 		// Define encryption scheme and key
