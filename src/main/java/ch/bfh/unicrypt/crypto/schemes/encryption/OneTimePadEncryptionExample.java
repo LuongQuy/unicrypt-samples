@@ -42,7 +42,7 @@
 package ch.bfh.unicrypt.crypto.schemes.encryption;
 
 import ch.bfh.unicrypt.Example;
-import ch.bfh.unicrypt.crypto.encoder.classes.GeneralEncoder;
+import ch.bfh.unicrypt.crypto.encoder.classes.ConvertEncoder;
 import ch.bfh.unicrypt.crypto.encoder.interfaces.Encoder;
 import ch.bfh.unicrypt.crypto.schemes.encryption.classes.OneTimePadEncryptionScheme;
 import ch.bfh.unicrypt.helper.converter.classes.bytearray.StringToByteArray;
@@ -90,7 +90,7 @@ public class OneTimePadEncryptionExample {
 		FiniteByteArraySet byteArraySet = FiniteByteArraySet.getInstance(stringSet.getOrder());
 
 		// Define encoder
-		Encoder encoder = GeneralEncoder.getInstance(stringSet, byteArraySet, StringToByteArray.getInstance());
+		Encoder encoder = ConvertEncoder.getInstance(stringSet, byteArraySet, StringToByteArray.getInstance());
 
 		// Create one time pad (length = 20 bytes)
 		OneTimePadEncryptionScheme oneTimePad = OneTimePadEncryptionScheme.getInstance(byteArraySet);
