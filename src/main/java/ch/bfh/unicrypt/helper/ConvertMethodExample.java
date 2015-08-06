@@ -66,7 +66,7 @@ import java.nio.charset.Charset;
  *
  * @author Rolf Haenni <rolf.haenni@bfh.ch>
  */
-public class ConverterMethodExample {
+public class ConvertMethodExample {
 
 	public static void example1() {
 
