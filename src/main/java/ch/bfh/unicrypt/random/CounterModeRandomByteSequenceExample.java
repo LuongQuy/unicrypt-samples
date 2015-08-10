@@ -53,7 +53,6 @@ public class CounterModeRandomByteSequenceExample {
 		System.out.println("An Example with a CounterModeRandomByteSequence");
 
 		CounterModeRandomByteSequence cmrbs = CounterModeRandomByteSequence.getInstance();
-		System.out.println("Using the following Algorithm: " + cmrbs.getHashAlgorithm());
 
 		System.out.println("Counter: " + cmrbs.getCounter());
 		System.out.println("Seed: " + cmrbs.getSeed());
