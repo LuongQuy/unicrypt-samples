@@ -43,24 +43,13 @@ package ch.bfh.unicrypt.crypto.proofsystem;
 
 import ch.bfh.unicrypt.Example;
 import ch.bfh.unicrypt.crypto.keygenerator.interfaces.KeyPairGenerator;
-import ch.bfh.unicrypt.crypto.proofsystem.challengegenerator.classes.FiatShamirSigmaChallengeGenerator;
-import ch.bfh.unicrypt.crypto.proofsystem.challengegenerator.interfaces.SigmaChallengeGenerator;
 import ch.bfh.unicrypt.crypto.proofsystem.classes.PlainPreimageProofSystem;
 import ch.bfh.unicrypt.crypto.schemes.encryption.classes.ElGamalEncryptionScheme;
 import ch.bfh.unicrypt.helper.factorization.SafePrime;
-import ch.bfh.unicrypt.helper.math.Alphabet;
-import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringMonoid;
-import ch.bfh.unicrypt.math.algebra.general.classes.Pair;
 import ch.bfh.unicrypt.math.algebra.general.classes.Triple;
-import ch.bfh.unicrypt.math.algebra.general.classes.Tuple;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.CyclicGroup;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
 import ch.bfh.unicrypt.math.algebra.multiplicative.classes.GStarModSafePrime;
-import ch.bfh.unicrypt.math.function.classes.CompositeFunction;
-import ch.bfh.unicrypt.math.function.classes.GeneratorFunction;
-import ch.bfh.unicrypt.math.function.classes.InvertFunction;
-import ch.bfh.unicrypt.math.function.classes.MultiIdentityFunction;
-import ch.bfh.unicrypt.math.function.classes.ProductFunction;
 import ch.bfh.unicrypt.math.function.interfaces.Function;
 
 /**
@@ -96,59 +85,6 @@ public class PreimageProofExample {
 		Example.printLines("Keys", privateKey, publicKey);
 		Example.printLine("Proof", proof);
 		Example.printLine("Check", result);
-	}
-
-	/**
-	 * pi = NIZKP{(x) : y = g^x ∧ (∧_i b_i = a_i^{−x} )}.
-	 */
-	public static void example2() {
-
-		// Setup
-		CyclicGroup cyclicGroup = GStarModSafePrime.getInstance(SafePrime.getRandomInstance(256));
-		Element g = cyclicGroup.getDefaultGenerator();
-
-		Element x = cyclicGroup.getZModOrder().getRandomElement();
-		Element y = g.selfApply(x);
-
-		int size = 5;
-		Element[] as = new Element[size];
-		Element[] bs = new Element[size];
-		Function[] fs = new Function[size];
-		for (int i = 0; i < size; i++) {
-			as[i] = cyclicGroup.getRandomElement();
-			bs[i] = as[i].selfApply(x.invert());
-			fs[i] = GeneratorFunction.getInstance(as[i]);
-		}
-
-		// Create proof function
-		Function f = CompositeFunction.getInstance(
-			   MultiIdentityFunction.getInstance(cyclicGroup.getZModOrder(), 2),
-			   ProductFunction.getInstance(
-					  GeneratorFunction.getInstance(g),
-					  CompositeFunction.getInstance(
-							 InvertFunction.getInstance(cyclicGroup.getZModOrder()),
-							 MultiIdentityFunction.getInstance(cyclicGroup.getZModOrder(), size),
-							 ProductFunction.getInstance(fs))));
-
-		// Private and public input and prover id
-		Element privateInput = x;
-		Pair publicInput = Pair.getInstance(y, Tuple.getInstance(bs));
-		Element proverId = StringMonoid.getInstance(Alphabet.BASE64).getElement("Prover1");
-
-		// Create challenge generator and prood system
-		SigmaChallengeGenerator challengeGenerator = FiatShamirSigmaChallengeGenerator.getInstance(cyclicGroup.getZModOrder(), proverId);
-		PlainPreimageProofSystem proofSystem = PlainPreimageProofSystem.getInstance(challengeGenerator, f);
-
-		// Generate and verify proof
-		Triple proof = proofSystem.generate(privateInput, publicInput);
-		boolean result = proofSystem.verify(proof, publicInput);
-
-		Example.printLine("Proof", proof);
-		Example.printLine("Check", result);
-	}
-
-	public static void main(final String[] args) {
-		Example.runExamples();
 	}
 
 }
