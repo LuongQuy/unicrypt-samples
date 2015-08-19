@@ -41,6 +41,7 @@
  */
 package ch.bfh.unicrypt.crypto.proofsystem;
 
+import ch.bfh.unicrypt.Example;
 import ch.bfh.unicrypt.crypto.mixer.classes.ReEncryptionMixer;
 import ch.bfh.unicrypt.crypto.proofsystem.challengegenerator.interfaces.ChallengeGenerator;
 import ch.bfh.unicrypt.crypto.proofsystem.challengegenerator.interfaces.SigmaChallengeGenerator;
@@ -77,20 +78,12 @@ public class CompleteShuffleExample {
 
 		// P R E P A R E
 		//---------------
-		// Create random oracle and random reference string
-		final RandomOracle ro = PseudoRandomOracle.getInstance();
-		final ReferenceRandomByteSequence rrs = ReferenceRandomByteSequence.getInstance();
-
 		// Create cyclic group and get generator
 		final CyclicGroup G_q = GStarModSafePrime.getInstance(SafePrime.getRandomInstance(160));
-		final Element g = G_q.getIndependentGenerator(0, rrs);
+		final Element g = G_q.getIndependentGenerator(0, ReferenceRandomByteSequence.getInstance());
 
 		// Set size
-		final int size = 1000;
-		final Element proverId = StringMonoid.getInstance(Alphabet.BASE64).getElement("Shuffler");
-		final int ke = 60;
-		final int kc = 60;
-		final int kr = 20;
+		final int size = 100;
 
 		// Create ElGamal keys and encryption system
 		ElGamalEncryptionScheme es = ElGamalEncryptionScheme.getInstance(g);
@@ -124,15 +117,12 @@ public class CompleteShuffleExample {
 		//----------------------
 		System.out.println("Permutation Proof...");
 		// Create permutation commitment
-		PermutationCommitmentScheme pcs = PermutationCommitmentScheme.getInstance(G_q, size, rrs);
+		PermutationCommitmentScheme pcs = PermutationCommitmentScheme.getInstance(G_q, size);
 		Tuple permutationCommitmentRandomizations = pcs.getRandomizationSpace().getRandomElement();
 		Tuple permutationCommitment = pcs.commit(permutation, permutationCommitmentRandomizations);
 
 		// Create permutation commitment proof generator
-		//PermutationCommitmentProofSystem pcps = PermutationCommitmentProofSystem.getInstance(G_q, size, rrs);
-		SigmaChallengeGenerator scg = PermutationCommitmentProofSystem.createNonInteractiveSigmaChallengeGenerator(kc, proverId, ro);
-		ChallengeGenerator ecg = PermutationCommitmentProofSystem.createNonInteractiveEValuesGenerator(ke, size, ro);
-		PermutationCommitmentProofSystem pcps = PermutationCommitmentProofSystem.getInstance(scg, ecg, G_q, size, kr, rrs);
+		PermutationCommitmentProofSystem pcps = PermutationCommitmentProofSystem.getInstance(G_q, size);
 
 		// Create permutation commitment proof
 		Pair proofPermutation = pcps.generate(Pair.getInstance(permutation, permutationCommitmentRandomizations), permutationCommitment);
@@ -141,10 +131,7 @@ public class CompleteShuffleExample {
 		//------------------
 		System.out.println("Shuffle Proof...");
 		// Create shuffle proof generator
-		//ReEncryptionShuffleProofSystem sps = ReEncryptionShuffleProofSystem.getInstance(G_q, size, es, publicKey, rrs);
-		SigmaChallengeGenerator scgS = ReEncryptionShuffleProofSystem.createNonInteractiveSigmaChallengeGenerator(G_q, es, size, kc, proverId, ro);
-		ChallengeGenerator ecgS = ReEncryptionShuffleProofSystem.createNonInteractiveEValuesGenerator(G_q, es, size, ke, ro);
-		ReEncryptionShuffleProofSystem sps = ReEncryptionShuffleProofSystem.getInstance(scgS, ecgS, G_q, size, es, publicKey, kr, rrs);
+		ReEncryptionShuffleProofSystem sps = ReEncryptionShuffleProofSystem.getInstance(G_q, size, es, publicKey);
 
 		// Compose private and public input
 		Triple privateInput = Triple.getInstance(permutation, permutationCommitmentRandomizations, randomizations);
@@ -158,12 +145,10 @@ public class CompleteShuffleExample {
 		System.out.print("Verify... ");
 		// Verify permutation commitment proof
 		boolean vPermutation = pcps.verify(proofPermutation, permutationCommitment);
-		System.out.println(vPermutation);
-		System.out.println(proofPermutation);
+
 		// Verify shuffle proof
 		boolean vShuffle = sps.verify(proofShuffle, publicInput);
-		System.out.println(vShuffle);
-		System.out.println(proofShuffle);
+
 		// Verify equality of permutation commitments
 		boolean vPermutationCommitments = permutationCommitment.isEquivalent(publicInput.getFirst());
 
@@ -241,8 +226,8 @@ public class CompleteShuffleExample {
 		//------------------
 		System.out.println("Shuffle Proof...");
 		// Create shuffle proof generator
-		SigmaChallengeGenerator scgS = ReEncryptionShuffleProofSystem.createNonInteractiveSigmaChallengeGenerator(G_q, es, size, kc, proverId, ro);
-		ChallengeGenerator ecgS = ReEncryptionShuffleProofSystem.createNonInteractiveEValuesGenerator(G_q, es, size, ke, ro);
+		SigmaChallengeGenerator scgS = ReEncryptionShuffleProofSystem.createNonInteractiveSigmaChallengeGenerator(kc, proverId, ro);
+		ChallengeGenerator ecgS = ReEncryptionShuffleProofSystem.createNonInteractiveEValuesGenerator(ke, size, ro);
 		ReEncryptionShuffleProofSystem sps = ReEncryptionShuffleProofSystem.getInstance(scgS, ecgS, G_q, size, es, publicKey, kr, rrs);
 
 		// Compose private and public input
@@ -272,240 +257,7 @@ public class CompleteShuffleExample {
 	}
 
 	public static void main(final String[] args) {
-		//Example.runExamples();
-
-//		System.out.println("Batch Example 1:\n===============");
-//		for (int i = 0; i < 10; i++) {
-//			example1();
-//			System.out.println();
-//		}
-//		System.out.println("Batch Example 2:\n===============");
-//		for (int i = 0; i < 10; i++) {
-//			example2();
-//			System.out.println();
-//		}
-		for (int i = 0; i < 10; i++) {
-			example4();
-			System.out.println();
-		}
-
-		System.out.println("\n\nCounter1: " + counter1 + "\nCounter2: " + counter2);
-	}
-
-	static int counter1 = 0;
-	static int counter2 = 0;
-
-	public static void example3() {
-
-		// P R E P A R E
-		//---------------
-		// Create random oracle and random reference string
-		final RandomOracle ro = PseudoRandomOracle.getInstance();
-		final ReferenceRandomByteSequence rrs = ReferenceRandomByteSequence.getInstance();
-
-		// Create cyclic group and get generator
-		//final CyclicGroup G_q = GStarModSafePrime.getInstance(SafePrime.getRandomInstance(8));
-		final CyclicGroup G_q = GStarModSafePrime.getInstance(SafePrime.getRandomInstance(160));
-		final Element g = G_q.getIndependentGenerator(0, rrs);
-
-		// Set size
-		final int size = 1000;
-		final Element proverId = StringMonoid.getInstance(Alphabet.BASE64).getElement("Shuffler");
-		//final int ke = 2;
-		//final int kc = 2;
-		//final int kr = 1;
-
-		final int ke = 60;
-		final int kc = 60;
-		final int kr = 20;
-
-		// Create ElGamal keys and encryption system
-		ElGamalEncryptionScheme es = ElGamalEncryptionScheme.getInstance(g);
-		Pair keys = es.getKeyPairGenerator().generateKeyPair();
-		Element publicKey = keys.getSecond();
-
-		// Create ciphertexts
-		Tuple messages = ProductGroup.getInstance(G_q, size).getRandomElement();
-		Element[] ciphertextArray = new Element[size];
-		for (int i = 0; i < size; i++) {
-			ciphertextArray[i] = es.encrypt(publicKey, messages.getAt(i));
-		}
-		Tuple ciphertexts = Tuple.getInstance(ciphertextArray);
-
-		// S H U F F L E
-		//---------------
-		System.out.println("Shuffle...");
-		// Create mixer
-		ReEncryptionMixer mixer = ReEncryptionMixer.getInstance(es, publicKey, size);
-		// Create permutation
-		PermutationElement permutation = PermutationGroup.getInstance(size).getRandomElement();
-		// Create randomizations
-		Tuple randomizations = mixer.generateRandomizations();
-		// Shuffle
-		Tuple shuffledCiphertexts = mixer.shuffle(ciphertexts, permutation, randomizations);
-
-		// P R O O F
-		//-----------
-		//
-		// 1. Permutation Proof
-		//----------------------
-		System.out.println("Permutation Proof...");
-		// Create permutation commitment
-		PermutationCommitmentScheme pcs = PermutationCommitmentScheme.getInstance(G_q, size, rrs);
-		Tuple permutationCommitmentRandomizations = pcs.getRandomizationSpace().getRandomElement();
-		Tuple permutationCommitment = pcs.commit(permutation, permutationCommitmentRandomizations);
-
-		// Create permutation commitment proof generator
-		//PermutationCommitmentProofSystem pcps = PermutationCommitmentProofSystem.getInstance(G_q, size, rrs);
-		SigmaChallengeGenerator scg = PermutationCommitmentProofSystem.createNonInteractiveSigmaChallengeGenerator(kc, proverId, ro);
-		ChallengeGenerator ecg = PermutationCommitmentProofSystem.createNonInteractiveEValuesGenerator(ke, size, ro);
-		PermutationCommitmentProofSystem pcps = PermutationCommitmentProofSystem.getInstance(scg, ecg, G_q, size, kr, rrs);
-
-		// Create permutation commitment proof
-		Pair proofPermutation = pcps.generate(Pair.getInstance(permutation, permutationCommitmentRandomizations), permutationCommitment);
-
-		// 2. Shuffle Proof
-		//------------------
-		System.out.println("Shuffle Proof...");
-		// Create shuffle proof generator
-		//ReEncryptionShuffleProofSystem sps = ReEncryptionShuffleProofSystem.getInstance(G_q, size, es, publicKey, rrs);
-		SigmaChallengeGenerator scgS = ReEncryptionShuffleProofSystem.createNonInteractiveSigmaChallengeGenerator(G_q, es, size, kc, proverId, ro);
-		ChallengeGenerator ecgS = ReEncryptionShuffleProofSystem.createNonInteractiveEValuesGenerator(G_q, es, size, ke, ro);
-		ReEncryptionShuffleProofSystem sps = ReEncryptionShuffleProofSystem.getInstance(scgS, ecgS, G_q, size, es, publicKey, kr, rrs);
-
-		// Compose private and public input
-		Triple privateInput = Triple.getInstance(permutation, permutationCommitmentRandomizations, randomizations);
-		Triple publicInput = Triple.getInstance(permutationCommitment, ciphertexts, shuffledCiphertexts);
-
-		// Create shuffle proof
-		Triple proofShuffle = sps.generate(privateInput, publicInput);
-
-		// V E R I F Y
-		//-------------
-		System.out.print("Verify... ");
-		// Verify permutation commitment proof
-		boolean vPermutation = pcps.verify(proofPermutation, permutationCommitment);
-		if (!vPermutation) {
-			counter1++;
-		}
-		System.out.println(vPermutation);
-		System.out.println(proofPermutation);
-		// Verify shuffle proof
-		boolean vShuffle = sps.verify(proofShuffle, publicInput);
-		System.out.println(vShuffle);
-		System.out.println(proofShuffle);
-		if (!vShuffle) {
-			counter2++;
-		}
-		// Verify equality of permutation commitments
-		boolean vPermutationCommitments = permutationCommitment.isEquivalent(publicInput.getFirst());
-
-		if (vPermutation && vShuffle && vPermutationCommitments) {
-			System.out.println("Proof is valid!");
-		} else {
-			System.out.println("Proof is NOT valid!");
-		}
-	}
-
-	public static void example4() {
-
-		// P R E P A R E
-		//---------------
-		// Create random oracle and random reference string
-		final RandomOracle ro = PseudoRandomOracle.getInstance();
-		final ReferenceRandomByteSequence rrs = ReferenceRandomByteSequence.getInstance();
-
-		// Create cyclic group and get generator
-		final CyclicGroup G_q = GStarModSafePrime.getInstance(SafePrime.getRandomInstance(160));
-		final Element g = G_q.getIndependentGenerator(0, rrs);
-
-		// Set size
-		final int size = 1000;
-		final Element proverId = StringMonoid.getInstance(Alphabet.BASE64).getElement("Shuffler");
-		final int ke = 60;
-		final int kc = 60;
-		final int kr = 20;
-
-		// Create ElGamal keys and encryption system
-		ElGamalEncryptionScheme es = ElGamalEncryptionScheme.getInstance(g);
-		Pair keys = es.getKeyPairGenerator().generateKeyPair();
-		Element publicKey = keys.getSecond();
-
-		// Create ciphertexts
-		Tuple messages = ProductGroup.getInstance(G_q, size).getRandomElement();
-		Element[] ciphertextArray = new Element[size];
-		for (int i = 0; i < size; i++) {
-			ciphertextArray[i] = es.encrypt(publicKey, messages.getAt(i));
-		}
-		Tuple ciphertexts = Tuple.getInstance(ciphertextArray);
-
-		// S H U F F L E
-		//---------------
-		System.out.println("Shuffle...");
-		// Create mixer
-		ReEncryptionMixer mixer = ReEncryptionMixer.getInstance(es, publicKey, size);
-		// Create permutation
-		PermutationElement permutation = PermutationGroup.getInstance(size).getRandomElement();
-		// Create randomizations
-		Tuple randomizations = mixer.generateRandomizations();
-		// Shuffle
-		Tuple shuffledCiphertexts = mixer.shuffle(ciphertexts, permutation, randomizations);
-
-		// P R O O F
-		//-----------
-		//
-		// 1. Permutation Proof
-		//----------------------
-		System.out.println("Permutation Proof...");
-		// Create permutation commitment
-		PermutationCommitmentScheme pcs = PermutationCommitmentScheme.getInstance(G_q, size);
-		Tuple permutationCommitmentRandomizations = pcs.getRandomizationSpace().getRandomElement();
-		Tuple permutationCommitment = pcs.commit(permutation, permutationCommitmentRandomizations);
-
-		// Create permutation commitment proof generator
-		PermutationCommitmentProofSystem pcps = PermutationCommitmentProofSystem.getInstance(G_q, size, rrs);
-
-		// Create permutation commitment proof
-		Pair proofPermutation = pcps.generate(Pair.getInstance(permutation, permutationCommitmentRandomizations), permutationCommitment);
-
-		// 2. Shuffle Proof
-		//------------------
-		System.out.println("Shuffle Proof...");
-		// Create shuffle proof generator
-		ReEncryptionShuffleProofSystem sps = ReEncryptionShuffleProofSystem.getInstance(G_q, size, es, publicKey, rrs);
-
-		// Compose private and public input
-		Triple privateInput = Triple.getInstance(permutation, permutationCommitmentRandomizations, randomizations);
-		Triple publicInput = Triple.getInstance(permutationCommitment, ciphertexts, shuffledCiphertexts);
-
-		// Create shuffle proof
-		Triple proofShuffle = sps.generate(privateInput, publicInput);
-
-		// V E R I F Y
-		//-------------
-		System.out.print("Verify... ");
-		// Verify permutation commitment proof
-		boolean vPermutation = pcps.verify(proofPermutation, permutationCommitment);
-		if (!vPermutation) {
-			counter1++;
-		}
-		System.out.println(vPermutation);
-		System.out.println(proofPermutation);
-		// Verify shuffle proof
-		boolean vShuffle = sps.verify(proofShuffle, publicInput);
-		System.out.println(vShuffle);
-		System.out.println(proofShuffle);
-		if (!vPermutation) {
-			counter2++;
-		}
-		// Verify equality of permutation commitments
-		boolean vPermutationCommitments = permutationCommitment.isEquivalent(publicInput.getFirst());
-
-		if (vPermutation && vShuffle && vPermutationCommitments) {
-			System.out.println("Proof is valid!");
-		} else {
-			System.out.println("Proof is NOT valid!");
-		}
+		Example.runExamples();
 	}
 
 }
