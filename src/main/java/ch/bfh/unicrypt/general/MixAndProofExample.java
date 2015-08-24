@@ -263,19 +263,19 @@ public class MixAndProofExample {
 		Element publicInput1 = permutationCommitment;
 
 		// Generate permutation commitment proof
-		Pair proofPermutation = pcpg.generate(privateInput1, publicInput1);
+		Tuple proofPermutation = pcpg.generate(privateInput1, publicInput1);
 
 		// 2. Shuffle Proof
 		//------------------
 		// Create shuffle proof generator (... -> see permutatin commitment proof generator)
-		ReEncryptionShuffleProofSystem spg = ReEncryptionShuffleProofSystem.getInstance(G_q, size, elGamalES, publicKey);
+		ReEncryptionShuffleProofSystem spg = ReEncryptionShuffleProofSystem.getInstance(size, elGamalES, publicKey);
 
 		// Private and public input
 		Triple privateInput2 = Triple.getInstance(permutation, permutationCommitmentRandomizations, randomizations);
 		Triple publicInput2 = Triple.getInstance(permutationCommitment, ciphertexts, shuffledCiphertexts);
 
 		// Generate shuffle proof
-		Triple proofShuffle = spg.generate(privateInput2, publicInput2);
+		Tuple proofShuffle = spg.generate(privateInput2, publicInput2);
 
 		// V E R I F Y
 		//-------------
@@ -359,7 +359,7 @@ public class MixAndProofExample {
 		Element publicInput1 = permutationCommitment;
 
 		// Generate permutation commitment proof
-		Pair proofPermutation = pcpg.generate(privateInput1, publicInput1);
+		Tuple proofPermutation = pcpg.generate(privateInput1, publicInput1);
 
 		// 2. Shuffle Proof
 		//------------------
@@ -372,7 +372,7 @@ public class MixAndProofExample {
 		Triple publicInput2 = Triple.getInstance(permutationCommitment, ciphertexts, shuffledCiphertexts);
 
 		// Generate shuffle proof
-		Triple proofShuffle = spg.generate(privateInput2, publicInput2);
+		Tuple proofShuffle = spg.generate(privateInput2, publicInput2);
 
 		// V E R I F Y
 		//-------------

@@ -101,7 +101,7 @@ public class ShuffleProofSystemExample {
 		return Triple.getInstance(uV, uPrimeV, rV);
 	}
 
-	public void proofOfShuffle(int size, CyclicGroup G_q, ReEncryptionScheme encryptionScheme, Element encryptionPK, PermutationElement pi, Tuple uV, Tuple uPrimeV, Tuple rV) {
+	public void proofOfShuffle(int size, CyclicGroup G_q, ElGamalEncryptionScheme encryptionScheme, Element encryptionPK, PermutationElement pi, Tuple uV, Tuple uPrimeV, Tuple rV) {
 
 		final RandomOracle ro = PseudoRandomOracle.getInstance();
 		final ReferenceRandomByteSequence rrs = ReferenceRandomByteSequence.getInstance();
@@ -120,13 +120,13 @@ public class ShuffleProofSystemExample {
 		// Shuffle Proof Generator
 		SigmaChallengeGenerator scgS = ReEncryptionShuffleProofSystem.createNonInteractiveSigmaChallengeGenerator(kc, proverId, ro);
 		ChallengeGenerator ecgS = ReEncryptionShuffleProofSystem.createNonInteractiveEValuesGenerator(ke, size, ro);
-		ReEncryptionShuffleProofSystem sps = ReEncryptionShuffleProofSystem.getInstance(scgS, ecgS, G_q, size, encryptionScheme, encryptionPK, kr, rrs);
+		ReEncryptionShuffleProofSystem sps = ReEncryptionShuffleProofSystem.getInstance(scgS, ecgS, size, encryptionScheme, encryptionPK, kr, rrs);
 
 		// Proof
-		Pair proofPermutation = pcps.generate(Pair.getInstance(pi, sV), cPiV);
+		Tuple proofPermutation = pcps.generate(Pair.getInstance(pi, sV), cPiV);
 		Tuple privateInput = Tuple.getInstance(pi, sV, rV);
 		Tuple publicInput = Tuple.getInstance(cPiV, uV, uPrimeV);
-		Triple proofShuffle = sps.generate(privateInput, publicInput);
+		Tuple proofShuffle = sps.generate(privateInput, publicInput);
 		System.out.println("Shuffle-Proof");
 
 		// Verify
@@ -148,7 +148,7 @@ public class ShuffleProofSystemExample {
 		// Create encryption scheme and key
 		final ReferenceRandomByteSequence rrs = ReferenceRandomByteSequence.getInstance();
 		final Element g = G_q.getIndependentGenerator(0, rrs);
-		ReEncryptionScheme encryptionScheme = ElGamalEncryptionScheme.getInstance(g);
+		ElGamalEncryptionScheme encryptionScheme = ElGamalEncryptionScheme.getInstance(g);
 		final Element encryptionPK = G_q.getRandomElement();
 
 		// Create random permutation

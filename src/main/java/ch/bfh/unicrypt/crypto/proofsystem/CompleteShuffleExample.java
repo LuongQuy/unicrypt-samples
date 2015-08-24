@@ -125,20 +125,20 @@ public class CompleteShuffleExample {
 		PermutationCommitmentProofSystem pcps = PermutationCommitmentProofSystem.getInstance(G_q, size);
 
 		// Create permutation commitment proof
-		Pair proofPermutation = pcps.generate(Pair.getInstance(permutation, permutationCommitmentRandomizations), permutationCommitment);
+		Tuple proofPermutation = pcps.generate(Pair.getInstance(permutation, permutationCommitmentRandomizations), permutationCommitment);
 
 		// 2. Shuffle Proof
 		//------------------
 		System.out.println("Shuffle Proof...");
 		// Create shuffle proof generator
-		ReEncryptionShuffleProofSystem sps = ReEncryptionShuffleProofSystem.getInstance(G_q, size, es, publicKey);
+		ReEncryptionShuffleProofSystem sps = ReEncryptionShuffleProofSystem.getInstance(size, es, publicKey);
 
 		// Compose private and public input
 		Triple privateInput = Triple.getInstance(permutation, permutationCommitmentRandomizations, randomizations);
 		Triple publicInput = Triple.getInstance(permutationCommitment, ciphertexts, shuffledCiphertexts);
 
 		// Create shuffle proof
-		Triple proofShuffle = sps.generate(privateInput, publicInput);
+		Tuple proofShuffle = sps.generate(privateInput, publicInput);
 
 		// V E R I F Y
 		//-------------
@@ -220,7 +220,7 @@ public class CompleteShuffleExample {
 		PermutationCommitmentProofSystem pcps = PermutationCommitmentProofSystem.getInstance(scg, ecg, G_q, size, kr, rrs);
 
 		// Create permutation commitment proof
-		Pair proofPermutation = pcps.generate(Pair.getInstance(permutation, permutationCommitmentRandomizations), permutationCommitment);
+		Tuple proofPermutation = pcps.generate(Pair.getInstance(permutation, permutationCommitmentRandomizations), permutationCommitment);
 
 		// 2. Shuffle Proof
 		//------------------
@@ -228,14 +228,14 @@ public class CompleteShuffleExample {
 		// Create shuffle proof generator
 		SigmaChallengeGenerator scgS = ReEncryptionShuffleProofSystem.createNonInteractiveSigmaChallengeGenerator(kc, proverId, ro);
 		ChallengeGenerator ecgS = ReEncryptionShuffleProofSystem.createNonInteractiveEValuesGenerator(ke, size, ro);
-		ReEncryptionShuffleProofSystem sps = ReEncryptionShuffleProofSystem.getInstance(scgS, ecgS, G_q, size, es, publicKey, kr, rrs);
+		ReEncryptionShuffleProofSystem sps = ReEncryptionShuffleProofSystem.getInstance(scgS, ecgS, size, es, publicKey, kr, rrs);
 
 		// Compose private and public input
 		Triple privateInput = Triple.getInstance(permutation, permutationCommitmentRandomizations, randomizations);
 		Triple publicInput = Triple.getInstance(permutationCommitment, ciphertexts, shuffledCiphertexts);
 
 		// Create shuffle proof
-		Triple proofShuffle = sps.generate(privateInput, publicInput);
+		Tuple proofShuffle = sps.generate(privateInput, publicInput);
 
 		// V E R I F Y
 		//-------------
