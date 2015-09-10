@@ -46,10 +46,11 @@ import ch.bfh.unicrypt.crypto.proofsystem.classes.EqualityPreimageProofSystem;
 import ch.bfh.unicrypt.crypto.proofsystem.classes.PolynomialMembershipProofSystem;
 import ch.bfh.unicrypt.crypto.schemes.commitment.classes.GeneralizedPedersenCommitmentScheme;
 import ch.bfh.unicrypt.crypto.schemes.commitment.classes.PedersenCommitmentScheme;
-import ch.bfh.unicrypt.helper.array.classes.ByteArray;
 import ch.bfh.unicrypt.helper.math.Alphabet;
 import ch.bfh.unicrypt.helper.math.MathUtil;
 import ch.bfh.unicrypt.helper.math.Polynomial;
+import ch.bfh.unicrypt.helper.random.RandomByteSequence;
+import ch.bfh.unicrypt.helper.random.deterministic.DeterministicRandomByteSequence;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringMonoid;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.PolynomialElement;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.PolynomialSemiRing;
@@ -67,8 +68,6 @@ import ch.bfh.unicrypt.math.function.classes.CompositeFunction;
 import ch.bfh.unicrypt.math.function.classes.GeneratorFunction;
 import ch.bfh.unicrypt.math.function.classes.SelectionFunction;
 import ch.bfh.unicrypt.math.function.interfaces.Function;
-import ch.bfh.unicrypt.random.classes.CounterModeRandomByteSequence;
-import ch.bfh.unicrypt.random.interfaces.RandomByteSequence;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
@@ -182,7 +181,7 @@ public class MemProofBasedVoting {
 
 		public void castBallot() {
 			System.out.println("Voter: Ballot casting...");
-			final RandomByteSequence randomGenerator = CounterModeRandomByteSequence.getInstance(ByteArray.getInstance((byte) 7));
+			final RandomByteSequence randomGenerator = DeterministicRandomByteSequence.getInstance();
 			Element v = StringMonoid.getInstance(Alphabet.ALPHANUMERIC).getElement("YES");
 			Element uHat = this.BB.getGHat().selfApply(this.betas.getAt(0));
 

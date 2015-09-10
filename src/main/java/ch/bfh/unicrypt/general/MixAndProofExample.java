@@ -55,6 +55,7 @@ import ch.bfh.unicrypt.crypto.schemes.commitment.classes.PermutationCommitmentSc
 import ch.bfh.unicrypt.crypto.schemes.encryption.classes.ElGamalEncryptionScheme;
 import ch.bfh.unicrypt.helper.factorization.SafePrime;
 import ch.bfh.unicrypt.helper.math.Alphabet;
+import ch.bfh.unicrypt.helper.random.deterministic.DeterministicRandomByteSequence;
 import ch.bfh.unicrypt.math.algebra.additive.classes.ECZModPrime;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringMonoid;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZModElement;
@@ -72,7 +73,6 @@ import ch.bfh.unicrypt.math.algebra.multiplicative.classes.GStarModSafePrime;
 import ch.bfh.unicrypt.math.algebra.params.classes.SECECCParamsFp;
 import ch.bfh.unicrypt.math.function.classes.GeneratorFunction;
 import ch.bfh.unicrypt.math.function.interfaces.Function;
-import ch.bfh.unicrypt.random.classes.ReferenceRandomByteSequence;
 
 /**
  *
@@ -218,9 +218,9 @@ public class MixAndProofExample {
 		// S E T U P
 		//-----------
 		// Create cyclic group
-		final CyclicGroup G_q = GStarModSafePrime.getInstance(SafePrime.getRandomInstance(160));
+		final GStarModSafePrime G_q = GStarModSafePrime.getInstance(SafePrime.getRandomInstance(160));
 		// Create generator based on the default reference random byte sequence (-> independent generators)
-		final Element g = G_q.getIndependentGenerator(0, ReferenceRandomByteSequence.getInstance());
+		final Element g = G_q.getIndependentGenerators(DeterministicRandomByteSequence.getInstance()).get(0);
 
 		// Set size
 		final int size = 10;
@@ -301,7 +301,7 @@ public class MixAndProofExample {
 		// S E T U P
 		//-----------
 		// Get default reference random byte sequence
-		final ReferenceRandomByteSequence rrs = ReferenceRandomByteSequence.getInstance();
+		final DeterministicRandomByteSequence rrs = DeterministicRandomByteSequence.getInstance();
 
 		// Set size
 		final int size = 10;
@@ -310,7 +310,7 @@ public class MixAndProofExample {
 		final ECZModPrime G_q_Com = ECZModPrime.getInstance(SECECCParamsFp.secp160r1);
 
 		// Create independent generators
-		final Tuple independentGenerators = G_q_Com.getIndependentGenerators(size, rrs);
+		final Tuple independentGenerators = Tuple.getInstance(G_q_Com.getIndependentGenerators(rrs).limit(size));
 
 		// Create cyclic group for encryption scheme
 		final CyclicGroup G_q_Enc = GStarModSafePrime.getInstance(SafePrime.getRandomInstance(160));

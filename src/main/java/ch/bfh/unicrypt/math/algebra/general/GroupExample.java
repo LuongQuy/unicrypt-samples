@@ -42,6 +42,7 @@
 package ch.bfh.unicrypt.math.algebra.general;
 
 import ch.bfh.unicrypt.Example;
+import ch.bfh.unicrypt.helper.factorization.Factorization;
 import ch.bfh.unicrypt.math.algebra.additive.interfaces.AdditiveElement;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.N;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.Z;
@@ -50,7 +51,6 @@ import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
 import ch.bfh.unicrypt.math.algebra.multiplicative.classes.ZStarMod;
 import ch.bfh.unicrypt.math.algebra.multiplicative.classes.ZStarModPrime;
 import ch.bfh.unicrypt.math.algebra.multiplicative.interfaces.MultiplicativeElement;
-import ch.bfh.unicrypt.helper.factorization.Factorization;
 import java.math.BigInteger;
 
 public class GroupExample {
@@ -67,8 +67,8 @@ public class GroupExample {
 		System.out.println(group1.getIdentityElement());
 		System.out.println(group1.getOrder());
 		System.out.println(group1.getDefaultGenerator());
-		for (int i = 1; i <= 3; i++) {
-			System.out.println(group1.getRandomGenerator());
+		for (Element generator : group1.getIndependentGenerators().limit(3)) {
+			System.out.println(generator);
 		}
 		a1 = group1.getElement(3);
 		a2 = group1.getElement(-5);
@@ -101,8 +101,8 @@ public class GroupExample {
 		System.out.println(group2.getIdentityElement());
 		System.out.println(group2.getOrder());
 		System.out.println(group2.getDefaultGenerator());
-		for (int i = 1; i <= 3; i++) {
-			System.out.println(group2.getRandomGenerator());
+		for (Element generator : group2.getIndependentGenerators().limit(10)) {
+			System.out.println(generator);
 		}
 		a1 = group2.getElement(3);
 		a2 = group2.getElement(5);

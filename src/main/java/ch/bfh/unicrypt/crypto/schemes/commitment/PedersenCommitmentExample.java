@@ -44,11 +44,11 @@ package ch.bfh.unicrypt.crypto.schemes.commitment;
 import ch.bfh.unicrypt.Example;
 import ch.bfh.unicrypt.crypto.schemes.commitment.classes.PedersenCommitmentScheme;
 import ch.bfh.unicrypt.helper.array.classes.ByteArray;
+import ch.bfh.unicrypt.helper.random.deterministic.DeterministicRandomByteSequence;
 import ch.bfh.unicrypt.math.algebra.general.classes.BooleanElement;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.CyclicGroup;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
 import ch.bfh.unicrypt.math.algebra.multiplicative.classes.GStarModSafePrime;
-import ch.bfh.unicrypt.random.classes.ReferenceRandomByteSequence;
 import java.math.BigInteger;
 
 /**
@@ -166,8 +166,8 @@ public class PedersenCommitmentExample {
 			// Create cyclic group G_q (modulo 167)
 			CyclicGroup cyclicGroup = GStarModSafePrime.getInstance(167);
 
-			// Establish the common reference String by a given ReferenceRandomByteSequence
-			ReferenceRandomByteSequence referenceRandomByteSequence = ReferenceRandomByteSequence.getInstance(ByteArray.getInstance("Hello World".getBytes()));
+			// Establish the common reference String by a given DeterministicRandomByteSequence
+			DeterministicRandomByteSequence referenceRandomByteSequence = DeterministicRandomByteSequence.getInstance(ByteArray.getInstance("Hello World".getBytes()));
 
 			Example.printLine("Cylic Group (G_q)", cyclicGroup);
 
@@ -238,7 +238,7 @@ public class PedersenCommitmentExample {
 			// Create cyclic group G_q (modulo 167)
 			CyclicGroup cyclicGroup = GStarModSafePrime.getInstance(167);
 
-			ReferenceRandomByteSequence referenceRandomByteSequence = ReferenceRandomByteSequence.getInstance(ByteArray.getInstance("Stock Exchange".getBytes()));
+			DeterministicRandomByteSequence referenceRandomByteSequence = DeterministicRandomByteSequence.getInstance(ByteArray.getInstance("Stock Exchange".getBytes()));
 
 			Example.printLine("Cylic Group (G_q)", cyclicGroup);
 

@@ -51,6 +51,8 @@ import ch.bfh.unicrypt.crypto.schemes.commitment.classes.PermutationCommitmentSc
 import ch.bfh.unicrypt.crypto.schemes.encryption.classes.ElGamalEncryptionScheme;
 import ch.bfh.unicrypt.helper.factorization.SafePrime;
 import ch.bfh.unicrypt.helper.math.Alphabet;
+import ch.bfh.unicrypt.helper.random.RandomOracle;
+import ch.bfh.unicrypt.helper.random.deterministic.DeterministicRandomByteSequence;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringMonoid;
 import ch.bfh.unicrypt.math.algebra.general.classes.Pair;
 import ch.bfh.unicrypt.math.algebra.general.classes.PermutationElement;
@@ -58,12 +60,8 @@ import ch.bfh.unicrypt.math.algebra.general.classes.PermutationGroup;
 import ch.bfh.unicrypt.math.algebra.general.classes.ProductGroup;
 import ch.bfh.unicrypt.math.algebra.general.classes.Triple;
 import ch.bfh.unicrypt.math.algebra.general.classes.Tuple;
-import ch.bfh.unicrypt.math.algebra.general.interfaces.CyclicGroup;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
 import ch.bfh.unicrypt.math.algebra.multiplicative.classes.GStarModSafePrime;
-import ch.bfh.unicrypt.random.classes.PseudoRandomOracle;
-import ch.bfh.unicrypt.random.classes.ReferenceRandomByteSequence;
-import ch.bfh.unicrypt.random.interfaces.RandomOracle;
 
 /**
  *
@@ -79,8 +77,8 @@ public class CompleteShuffleExample {
 		// P R E P A R E
 		//---------------
 		// Create cyclic group and get generator
-		final CyclicGroup G_q = GStarModSafePrime.getInstance(SafePrime.getRandomInstance(160));
-		final Element g = G_q.getIndependentGenerator(0, ReferenceRandomByteSequence.getInstance());
+		final GStarModSafePrime G_q = GStarModSafePrime.getInstance(SafePrime.getRandomInstance(160));
+		final Element g = G_q.getIndependentGenerators(DeterministicRandomByteSequence.getInstance()).get(0);
 
 		// Set size
 		final int size = 100;
@@ -164,12 +162,12 @@ public class CompleteShuffleExample {
 		// P R E P A R E
 		//---------------
 		// Create random oracle and random reference string
-		final RandomOracle ro = PseudoRandomOracle.getInstance();
-		final ReferenceRandomByteSequence rrs = ReferenceRandomByteSequence.getInstance();
+		final RandomOracle ro = RandomOracle.getInstance();
+		final DeterministicRandomByteSequence rrs = DeterministicRandomByteSequence.getInstance();
 
 		// Create cyclic group and get generator
-		final CyclicGroup G_q = GStarModSafePrime.getInstance(SafePrime.getRandomInstance(160));
-		final Element g = G_q.getIndependentGenerator(0, rrs);
+		final GStarModSafePrime G_q = GStarModSafePrime.getInstance(SafePrime.getRandomInstance(160));
+		final Element g = G_q.getIndependentGenerators(rrs).get(0);
 
 		// Set size, prover-id and security parameters
 		final int size = 1000;

@@ -49,7 +49,8 @@ import ch.bfh.unicrypt.crypto.schemes.commitment.classes.PermutationCommitmentSc
 import ch.bfh.unicrypt.crypto.schemes.encryption.classes.ElGamalEncryptionScheme;
 import ch.bfh.unicrypt.crypto.schemes.encryption.interfaces.ReEncryptionScheme;
 import ch.bfh.unicrypt.helper.math.Alphabet;
-import ch.bfh.unicrypt.helper.math.Permutation;
+import ch.bfh.unicrypt.helper.random.RandomOracle;
+import ch.bfh.unicrypt.helper.random.deterministic.DeterministicRandomByteSequence;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringMonoid;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZMod;
 import ch.bfh.unicrypt.math.algebra.general.classes.Pair;
@@ -62,9 +63,6 @@ import ch.bfh.unicrypt.math.algebra.general.interfaces.CyclicGroup;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
 import ch.bfh.unicrypt.math.algebra.multiplicative.classes.GStarModSafePrime;
 import ch.bfh.unicrypt.math.function.classes.PermutationFunction;
-import ch.bfh.unicrypt.random.classes.PseudoRandomOracle;
-import ch.bfh.unicrypt.random.classes.ReferenceRandomByteSequence;
-import ch.bfh.unicrypt.random.interfaces.RandomOracle;
 import java.math.BigInteger;
 
 public class ShuffleProofSystemExample {
@@ -103,8 +101,8 @@ public class ShuffleProofSystemExample {
 
 	public void proofOfShuffle(int size, CyclicGroup G_q, ElGamalEncryptionScheme encryptionScheme, Element encryptionPK, PermutationElement pi, Tuple uV, Tuple uPrimeV, Tuple rV) {
 
-		final RandomOracle ro = PseudoRandomOracle.getInstance();
-		final ReferenceRandomByteSequence rrs = ReferenceRandomByteSequence.getInstance();
+		final RandomOracle ro = RandomOracle.getInstance();
+		final DeterministicRandomByteSequence rrs = DeterministicRandomByteSequence.getInstance();
 
 		// Permutation commitment
 		PermutationCommitmentScheme pcs = PermutationCommitmentScheme.getInstance(G_q, size, rrs);
@@ -142,18 +140,17 @@ public class ShuffleProofSystemExample {
 
 		// Setup
 		final int size = 100;
-		final CyclicGroup G_q = GStarModSafePrime.getInstance(new BigInteger(P_1024, 10));
+		final GStarModSafePrime G_q = GStarModSafePrime.getInstance(new BigInteger(P_1024, 10));
 		//final CyclicGroup G_q = GStarModPrime.getInstance(new BigInteger(P, 10), new BigInteger(Q, 10));
 
 		// Create encryption scheme and key
-		final ReferenceRandomByteSequence rrs = ReferenceRandomByteSequence.getInstance();
-		final Element g = G_q.getIndependentGenerator(0, rrs);
+		final DeterministicRandomByteSequence rrs = DeterministicRandomByteSequence.getInstance();
+		final Element g = G_q.getIndependentGenerators(rrs).get(0);
 		ElGamalEncryptionScheme encryptionScheme = ElGamalEncryptionScheme.getInstance(g);
 		final Element encryptionPK = G_q.getRandomElement();
 
 		// Create random permutation
-		final Permutation permutation = Permutation.getRandomInstance(size);
-		final PermutationElement pi = PermutationGroup.getInstance(size).getElement(permutation);
+		final PermutationElement pi = PermutationGroup.getInstance(size).getRandomElement();
 
 		// Create example instance
 		ShuffleProofSystemExample ex = new ShuffleProofSystemExample();
