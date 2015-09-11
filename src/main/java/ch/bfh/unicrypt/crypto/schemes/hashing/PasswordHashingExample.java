@@ -42,40 +42,35 @@
 package ch.bfh.unicrypt.crypto.schemes.hashing;
 
 import ch.bfh.unicrypt.Example;
+import ch.bfh.unicrypt.helper.array.classes.ByteArray;
 import ch.bfh.unicrypt.helper.math.Alphabet;
+import ch.bfh.unicrypt.math.algebra.concatenative.classes.ByteArrayElement;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringElement;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringMonoid;
-import ch.bfh.unicrypt.math.algebra.dualistic.classes.Z;
-import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZElement;
 import ch.bfh.unicrypt.math.algebra.general.classes.FiniteByteArrayElement;
-import ch.bfh.unicrypt.math.algebra.general.classes.ProductSet;
-import ch.bfh.unicrypt.math.algebra.general.classes.Tuple;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
 
 /**
  *
  * @author Rolf Haenni <rolf.haenni@bfh.ch>
  */
-public class HashingExample {
+public class PasswordHashingExample {
 
 	public static void example1() {
 
-		StringMonoid stringSet = StringMonoid.getInstance(Alphabet.LOWER_CASE);
-		StringElement stringElement = stringSet.getElement("message");
+		StringMonoid passwordSpace = StringMonoid.getInstance(Alphabet.ALPHANUMERIC);
+		StringElement password = passwordSpace.getElement("SecretPassword");
 
-		Z z = Z.getInstance();
-		ZElement zElement = z.getElement(5);
+		ByteArrayElement salt = ByteArrayElement.getInstance(ByteArray.getInstance("12|23|45|67|89|AB"));
 
-		ProductSet messageSpace = ProductSet.getInstance(stringSet, z);
-		Tuple message = messageSpace.getElement(stringElement, zElement);
+		PasswordHashingScheme scheme = PasswordHashingScheme.getInstance(passwordSpace);
 
-		HashingScheme scheme = HashingScheme.getInstance(messageSpace);
-
-		FiniteByteArrayElement hash = scheme.hash(message);
-		Element result = scheme.check(message, hash);
+		FiniteByteArrayElement hash = scheme.hash(password, salt);
+		Element result = scheme.check(password, salt, hash);
 
 		Example.printLine(scheme);
-		Example.printLine("Message", message);
+		Example.printLine("Message", password);
+		Example.printLine("Salt   ", salt);
 		Example.printLine("Hash   ", hash);
 		Example.printLine("Check  ", result);
 	}
