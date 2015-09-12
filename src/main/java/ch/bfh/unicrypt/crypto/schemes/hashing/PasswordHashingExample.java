@@ -61,7 +61,7 @@ public class PasswordHashingExample {
 		StringMonoid passwordSpace = StringMonoid.getInstance(Alphabet.ALPHANUMERIC);
 		StringElement password = passwordSpace.getElement("SecretPassword");
 
-		ByteArrayElement salt = ByteArrayElement.getInstance(ByteArray.getInstance("12|23|45|67|89|AB"));
+		ByteArrayElement salt = ByteArrayElement.getInstance(ByteArray.getRandomInstance(10));
 
 		PasswordHashingScheme scheme = PasswordHashingScheme.getInstance(passwordSpace);
 

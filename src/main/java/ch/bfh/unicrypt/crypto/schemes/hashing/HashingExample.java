@@ -69,7 +69,7 @@ public class HashingExample {
 		ProductSet messageSpace = ProductSet.getInstance(stringSet, z);
 		Tuple message = messageSpace.getElement(stringElement, zElement);
 
-		HashingScheme scheme = HashingScheme.getInstance(messageSpace);
+		HashingScheme<ProductSet> scheme = HashingScheme.getInstance(messageSpace);
 
 		FiniteByteArrayElement hash = scheme.hash(message);
 		Element result = scheme.check(message, hash);
