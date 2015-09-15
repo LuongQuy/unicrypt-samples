@@ -42,6 +42,7 @@
 package ch.bfh.unicrypt.math.algebra.general;
 
 import ch.bfh.unicrypt.Example;
+import ch.bfh.unicrypt.exception.UniCryptException;
 import ch.bfh.unicrypt.math.algebra.general.classes.PermutationGroup;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
 import java.math.BigInteger;
@@ -75,9 +76,12 @@ public class PermutationExample {
 		BigInteger x = p1.convertToBigInteger();
 
 		// Convert it back to PermutationElement
-		Element p2 = pg.getElementFrom(x);
-
-		Example.printLines(p1, x, p2);
+		Element p2;
+		try {
+			p2 = pg.getElementFrom(x);
+			Example.printLines(p1, x, p2);
+		} catch (UniCryptException ex) {
+		}
 
 	}
 

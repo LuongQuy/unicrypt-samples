@@ -49,7 +49,6 @@ import ch.bfh.unicrypt.math.algebra.general.classes.BooleanElement;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.CyclicGroup;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
 import ch.bfh.unicrypt.math.algebra.multiplicative.classes.GStarModSafePrime;
-import java.math.BigInteger;
 
 /**
  *
@@ -97,8 +96,8 @@ public class PedersenCommitmentExample {
 			CyclicGroup cyclicGroup = GStarModSafePrime.getInstance(167);
 
 			// Create two independent generators g=98, h=27;
-			Element messageGenerator = cyclicGroup.getElementFrom(BigInteger.valueOf(27));
-			Element randomElementGenerator = cyclicGroup.getElementFrom(BigInteger.valueOf(98)); //h=g^2 \mod{167} not really independent
+			Element messageGenerator = cyclicGroup.getElement(27);
+			Element randomElementGenerator = cyclicGroup.getElement(98); //h=g^2 \mod{167} not really independent
 
 			Example.printLine("Cylic Group (G_q)", cyclicGroup);
 			Example.printLine("Message Generator (g)", messageGenerator);
@@ -114,8 +113,8 @@ public class PedersenCommitmentExample {
 				PedersenCommitmentScheme commitmentScheme = PedersenCommitmentScheme.getInstance(randomElementGenerator, messageGenerator);
 
 				// Create message (m) and randomization (r) to commit
-				Element message = commitmentScheme.getMessageSpace().getElementFrom(42);
-				Element randomization = commitmentScheme.getRandomizationSpace().getElementFrom(7); //Not really random!
+				Element message = commitmentScheme.getMessageSpace().getElement(42);
+				Element randomization = commitmentScheme.getRandomizationSpace().getElement(7); //Not really random!
 
 				// Create commitment (h^m * g^r mod p)
 				Element commitment = commitmentScheme.commit(message, randomization);
@@ -181,8 +180,8 @@ public class PedersenCommitmentExample {
 				PedersenCommitmentScheme commitmentScheme = PedersenCommitmentScheme.getInstance(cyclicGroup, referenceRandomByteSequence);
 
 				// Create message (m) and randomization (r) to commit
-				Element message = commitmentScheme.getMessageSpace().getElementFrom(42);
-				Element randomization = commitmentScheme.getRandomizationSpace().getElementFrom(7); //Not really random!
+				Element message = commitmentScheme.getMessageSpace().getElement(42);
+				Element randomization = commitmentScheme.getRandomizationSpace().getElement(7); //Not really random!
 
 				// Create commitment (h^m * g^r mod p)
 				Element commitment = commitmentScheme.commit(message, randomization);
@@ -252,7 +251,7 @@ public class PedersenCommitmentExample {
 				PedersenCommitmentScheme commitmentScheme = PedersenCommitmentScheme.getInstance(cyclicGroup, referenceRandomByteSequence);
 
 				// Create message (m) and randomization (r) to commit
-				Element message = commitmentScheme.getMessageSpace().getElementFrom(42);
+				Element message = commitmentScheme.getMessageSpace().getElement(42);
 				Element randomization = commitmentScheme.getRandomizationSpace().getRandomElement();
 
 				// Create commitment (h^m * g^r mod p)

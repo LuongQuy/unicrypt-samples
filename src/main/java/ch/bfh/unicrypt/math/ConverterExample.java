@@ -42,6 +42,7 @@
 package ch.bfh.unicrypt.math;
 
 import ch.bfh.unicrypt.Example;
+import ch.bfh.unicrypt.exception.UniCryptException;
 import ch.bfh.unicrypt.helper.array.classes.ByteArray;
 import ch.bfh.unicrypt.helper.converter.classes.bytearray.BigIntegerToByteArray;
 import ch.bfh.unicrypt.helper.converter.classes.string.BigIntegerToString;
@@ -55,6 +56,8 @@ import java.math.BigInteger;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -72,16 +75,20 @@ public class ConverterExample {
 		Z z = Z.getInstance();
 
 		List<ZElement> zElements = new ArrayList<>();
-		zElements.add(z.getElement(BigInteger.valueOf(1000)));
-		zElements.add(z.getElement(BigInteger.valueOf(-1000)));
-		zElements.add(z.getElementFrom(2000));
-		zElements.add(z.getElementFrom(1999));
-		zElements.add(z.getElementFrom("1000"));
-		zElements.add(z.getElementFrom("-1000"));
-		zElements.add(z.getElementFrom("3e8", hexConverter));
-		zElements.add(z.getElementFrom("-3e8", hexConverter));
-		zElements.add(z.getElementFrom("1111101000", binConverter));
-		zElements.add(z.getElementFrom("-1111101000", binConverter));
+		try {
+			zElements.add(z.getElement(BigInteger.valueOf(1000)));
+			zElements.add(z.getElement(BigInteger.valueOf(-1000)));
+			zElements.add(z.getElementFrom(2000));
+			zElements.add(z.getElementFrom(1999));
+			zElements.add(z.getElementFrom("1000"));
+			zElements.add(z.getElementFrom("-1000"));
+			zElements.add(z.getElementFrom("3e8", hexConverter));
+			zElements.add(z.getElementFrom("-3e8", hexConverter));
+			zElements.add(z.getElementFrom("1111101000", binConverter));
+			zElements.add(z.getElementFrom("-1111101000", binConverter));
+		} catch (UniCryptException ex) {
+			Logger.getLogger(ConverterExample.class.getName()).log(Level.SEVERE, null, ex);
+		}
 		for (ZElement zElement : zElements) {
 			Example.printLine(zElement,
 							  zElement.convertToBigInteger(),
