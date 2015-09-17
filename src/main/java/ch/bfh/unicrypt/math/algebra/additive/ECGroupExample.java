@@ -48,10 +48,10 @@ import ch.bfh.unicrypt.math.algebra.additive.classes.ECPolynomialField;
 import ch.bfh.unicrypt.math.algebra.additive.classes.ECZModElement;
 import ch.bfh.unicrypt.math.algebra.additive.classes.ECZModPrime;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZMod;
-import ch.bfh.unicrypt.math.algebra.params.classes.SECECCParamsF2m;
-import ch.bfh.unicrypt.math.algebra.params.classes.SECECCParamsFp;
-import ch.bfh.unicrypt.math.algebra.params.interfaces.StandardECPolynomialFieldParams;
-import ch.bfh.unicrypt.math.algebra.params.interfaces.StandardECZModParams;
+import ch.bfh.unicrypt.math.algebra.params.classes.SEC2_ECPolynomialField;
+import ch.bfh.unicrypt.math.algebra.params.classes.SEC2_ECZMod;
+import ch.bfh.unicrypt.math.algebra.params.interfaces.ECPolynomialFieldParameters;
+import ch.bfh.unicrypt.math.algebra.params.interfaces.ECZModParameters;
 import java.math.BigInteger;
 
 /**
@@ -64,7 +64,7 @@ public class ECGroupExample {
 	public static void example1() throws Exception {
 
 		// Example with StandardECZModPrime
-		for (StandardECZModParams params : SECECCParamsFp.values()) {
+		for (ECZModParameters params : SEC2_ECZMod.values()) {
 
 			ECZModPrime ec = ECZModPrime.getInstance(params);
 			ECZModElement generator = ec.getDefaultGenerator();
@@ -78,7 +78,7 @@ public class ECGroupExample {
 	}
 
 	public static void example2() throws Exception {
-		ECPolynomialField ec = ECPolynomialField.getInstance(SECECCParamsF2m.sect113r1);
+		ECPolynomialField ec = ECPolynomialField.getInstance(SEC2_ECPolynomialField.sect113r1);
 		ECPolynomialElement r = ec.getRandomElement();
 		Example.printLine(r.getY());
 		Example.printLine(r.invert().getY());
@@ -91,7 +91,7 @@ public class ECGroupExample {
 	public static void example3() throws Exception {
 		// Example with StandardECPolynomialField
 
-		for (StandardECPolynomialFieldParams params : SECECCParamsF2m.values()) {
+		for (ECPolynomialFieldParameters params : SEC2_ECPolynomialField.values()) {
 			ECPolynomialField ec = ECPolynomialField.getInstance(params);
 			ECPolynomialElement generator = ec.getDefaultGenerator();
 

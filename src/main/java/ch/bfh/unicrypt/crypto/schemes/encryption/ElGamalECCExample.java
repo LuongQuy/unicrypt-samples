@@ -51,15 +51,15 @@ import ch.bfh.unicrypt.math.algebra.additive.classes.ECZModPrime;
 import ch.bfh.unicrypt.math.algebra.general.classes.Pair;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.CyclicGroup;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
-import ch.bfh.unicrypt.math.algebra.params.classes.SECECCParamsF2m;
-import ch.bfh.unicrypt.math.algebra.params.classes.SECECCParamsFp;
+import ch.bfh.unicrypt.math.algebra.params.classes.SEC2_ECPolynomialField;
+import ch.bfh.unicrypt.math.algebra.params.classes.SEC2_ECZMod;
 
 public class ElGamalECCExample {
 
 	public static void example1() throws Exception {
 
 		// Create cyclic group EC Fp (modulo 521 bits) and get default generator
-		CyclicGroup cyclicGroup = ECZModPrime.getInstance(SECECCParamsFp.secp521r1);
+		CyclicGroup cyclicGroup = ECZModPrime.getInstance(SEC2_ECZMod.secp521r1);
 		Element generator = cyclicGroup.getDefaultGenerator();
 
 		// Create ElGamal encryption scheme
@@ -90,7 +90,7 @@ public class ElGamalECCExample {
 	public static void example2() throws Exception {
 
 		// Create cyclic group EC Fp (modulo 521 bits) and get default generator
-		ECZModPrime cyclicGroup = ECZModPrime.getInstance(SECECCParamsFp.secp521r1);
+		ECZModPrime cyclicGroup = ECZModPrime.getInstance(SEC2_ECZMod.secp521r1);
 		Element generator = cyclicGroup.getDefaultGenerator();
 
 		// Create ElGamal encryption scheme
@@ -127,7 +127,7 @@ public class ElGamalECCExample {
 	public static void example3() throws Exception {
 
 		// Create cyclic group EC Fp (modulo 521 bits) and get default generator
-		CyclicGroup cyclicGroup = ECPolynomialField.getInstance(SECECCParamsF2m.sect113r1);
+		CyclicGroup cyclicGroup = ECPolynomialField.getInstance(SEC2_ECPolynomialField.sect113r1);
 		Element generator = cyclicGroup.getDefaultGenerator();
 
 		// Create ElGamal encryption scheme
@@ -158,7 +158,7 @@ public class ElGamalECCExample {
 	public static void example4() throws Exception {
 
 		// Create cyclic group EC Fp (modulo 521 bits) and get default generator
-		ECPolynomialField cyclicGroup = ECPolynomialField.getInstance(SECECCParamsF2m.sect113r1);
+		ECPolynomialField cyclicGroup = ECPolynomialField.getInstance(SEC2_ECPolynomialField.sect113r1);
 
 		Element generator = cyclicGroup.getDefaultGenerator();
 

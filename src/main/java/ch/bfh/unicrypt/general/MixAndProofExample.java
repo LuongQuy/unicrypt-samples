@@ -70,7 +70,7 @@ import ch.bfh.unicrypt.math.algebra.general.interfaces.CyclicGroup;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
 import ch.bfh.unicrypt.math.algebra.multiplicative.classes.GStarMod;
 import ch.bfh.unicrypt.math.algebra.multiplicative.classes.GStarModSafePrime;
-import ch.bfh.unicrypt.math.algebra.params.classes.SECECCParamsFp;
+import ch.bfh.unicrypt.math.algebra.params.classes.SEC2_ECZMod;
 import ch.bfh.unicrypt.math.function.classes.GeneratorFunction;
 import ch.bfh.unicrypt.math.function.interfaces.Function;
 
@@ -307,7 +307,7 @@ public class MixAndProofExample {
 		final int size = 10;
 
 		// Create cyclic group for commitments
-		final ECZModPrime G_q_Com = ECZModPrime.getInstance(SECECCParamsFp.secp160r1);
+		final ECZModPrime G_q_Com = ECZModPrime.getInstance(SEC2_ECZMod.secp160r1);
 
 		// Create independent generators
 		final Tuple independentGenerators = Tuple.getInstance(G_q_Com.getIndependentGenerators(rrs).limit(size));

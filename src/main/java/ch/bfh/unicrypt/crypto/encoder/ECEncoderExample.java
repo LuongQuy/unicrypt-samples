@@ -13,8 +13,8 @@ import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZMod;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZModElement;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZModPrime;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
-import ch.bfh.unicrypt.math.algebra.params.classes.SECECCParamsF2m;
-import ch.bfh.unicrypt.math.algebra.params.classes.SECECCParamsFp;
+import ch.bfh.unicrypt.math.algebra.params.classes.SEC2_ECPolynomialField;
+import ch.bfh.unicrypt.math.algebra.params.classes.SEC2_ECZMod;
 
 public class ECEncoderExample {
 
@@ -25,7 +25,7 @@ public class ECEncoderExample {
 	 */
 	public static void example1() throws Exception {
 
-		ECZModPrime ecFp = ECZModPrime.getInstance(SECECCParamsFp.secp521r1);
+		ECZModPrime ecFp = ECZModPrime.getInstance(SEC2_ECZMod.secp521r1);
 		ZModPrime zModPrime = ecFp.getFiniteField();
 		Encoder encoder = ZModPrimeToEC.getInstance(zModPrime, ecFp, 10);
 
@@ -44,7 +44,7 @@ public class ECEncoderExample {
 	 */
 	public static void example2() throws Exception {
 
-		ECPolynomialField ecF2m = ECPolynomialField.getInstance(SECECCParamsF2m.sect113r1);
+		ECPolynomialField ecF2m = ECPolynomialField.getInstance(SEC2_ECPolynomialField.sect113r1);
 		ZModPrime zModPrime = ecF2m.getZModOrder();
 		AbstractEncoder<ZMod, ZModElement, PolynomialField, PolynomialElement> enc = ZModToBinaryPolynomialField.getInstance(zModPrime, ecF2m.getFiniteField());
 		Encoder encoder = ZModPrimeToEC.getInstance(zModPrime, ecF2m, 10);
