@@ -51,8 +51,8 @@ import ch.bfh.unicrypt.math.algebra.additive.classes.ECZModPrime;
 import ch.bfh.unicrypt.math.algebra.general.classes.Pair;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.CyclicGroup;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
-import ch.bfh.unicrypt.math.algebra.additive.parameters.classes.SEC2_ECPolynomialField;
-import ch.bfh.unicrypt.math.algebra.additive.parameters.classes.SEC2_ECZModParameters;
+import ch.bfh.unicrypt.math.algebra.additive.parameters.SEC2_ECPolynomialField;
+import ch.bfh.unicrypt.math.algebra.additive.parameters.SEC2_ECZModParameters;
 
 public class ElGamalECCExample {
 

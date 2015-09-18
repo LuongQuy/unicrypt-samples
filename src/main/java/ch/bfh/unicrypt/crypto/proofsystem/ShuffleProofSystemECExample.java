@@ -64,7 +64,7 @@ import ch.bfh.unicrypt.math.algebra.general.classes.Triple;
 import ch.bfh.unicrypt.math.algebra.general.classes.Tuple;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.CyclicGroup;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
-import ch.bfh.unicrypt.math.algebra.additive.parameters.classes.SEC2_ECZModParameters;
+import ch.bfh.unicrypt.math.algebra.additive.parameters.SEC2_ECZModParameters;
 import ch.bfh.unicrypt.math.function.classes.PermutationFunction;
 import java.math.BigInteger;
 

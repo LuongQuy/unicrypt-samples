@@ -70,7 +70,7 @@ import ch.bfh.unicrypt.math.algebra.general.interfaces.CyclicGroup;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
 import ch.bfh.unicrypt.math.algebra.multiplicative.classes.GStarMod;
 import ch.bfh.unicrypt.math.algebra.multiplicative.classes.GStarModSafePrime;
-import ch.bfh.unicrypt.math.algebra.additive.parameters.classes.SEC2_ECZModParameters;
+import ch.bfh.unicrypt.math.algebra.additive.parameters.SEC2_ECZModParameters;
 import ch.bfh.unicrypt.math.function.classes.GeneratorFunction;
 import ch.bfh.unicrypt.math.function.interfaces.Function;
 

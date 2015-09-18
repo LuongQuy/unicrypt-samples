@@ -48,10 +48,10 @@ import ch.bfh.unicrypt.math.algebra.additive.classes.ECPolynomialField;
 import ch.bfh.unicrypt.math.algebra.additive.classes.ECZModElement;
 import ch.bfh.unicrypt.math.algebra.additive.classes.ECZModPrime;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZMod;
-import ch.bfh.unicrypt.math.algebra.additive.parameters.classes.SEC2_ECPolynomialField;
-import ch.bfh.unicrypt.math.algebra.additive.parameters.classes.SEC2_ECZModParameters;
-import ch.bfh.unicrypt.math.algebra.additive.parameters.interfaces.ECPolynomialFieldParameters;
-import ch.bfh.unicrypt.math.algebra.additive.parameters.interfaces.ECZModParameters;
+import ch.bfh.unicrypt.math.algebra.additive.parameters.SEC2_ECPolynomialField;
+import ch.bfh.unicrypt.math.algebra.additive.parameters.SEC2_ECZModParameters;
+import ch.bfh.unicrypt.math.algebra.additive.parameters.ECPolynomialFieldParameters;
+import ch.bfh.unicrypt.math.algebra.additive.parameters.ECZModParameters;
 import java.math.BigInteger;
 
 /**

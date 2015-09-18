@@ -13,8 +13,8 @@ import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZMod;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZModElement;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZModPrime;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
-import ch.bfh.unicrypt.math.algebra.additive.parameters.classes.SEC2_ECPolynomialField;
-import ch.bfh.unicrypt.math.algebra.additive.parameters.classes.SEC2_ECZModParameters;
+import ch.bfh.unicrypt.math.algebra.additive.parameters.SEC2_ECPolynomialField;
+import ch.bfh.unicrypt.math.algebra.additive.parameters.SEC2_ECZModParameters;
 
 public class ECEncoderExample {
 
