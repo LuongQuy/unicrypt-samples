@@ -42,7 +42,7 @@
 package ch.bfh.unicrypt.math;
 
 import ch.bfh.unicrypt.Example;
-import ch.bfh.unicrypt.exception.UniCryptException;
+import ch.bfh.unicrypt.UniCryptException;
 import ch.bfh.unicrypt.helper.array.classes.ByteArray;
 import ch.bfh.unicrypt.helper.converter.classes.bytearray.BigIntegerToByteArray;
 import ch.bfh.unicrypt.helper.converter.classes.string.BigIntegerToString;

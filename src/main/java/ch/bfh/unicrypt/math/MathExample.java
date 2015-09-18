@@ -42,7 +42,7 @@
 package ch.bfh.unicrypt.math;
 
 import ch.bfh.unicrypt.Example;
-import ch.bfh.unicrypt.exception.UniCryptException;
+import ch.bfh.unicrypt.UniCryptException;
 import ch.bfh.unicrypt.helper.math.Alphabet;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringElement;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringMonoid;
