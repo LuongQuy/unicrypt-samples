@@ -13,8 +13,8 @@ import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZMod;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZModElement;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZModPrime;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
-import ch.bfh.unicrypt.math.algebra.params.classes.SEC2_ECPolynomialField;
-import ch.bfh.unicrypt.math.algebra.params.classes.SEC2_ECZMod;
+import ch.bfh.unicrypt.math.algebra.additive.parameters.classes.SEC2_ECPolynomialField;
+import ch.bfh.unicrypt.math.algebra.additive.parameters.classes.SEC2_ECZModParameters;
 
 public class ECEncoderExample {
 
@@ -25,7 +25,7 @@ public class ECEncoderExample {
 	 */
 	public static void example1() throws Exception {
 
-		ECZModPrime ecFp = ECZModPrime.getInstance(SEC2_ECZMod.secp521r1);
+		ECZModPrime ecFp = ECZModPrime.getInstance(SEC2_ECZModParameters.secp521r1);
 		ZModPrime zModPrime = ecFp.getFiniteField();
 		Encoder encoder = ZModPrimeToEC.getInstance(zModPrime, ecFp, 10);
 

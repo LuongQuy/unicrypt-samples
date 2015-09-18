@@ -51,15 +51,15 @@ import ch.bfh.unicrypt.math.algebra.additive.classes.ECZModPrime;
 import ch.bfh.unicrypt.math.algebra.general.classes.Pair;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.CyclicGroup;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
-import ch.bfh.unicrypt.math.algebra.params.classes.SEC2_ECPolynomialField;
-import ch.bfh.unicrypt.math.algebra.params.classes.SEC2_ECZMod;
+import ch.bfh.unicrypt.math.algebra.additive.parameters.classes.SEC2_ECPolynomialField;
+import ch.bfh.unicrypt.math.algebra.additive.parameters.classes.SEC2_ECZModParameters;
 
 public class ElGamalECCExample {
 
 	public static void example1() throws Exception {
 
 		// Create cyclic group EC Fp (modulo 521 bits) and get default generator
-		CyclicGroup cyclicGroup = ECZModPrime.getInstance(SEC2_ECZMod.secp521r1);
+		CyclicGroup cyclicGroup = ECZModPrime.getInstance(SEC2_ECZModParameters.secp521r1);
 		Element generator = cyclicGroup.getDefaultGenerator();
 
 		// Create ElGamal encryption scheme
@@ -90,7 +90,7 @@ public class ElGamalECCExample {
 	public static void example2() throws Exception {
 
 		// Create cyclic group EC Fp (modulo 521 bits) and get default generator
-		ECZModPrime cyclicGroup = ECZModPrime.getInstance(SEC2_ECZMod.secp521r1);
+		ECZModPrime cyclicGroup = ECZModPrime.getInstance(SEC2_ECZModParameters.secp521r1);
 		Element generator = cyclicGroup.getDefaultGenerator();
 
 		// Create ElGamal encryption scheme

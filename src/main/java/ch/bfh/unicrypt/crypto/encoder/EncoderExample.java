@@ -48,8 +48,8 @@ import ch.bfh.unicrypt.math.algebra.additive.classes.ECPolynomialField;
 import ch.bfh.unicrypt.math.algebra.additive.classes.ECZModPrime;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZModPrime;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
-import ch.bfh.unicrypt.math.algebra.params.classes.SEC2_ECPolynomialField;
-import ch.bfh.unicrypt.math.algebra.params.classes.SEC2_ECZMod;
+import ch.bfh.unicrypt.math.algebra.additive.parameters.classes.SEC2_ECPolynomialField;
+import ch.bfh.unicrypt.math.algebra.additive.parameters.classes.SEC2_ECZModParameters;
 
 /**
  *
@@ -93,7 +93,7 @@ public class EncoderExample {
 	public static void example2() throws Exception {
 
 		// Define underlying groups
-		ECZModPrime ec = ECZModPrime.getInstance(SEC2_ECZMod.secp160r1);
+		ECZModPrime ec = ECZModPrime.getInstance(SEC2_ECZModParameters.secp160r1);
 
 		// Create encoders
 		ZModPrimeToECZModPrime encoder1 = ZModPrimeToECZModPrime.getInstance(ec,15);

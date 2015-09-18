@@ -48,10 +48,10 @@ import ch.bfh.unicrypt.math.algebra.additive.classes.ECPolynomialField;
 import ch.bfh.unicrypt.math.algebra.additive.classes.ECZModElement;
 import ch.bfh.unicrypt.math.algebra.additive.classes.ECZModPrime;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZMod;
-import ch.bfh.unicrypt.math.algebra.params.classes.SEC2_ECPolynomialField;
-import ch.bfh.unicrypt.math.algebra.params.classes.SEC2_ECZMod;
-import ch.bfh.unicrypt.math.algebra.params.interfaces.ECPolynomialFieldParameters;
-import ch.bfh.unicrypt.math.algebra.params.interfaces.ECZModParameters;
+import ch.bfh.unicrypt.math.algebra.additive.parameters.classes.SEC2_ECPolynomialField;
+import ch.bfh.unicrypt.math.algebra.additive.parameters.classes.SEC2_ECZModParameters;
+import ch.bfh.unicrypt.math.algebra.additive.parameters.interfaces.ECPolynomialFieldParameters;
+import ch.bfh.unicrypt.math.algebra.additive.parameters.interfaces.ECZModParameters;
 import java.math.BigInteger;
 
 /**
@@ -64,7 +64,7 @@ public class ECGroupExample {
 	public static void example1() throws Exception {
 
 		// Example with StandardECZModPrime
-		for (ECZModParameters params : SEC2_ECZMod.values()) {
+		for (ECZModParameters params : SEC2_ECZModParameters.values()) {
 
 			ECZModPrime ec = ECZModPrime.getInstance(params);
 			ECZModElement generator = ec.getDefaultGenerator();
