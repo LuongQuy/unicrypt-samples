@@ -42,7 +42,7 @@
 package ch.bfh.unicrypt.crypto.schemes.commitment;
 
 import ch.bfh.unicrypt.Example;
-import ch.bfh.unicrypt.crypto.schemes.commitment.classes.StandardCommitmentScheme;
+import ch.bfh.unicrypt.crypto.schemes.commitment.classes.DiscreteLogarithmCommitmentScheme;
 import ch.bfh.unicrypt.math.algebra.general.classes.BooleanElement;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
 import ch.bfh.unicrypt.math.algebra.multiplicative.classes.GStarModSafePrime;
@@ -60,7 +60,7 @@ public class StandardCommitmentExample {
 		Element generator = cyclicGroup.getElement(98);
 
 		// Create commitment scheme to be used
-		StandardCommitmentScheme commitmentScheme = StandardCommitmentScheme.getInstance(generator);
+		DiscreteLogarithmCommitmentScheme commitmentScheme = DiscreteLogarithmCommitmentScheme.getInstance(generator);
 
 		// Create message to commit
 		Element message = commitmentScheme.getMessageSpace().getElement(42);
