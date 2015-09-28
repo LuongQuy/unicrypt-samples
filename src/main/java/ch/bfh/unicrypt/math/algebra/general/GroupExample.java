@@ -66,10 +66,6 @@ public class GroupExample {
 		final Z group1 = Z.getInstance();
 		System.out.println(group1.getIdentityElement());
 		System.out.println(group1.getOrder());
-		System.out.println(group1.getDefaultGenerator());
-		for (Element generator : group1.getIndependentGenerators().limit(3)) {
-			System.out.println(generator);
-		}
 		a1 = group1.getElement(3);
 		a2 = group1.getElement(-5);
 		System.out.println(group1.invert(a1));
@@ -100,10 +96,6 @@ public class GroupExample {
 		final ZMod group2 = ZMod.getInstance(BigInteger.valueOf(10));
 		System.out.println(group2.getIdentityElement());
 		System.out.println(group2.getOrder());
-		System.out.println(group2.getDefaultGenerator());
-		for (Element generator : group2.getIndependentGenerators().limit(10)) {
-			System.out.println(generator);
-		}
 		a1 = group2.getElement(3);
 		a2 = group2.getElement(5);
 		System.out.println(group2.invert(a1));
