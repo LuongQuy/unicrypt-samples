@@ -57,6 +57,7 @@ import ch.bfh.unicrypt.helper.factorization.SafePrime;
 import ch.bfh.unicrypt.helper.math.Alphabet;
 import ch.bfh.unicrypt.helper.random.deterministic.DeterministicRandomByteSequence;
 import ch.bfh.unicrypt.math.algebra.additive.classes.ECZModPrime;
+import ch.bfh.unicrypt.math.algebra.additive.parameters.ECZModPrimeParameters;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringMonoid;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZModElement;
 import ch.bfh.unicrypt.math.algebra.general.classes.Pair;
@@ -70,7 +71,6 @@ import ch.bfh.unicrypt.math.algebra.general.interfaces.CyclicGroup;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
 import ch.bfh.unicrypt.math.algebra.multiplicative.classes.GStarMod;
 import ch.bfh.unicrypt.math.algebra.multiplicative.classes.GStarModSafePrime;
-import ch.bfh.unicrypt.math.algebra.additive.parameters.SEC2_ECZModParameters;
 import ch.bfh.unicrypt.math.function.classes.GeneratorFunction;
 import ch.bfh.unicrypt.math.function.interfaces.Function;
 
@@ -307,7 +307,7 @@ public class MixAndProofExample {
 		final int size = 10;
 
 		// Create cyclic group for commitments
-		final ECZModPrime G_q_Com = ECZModPrime.getInstance(SEC2_ECZModParameters.secp160r1);
+		final ECZModPrime G_q_Com = ECZModPrime.getInstance(ECZModPrimeParameters.SECP160r1);
 
 		// Create independent generators
 		final Tuple independentGenerators = Tuple.getInstance(G_q_Com.getIndependentGenerators(rrs).limit(size));

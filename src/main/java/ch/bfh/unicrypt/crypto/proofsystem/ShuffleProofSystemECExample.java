@@ -52,6 +52,7 @@ import ch.bfh.unicrypt.helper.math.Alphabet;
 import ch.bfh.unicrypt.helper.random.RandomOracle;
 import ch.bfh.unicrypt.helper.random.deterministic.DeterministicRandomByteSequence;
 import ch.bfh.unicrypt.math.algebra.additive.classes.ECZModPrime;
+import ch.bfh.unicrypt.math.algebra.additive.parameters.ECZModPrimeParameters;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringMonoid;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZMod;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZModElement;
@@ -64,7 +65,6 @@ import ch.bfh.unicrypt.math.algebra.general.classes.Triple;
 import ch.bfh.unicrypt.math.algebra.general.classes.Tuple;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.CyclicGroup;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
-import ch.bfh.unicrypt.math.algebra.additive.parameters.SEC2_ECZModParameters;
 import ch.bfh.unicrypt.math.function.classes.PermutationFunction;
 import java.math.BigInteger;
 
@@ -142,7 +142,7 @@ public class ShuffleProofSystemECExample {
 		BigInteger h = BigInteger.ONE;
 		//final ECZModPrime G_q = ECZModPrime.getInstance(f, a, b, gx, gy, order, h);
 
-		final ECZModPrime G_q = ECZModPrime.getInstance(SEC2_ECZModParameters.secp160r1); //Possible curves secp{112,160,192,224,256,384,521}r1
+		final ECZModPrime G_q = ECZModPrime.getInstance(ECZModPrimeParameters.SECP160r1); //Possible curves SECP{112,160,192,224,256,384,521}r1
 
 		// Create encryption scheme and key
 		final DeterministicRandomByteSequence rrs = DeterministicRandomByteSequence.getInstance();

@@ -7,25 +7,25 @@ import ch.bfh.unicrypt.crypto.encoder.classes.ZModToBinaryPolynomialField;
 import ch.bfh.unicrypt.crypto.encoder.interfaces.Encoder;
 import ch.bfh.unicrypt.math.algebra.additive.classes.ECPolynomialField;
 import ch.bfh.unicrypt.math.algebra.additive.classes.ECZModPrime;
+import ch.bfh.unicrypt.math.algebra.additive.parameters.ECPolynomialFieldParameters;
+import ch.bfh.unicrypt.math.algebra.additive.parameters.ECZModPrimeParameters;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.PolynomialElement;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.PolynomialField;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZMod;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZModElement;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZModPrime;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
-import ch.bfh.unicrypt.math.algebra.additive.parameters.SEC2_ECPolynomialField;
-import ch.bfh.unicrypt.math.algebra.additive.parameters.SEC2_ECZModParameters;
 
-public class ECEncoderExample {
+/**
+ * @author C. Lutz
+ * @author R. Haenni
+ */
+public class ECEncoderExample1 {
 
-	/**
-	 * Example shows how to encode an element from ZModPrime into an elliptic curve over Fq
-	 * <p>
-	 * @throws Exception
-	 */
+	// Example to show how to encode an element from ZModPrime into an elliptic curve over Fq
 	public static void example1() throws Exception {
 
-		ECZModPrime ecFp = ECZModPrime.getInstance(SEC2_ECZModParameters.secp521r1);
+		ECZModPrime ecFp = ECZModPrime.getInstance(ECZModPrimeParameters.SECP521r1);
 		ZModPrime zModPrime = ecFp.getFiniteField();
 		Encoder encoder = ZModPrimeToEC.getInstance(zModPrime, ecFp, 10);
 
@@ -37,14 +37,10 @@ public class ECEncoderExample {
 		System.out.println(decMessage);
 	}
 
-	/**
-	 * Example shows how to encode an element from ZModPrime into an elliptic curve over F2m
-	 * <p>
-	 * @throws Exception
-	 */
+	// Example to show how to encode an element from ZModPrime into an elliptic curve over F2m
 	public static void example2() throws Exception {
 
-		ECPolynomialField ecF2m = ECPolynomialField.getInstance(SEC2_ECPolynomialField.sect113r1);
+		ECPolynomialField ecF2m = ECPolynomialField.getInstance(ECPolynomialFieldParameters.SECT113r1);
 		ZModPrime zModPrime = ecF2m.getZModOrder();
 		AbstractEncoder<ZMod, ZModElement, PolynomialField, PolynomialElement> enc = ZModToBinaryPolynomialField.getInstance(zModPrime, ecF2m.getFiniteField());
 		Encoder encoder = ZModPrimeToEC.getInstance(zModPrime, ecF2m, 10);
