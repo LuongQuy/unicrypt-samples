@@ -42,8 +42,8 @@
 package ch.bfh.unicrypt.crypto.schemes.encryption;
 
 import ch.bfh.unicrypt.Example;
-import ch.bfh.unicrypt.crypto.encoder.classes.ZModPrimeToECPolynomialField;
-import ch.bfh.unicrypt.crypto.encoder.classes.ZModPrimeToECZModPrime;
+import ch.bfh.unicrypt.crypto.encoder.classes.ZModToECPolynomialField;
+import ch.bfh.unicrypt.crypto.encoder.classes.ZModToECZModPrime;
 import ch.bfh.unicrypt.crypto.encoder.interfaces.Encoder;
 import ch.bfh.unicrypt.crypto.schemes.encryption.classes.ElGamalEncryptionScheme;
 import ch.bfh.unicrypt.math.algebra.additive.classes.ECPolynomialField;
@@ -101,7 +101,7 @@ public class ElGamalECCExample {
 		ElGamalEncryptionScheme elGamal = ElGamalEncryptionScheme.getInstance(generator);
 
 		// Create encoder from Z_q to EC Fp
-		Encoder encoder = ZModPrimeToECZModPrime.getInstance(cyclicGroup, 15);
+		Encoder encoder = ZModToECZModPrime.getInstance(cyclicGroup, 15);
 
 		// Create keys
 		Pair keyPair = elGamal.getKeyPairGenerator().generateKeyPair();
@@ -170,7 +170,7 @@ public class ElGamalECCExample {
 		ElGamalEncryptionScheme elGamal = ElGamalEncryptionScheme.getInstance(generator);
 
 		// Create encoder from Z_q to EC Fp
-		Encoder encoder = ZModPrimeToECPolynomialField.getInstance(cyclicGroup.getZModOrder(), cyclicGroup, 15);
+		Encoder encoder = ZModToECPolynomialField.getInstance(cyclicGroup, 15);
 
 		// Create keys
 		Pair keyPair = elGamal.getKeyPairGenerator().generateKeyPair();
