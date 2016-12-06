@@ -41,6 +41,8 @@
  */
 package ch.bfh.unicrypt.crypto.proofsystem;
 
+import ch.bfh.unicrypt.crypto.proofsystem.challengegenerator.classes.FiatShamirSigmaChallengeGenerator;
+import ch.bfh.unicrypt.crypto.proofsystem.challengegenerator.interfaces.SigmaChallengeGenerator;
 import ch.bfh.unicrypt.crypto.proofsystem.classes.DoubleDiscreteLogProofSystem;
 import ch.bfh.unicrypt.crypto.proofsystem.classes.EqualityPreimageProofSystem;
 import ch.bfh.unicrypt.crypto.proofsystem.classes.PolynomialMembershipProofSystem;
@@ -191,7 +193,8 @@ public class MemProofBasedVoting {
 			Element r = this.G_p.getZModOrder().getRandomElement(randomGenerator);
 			Element cu = this.BB.getComP().commit(uInZp, r);
 
-			PolynomialMembershipProofSystem pmps = PolynomialMembershipProofSystem.getInstance(this.BB.getCredentialPolynomial(), this.BB.getComP());
+			SigmaChallengeGenerator fsscg = FiatShamirSigmaChallengeGenerator.getInstance(this.BB.getComP().getMessageSpace(), v);
+			PolynomialMembershipProofSystem pmps = PolynomialMembershipProofSystem.getInstance(fsscg, this.BB.getCredentialPolynomial(), this.BB.getComP());
 			Tuple pi1 = pmps.generate(Tuple.getInstance(uInZp, r), cu);
 			System.out.println("  > Time pi_1: " + (System.currentTimeMillis() - time));
 
@@ -200,7 +203,8 @@ public class MemProofBasedVoting {
 			Element s = this.G_q.getZModOrder().getRandomElement();
 			Tuple m = this.betas.insert(this.alpha);
 			Element cab = this.BB.getComQ().commit(m, s);
-			DoubleDiscreteLogProofSystem ddlps = DoubleDiscreteLogProofSystem.getInstance(this.BB.getComP(), this.BB.getComQ(), SECURITY_FACTOR);
+
+			DoubleDiscreteLogProofSystem ddlps = DoubleDiscreteLogProofSystem.getInstance(fsscg, this.BB.getComP(), this.BB.getComQ(), SECURITY_FACTOR);
 			Triple pi2 = ddlps.generate(Tuple.getInstance(uInZp, r, s, m), Pair.getInstance(cu, cab));
 			System.out.println("  > Time pi_2: " + (System.currentTimeMillis() - time));
 
@@ -208,7 +212,9 @@ public class MemProofBasedVoting {
 			time = System.currentTimeMillis();
 			ProductSet space = (ProductSet) this.BB.getComQ().getCommitmentFunction().getDomain();
 			Function f = CompositeFunction.getInstance(SelectionFunction.getInstance(space, 0, 1), GeneratorFunction.getInstance(this.BB.getGHat()));
-			EqualityPreimageProofSystem apps = EqualityPreimageProofSystem.getInstance(this.BB.getComQ().getCommitmentFunction(), f);
+
+			SigmaChallengeGenerator fsscg2 = FiatShamirSigmaChallengeGenerator.getInstance(this.G_q.getZModOrder(), v);
+			EqualityPreimageProofSystem apps = EqualityPreimageProofSystem.getInstance(fsscg2, this.BB.getComQ().getCommitmentFunction(), f);
 
 			Triple pi3 = apps.generate(Tuple.getInstance(m, s), Tuple.getInstance(cab, uHat));
 			System.out.println("  > Time pi_3: " + (System.currentTimeMillis() - time));
@@ -236,12 +242,6 @@ public class MemProofBasedVoting {
 
 		public void verifyBallots() {
 			System.out.println("Start verifying...");
-			PolynomialMembershipProofSystem pmps = PolynomialMembershipProofSystem.getInstance(this.BB.getCredentialPolynomial(), this.BB.getComP());
-			DoubleDiscreteLogProofSystem ddlps = DoubleDiscreteLogProofSystem.getInstance(this.BB.getComP(), this.BB.getComQ(), SECURITY_FACTOR);
-
-			ProductSet space = (ProductSet) this.BB.getComQ().getCommitmentFunction().getDomain();
-			Function f = CompositeFunction.getInstance(SelectionFunction.getInstance(space, 0, 1), GeneratorFunction.getInstance(this.BB.getGHat()));
-			EqualityPreimageProofSystem apps = EqualityPreimageProofSystem.getInstance(this.BB.getComQ().getCommitmentFunction(), f);
 
 			Tuple ballots = this.BB.getBallots();
 			for (int i = 0; i < ballots.getArity(); i++) {
@@ -249,6 +249,15 @@ public class MemProofBasedVoting {
 				Element v = ballot.getAt(0);
 				Triple coms = (Triple) ballot.getAt(1);
 				Triple proof = (Triple) ballot.getAt(2);
+
+				FiatShamirSigmaChallengeGenerator fsscg = FiatShamirSigmaChallengeGenerator.getInstance(this.BB.getComP().getMessageSpace(), v);
+				PolynomialMembershipProofSystem pmps = PolynomialMembershipProofSystem.getInstance(fsscg, this.BB.getCredentialPolynomial(), this.BB.getComP());
+				DoubleDiscreteLogProofSystem ddlps = DoubleDiscreteLogProofSystem.getInstance(fsscg, this.BB.getComP(), this.BB.getComQ(), SECURITY_FACTOR);
+
+				ProductSet space = (ProductSet) this.BB.getComQ().getCommitmentFunction().getDomain();
+				Function f = CompositeFunction.getInstance(SelectionFunction.getInstance(space, 0, 1), GeneratorFunction.getInstance(this.BB.getGHat()));
+				SigmaChallengeGenerator fsscg2 = FiatShamirSigmaChallengeGenerator.getInstance(this.G_q.getZModOrder(), v);
+				EqualityPreimageProofSystem apps = EqualityPreimageProofSystem.getInstance(fsscg2, this.BB.getComQ().getCommitmentFunction(), f);
 
 				boolean verify = pmps.verify(proof.getFirst(), coms.getFirst());
 				verify = verify && ddlps.verify(proof.getSecond(), Pair.getInstance(coms.getFirst(), coms.getSecond()));
