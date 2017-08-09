@@ -42,7 +42,7 @@
 package ch.bfh.unicrypt.math.algebra.general;
 
 import ch.bfh.unicrypt.Example;
-import ch.bfh.unicrypt.helper.factorization.Factorization;
+import ch.bfh.unicrypt.helper.prime.Factorization;
 import ch.bfh.unicrypt.math.algebra.additive.interfaces.AdditiveElement;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.N;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.Z;
