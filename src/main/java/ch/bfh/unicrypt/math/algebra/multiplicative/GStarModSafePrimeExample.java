@@ -42,6 +42,7 @@
 package ch.bfh.unicrypt.math.algebra.multiplicative;
 
 import ch.bfh.unicrypt.Example;
+import ch.bfh.unicrypt.helper.prime.SafePrime;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
 import ch.bfh.unicrypt.math.algebra.multiplicative.classes.GStarModSafePrime;
 import java.math.BigInteger;
@@ -85,7 +86,7 @@ public class GStarModSafePrimeExample {
 		int bitLength = 128;
 
 		// Create random groups
-		GStarModSafePrime group = GStarModSafePrime.getFirstInstance(bitLength);
+		GStarModSafePrime group = GStarModSafePrime.getInstance(SafePrime.getSmallestInstance(bitLength));
 
 		// Get order
 		BigInteger order = group.getOrder();

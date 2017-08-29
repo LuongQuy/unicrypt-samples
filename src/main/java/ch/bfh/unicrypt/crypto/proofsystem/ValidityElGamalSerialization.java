@@ -53,7 +53,7 @@ public class ValidityElGamalSerialization {
 		possibleMessages[2] = gQ.getDefaultGenerator().power(2);
 		possibleMessages[3] = gQ.getDefaultGenerator().power(3);
 
-		SigmaChallengeGenerator scg = ElGamalEncryptionValidityProofSystem.createNonInteractiveChallengeGenerator(elGamal, possibleMessages.length, proverId, r1);
+		SigmaChallengeGenerator scg = ElGamalEncryptionValidityProofSystem.createNonInteractiveChallengeGenerator(elGamal, possibleMessages.length, proverId);
 
 		Subset plaintexts = Subset.getInstance(gQ, possibleMessages);
 

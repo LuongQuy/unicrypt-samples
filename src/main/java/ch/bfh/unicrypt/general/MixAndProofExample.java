@@ -43,8 +43,8 @@ package ch.bfh.unicrypt.general;
 
 import ch.bfh.unicrypt.Example;
 import ch.bfh.unicrypt.crypto.mixer.classes.ReEncryptionMixer;
-import ch.bfh.unicrypt.crypto.proofsystem.challengegenerator.classes.RandomOracleChallengeGenerator;
-import ch.bfh.unicrypt.crypto.proofsystem.challengegenerator.classes.RandomOracleSigmaChallengeGenerator;
+import ch.bfh.unicrypt.crypto.proofsystem.challengegenerator.classes.FiatShamirSigmaChallengeGenerator;
+import ch.bfh.unicrypt.crypto.proofsystem.challengegenerator.classes.MultiValuesNonInteractiveChallengeGenerator;
 import ch.bfh.unicrypt.crypto.proofsystem.challengegenerator.interfaces.ChallengeGenerator;
 import ch.bfh.unicrypt.crypto.proofsystem.challengegenerator.interfaces.SigmaChallengeGenerator;
 import ch.bfh.unicrypt.crypto.proofsystem.classes.ElGamalEncryptionValidityProofSystem;
@@ -56,18 +56,14 @@ import ch.bfh.unicrypt.crypto.schemes.encryption.classes.ElGamalEncryptionScheme
 import ch.bfh.unicrypt.helper.math.Alphabet;
 import ch.bfh.unicrypt.helper.prime.SafePrime;
 import ch.bfh.unicrypt.helper.random.deterministic.DeterministicRandomByteSequence;
-import ch.bfh.unicrypt.math.algebra.additive.classes.ECZModPrime;
-import ch.bfh.unicrypt.math.algebra.additive.parameters.ECZModPrimeParameters;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringMonoid;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZModElement;
 import ch.bfh.unicrypt.math.algebra.general.classes.Pair;
 import ch.bfh.unicrypt.math.algebra.general.classes.PermutationElement;
 import ch.bfh.unicrypt.math.algebra.general.classes.ProductGroup;
-import ch.bfh.unicrypt.math.algebra.general.classes.ProductSet;
 import ch.bfh.unicrypt.math.algebra.general.classes.Subset;
 import ch.bfh.unicrypt.math.algebra.general.classes.Triple;
 import ch.bfh.unicrypt.math.algebra.general.classes.Tuple;
-import ch.bfh.unicrypt.math.algebra.general.interfaces.CyclicGroup;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
 import ch.bfh.unicrypt.math.algebra.multiplicative.classes.GStarMod;
 import ch.bfh.unicrypt.math.algebra.multiplicative.classes.GStarModSafePrime;
@@ -91,8 +87,8 @@ public class MixAndProofExample {
 		// Challenge Generator
 		//=====================
 		// Create a non-interactive challenge generator that on input <StringElement> returns
-		// 10 G_q elements
-		ChallengeGenerator cg = RandomOracleChallengeGenerator.getInstance(ProductSet.getInstance(G_q, 10));
+		// 10 ZMod elements
+		ChallengeGenerator cg = MultiValuesNonInteractiveChallengeGenerator.getInstance(G_q.getZModOrder(), 10);
 
 		// Generate challenge
 		Tuple challenges = (Tuple) cg.generate(sm.getElement("inputX"));
@@ -108,7 +104,7 @@ public class MixAndProofExample {
 		final Element commitment = f.apply(G_q.getZModOrder().getElement(3));
 
 		// Create non-interactive sigma challenge generator for function <f> and prover <proverId>
-		SigmaChallengeGenerator scg = RandomOracleSigmaChallengeGenerator.getInstance(f, proverId);
+		SigmaChallengeGenerator scg = FiatShamirSigmaChallengeGenerator.getInstance(f, proverId);
 
 		// Generate challenge
 		ZModElement challenge = scg.generate(publicInput, commitment);
@@ -130,7 +126,7 @@ public class MixAndProofExample {
 		// - Create proof function
 		GeneratorFunction f = GeneratorFunction.getInstance(G_q.getElement(4));
 		// - Create sigma challenge generator
-		SigmaChallengeGenerator scg = RandomOracleSigmaChallengeGenerator.getInstance(f, proverId);
+		SigmaChallengeGenerator scg = FiatShamirSigmaChallengeGenerator.getInstance(f, proverId);
 		// - Create preimage proof generator
 		PlainPreimageProofSystem pg = PlainPreimageProofSystem.getInstance(scg, f);
 
@@ -269,103 +265,6 @@ public class MixAndProofExample {
 		//------------------
 		// Create shuffle proof generator (... -> see permutatin commitment proof generator)
 		ReEncryptionShuffleProofSystem spg = ReEncryptionShuffleProofSystem.getInstance(size, elGamalES, publicKey);
-
-		// Private and public input
-		Triple privateInput2 = Triple.getInstance(permutation, permutationCommitmentRandomizations, randomizations);
-		Triple publicInput2 = Triple.getInstance(permutationCommitment, ciphertexts, shuffledCiphertexts);
-
-		// Generate shuffle proof
-		Tuple proofShuffle = spg.generate(privateInput2, publicInput2);
-
-		// V E R I F Y
-		//-------------
-		// Verify permutation commitment proof
-		boolean vPermutation = pcpg.verify(proofPermutation, publicInput1);
-
-		// Verify shuffle proof
-		boolean vShuffle = spg.verify(proofShuffle, publicInput2);
-
-		// Verify equality of permutation commitments
-		boolean vPermutationCommitments = publicInput1.isEquivalent(publicInput2.getFirst());
-
-		if (vPermutation && vShuffle && vPermutationCommitments) {
-			Example.printLine("Proof is valid!");
-		} else {
-			Example.printLine("Proof is NOT valid!");
-		}
-	}
-
-	// COMPLETE SHUFFLE WITH DIFFERENT GROUPS AND EXPLICIT SECURITY PARAMETERS
-	public static void example6() throws Exception {
-
-		// S E T U P
-		//-----------
-		// Get default reference random byte sequence
-		final DeterministicRandomByteSequence rrs = DeterministicRandomByteSequence.getInstance();
-
-		// Set size
-		final int size = 10;
-
-		// Create cyclic group for commitments
-		final ECZModPrime G_q_Com = ECZModPrime.getInstance(ECZModPrimeParameters.SECP160r1);
-
-		// Create independent generators
-		final Tuple independentGenerators = Tuple.getInstance(G_q_Com.getIndependentGenerators(rrs).limit(size));
-
-		// Create cyclic group for encryption scheme
-		final CyclicGroup G_q_Enc = GStarModSafePrime.getInstance(SafePrime.getRandomInstance(160));
-
-		// Create ElGamal encryption scheme
-		ElGamalEncryptionScheme elGamalES = ElGamalEncryptionScheme.getInstance(G_q_Enc);
-		Element publicKey = G_q_Enc.getRandomElement();
-
-		// Create ciphertexts at random
-		Tuple ciphertexts = ProductGroup.getInstance(elGamalES.getEncryptionSpace(), size).getRandomElement();
-
-		// Create prover id
-		final StringMonoid sm = StringMonoid.getInstance(Alphabet.BASE64);
-		final Element proverId = sm.getElement("Mixer1");
-
-		// S H U F F L E
-		//---------------
-		// Create mixer
-		ReEncryptionMixer mixer = ReEncryptionMixer.getInstance(elGamalES, publicKey, size);
-		// Create a random permutation
-		PermutationElement permutation = mixer.getPermutationGroup().getRandomElement();
-		// Create random randomizations
-		Tuple randomizations = mixer.generateRandomizations();
-		// Shuffle
-		Tuple shuffledCiphertexts = mixer.shuffle(ciphertexts, permutation, randomizations);
-
-		// P R O O F
-		//-----------
-		//
-		// 1. Permutation Proof
-		//----------------------
-		// Create permutation commitment scheme based on the independent generators
-		PermutationCommitmentScheme pcs = PermutationCommitmentScheme.getInstance(independentGenerators.getAt(0), independentGenerators.extractRange(1, size));
-		// Create permutation commitment
-		Tuple permutationCommitmentRandomizations = pcs.getRandomizationSpace().getRandomElement();
-		Tuple permutationCommitment = pcs.commit(permutation, permutationCommitmentRandomizations);
-
-		// Create permutation commitment proof generator based on the independent generators and with explicit
-		// security parameters (a non-interactive challenge generator for the e-values and a non-interactive
-		// sigma challenge generator are created implicitly)
-		PermutationCommitmentProofSystem pcpg
-			   = PermutationCommitmentProofSystem.getInstance(independentGenerators, proverId, 60, 60, 20);
-
-		// Private and public input
-		Pair privateInput1 = Pair.getInstance(permutation, permutationCommitmentRandomizations);
-		Element publicInput1 = permutationCommitment;
-
-		// Generate permutation commitment proof
-		Tuple proofPermutation = pcpg.generate(privateInput1, publicInput1);
-
-		// 2. Shuffle Proof
-		//------------------
-		// Create shuffle proof generator (... -> see permutatin commitment proof generator)
-		ReEncryptionShuffleProofSystem spg
-			   = ReEncryptionShuffleProofSystem.getInstance(independentGenerators, elGamalES, publicKey, proverId, 60, 60, 20);
 
 		// Private and public input
 		Triple privateInput2 = Triple.getInstance(permutation, permutationCommitmentRandomizations, randomizations);
