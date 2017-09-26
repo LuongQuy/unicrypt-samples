@@ -45,7 +45,7 @@ import ch.bfh.unicrypt.Example;
 import ch.bfh.unicrypt.crypto.keygenerator.interfaces.KeyPairGenerator;
 import ch.bfh.unicrypt.crypto.proofsystem.classes.PlainPreimageProofSystem;
 import ch.bfh.unicrypt.crypto.schemes.encryption.classes.ElGamalEncryptionScheme;
-import ch.bfh.unicrypt.helper.factorization.SafePrime;
+import ch.bfh.unicrypt.helper.prime.SafePrime;
 import ch.bfh.unicrypt.math.algebra.general.classes.Triple;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.CyclicGroup;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
@@ -85,10 +85,6 @@ public class PreimageProofExample {
 		Example.printLines("Keys", privateKey, publicKey);
 		Example.printLine("Proof", proof);
 		Example.printLine("Check", result);
-	}
-
-	public static void main(final String[] args) {
-		Example.runExamples();
 	}
 
 }

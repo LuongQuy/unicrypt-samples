@@ -42,38 +42,30 @@
 package ch.bfh.unicrypt.crypto.encoder;
 
 import ch.bfh.unicrypt.Example;
-import ch.bfh.unicrypt.crypto.encoder.classes.ZModPrimeToECPolynomialField;
-import ch.bfh.unicrypt.crypto.encoder.classes.ZModPrimeToECZModPrime;
+import ch.bfh.unicrypt.crypto.encoder.classes.ZModToECPolynomialField;
+import ch.bfh.unicrypt.crypto.encoder.classes.ZModToECZModPrime;
 import ch.bfh.unicrypt.math.algebra.additive.classes.ECPolynomialField;
 import ch.bfh.unicrypt.math.algebra.additive.classes.ECZModPrime;
+import ch.bfh.unicrypt.math.algebra.additive.parameters.ECPolynomialFieldParameters;
+import ch.bfh.unicrypt.math.algebra.additive.parameters.ECZModPrimeParameters;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZModPrime;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
-import ch.bfh.unicrypt.math.algebra.params.classes.SECECCParamsF2m;
-import ch.bfh.unicrypt.math.algebra.params.classes.SECECCParamsFp;
 
 /**
- *
- * @author Rolf Haenni <rolf.haenni@bfh.ch>
+ * @author C. Lutz
+ * @author R. Haenni
  */
-public class EncoderExample {
+public class ECEncoderExample2 {
 
-
-
-	/**
-	 * Example shows how to encode an element from ZModPrime into an elliptic curve over F2m
-	 * <p>
-	 * @throws Exception
-	 */
+	// Example to shows how to encode an element from ZModPrime into an elliptic curve over F2m
 	public static void example1() throws Exception {
 
 		// Define underlying groups
-		ECPolynomialField ec = ECPolynomialField.getInstance(SECECCParamsF2m.sect113r1);
+		ECPolynomialField ec = ECPolynomialField.getInstance(ECPolynomialFieldParameters.SECT113r1);
 		ZModPrime z = ZModPrime.getInstance(ec.getOrder());
 
 		// Create encoders
-		ZModPrimeToECPolynomialField encoder1 = ZModPrimeToECPolynomialField.getInstance(z, ec,15);
-
-
+		ZModToECPolynomialField encoder1 = ZModToECPolynomialField.getInstance(ec, 15);
 
 		Element message = encoder1.getDomain().getElement(12350);
 		Element encodedMessage = encoder1.encode(message);
@@ -84,7 +76,7 @@ public class EncoderExample {
 		Example.printLines("Messages", message, encodedMessage, decodedMessage);
 
 	}
-	
+
 	/**
 	 * Example shows how to encode an element from ZModPrime into an elliptic curve over F2m
 	 * <p>
@@ -93,10 +85,10 @@ public class EncoderExample {
 	public static void example2() throws Exception {
 
 		// Define underlying groups
-		ECZModPrime ec = ECZModPrime.getInstance(SECECCParamsFp.secp160r1);
+		ECZModPrime ec = ECZModPrime.getInstance(ECZModPrimeParameters.SECP160r1);
 
 		// Create encoders
-		ZModPrimeToECZModPrime encoder1 = ZModPrimeToECZModPrime.getInstance(ec,15);
+		ZModToECZModPrime encoder1 = ZModToECZModPrime.getInstance(ec, 15);
 
 		// Encode and decode message
 		Element message = encoder1.getDomain().getElement(123456);

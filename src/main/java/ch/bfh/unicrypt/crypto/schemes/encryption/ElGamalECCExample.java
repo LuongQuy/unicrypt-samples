@@ -42,24 +42,28 @@
 package ch.bfh.unicrypt.crypto.schemes.encryption;
 
 import ch.bfh.unicrypt.Example;
-import ch.bfh.unicrypt.crypto.encoder.classes.ZModPrimeToECPolynomialField;
-import ch.bfh.unicrypt.crypto.encoder.classes.ZModPrimeToECZModPrime;
+import ch.bfh.unicrypt.crypto.encoder.classes.ZModToECPolynomialField;
+import ch.bfh.unicrypt.crypto.encoder.classes.ZModToECZModPrime;
 import ch.bfh.unicrypt.crypto.encoder.interfaces.Encoder;
 import ch.bfh.unicrypt.crypto.schemes.encryption.classes.ElGamalEncryptionScheme;
 import ch.bfh.unicrypt.math.algebra.additive.classes.ECPolynomialField;
 import ch.bfh.unicrypt.math.algebra.additive.classes.ECZModPrime;
+import ch.bfh.unicrypt.math.algebra.additive.parameters.ECPolynomialFieldParameters;
+import ch.bfh.unicrypt.math.algebra.additive.parameters.ECZModPrimeParameters;
 import ch.bfh.unicrypt.math.algebra.general.classes.Pair;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.CyclicGroup;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
-import ch.bfh.unicrypt.math.algebra.params.classes.SECECCParamsF2m;
-import ch.bfh.unicrypt.math.algebra.params.classes.SECECCParamsFp;
 
+/**
+ * @author C. Lutz
+ * @author R. Haenni
+ */
 public class ElGamalECCExample {
 
 	public static void example1() throws Exception {
 
 		// Create cyclic group EC Fp (modulo 521 bits) and get default generator
-		CyclicGroup cyclicGroup = ECZModPrime.getInstance(SECECCParamsFp.secp521r1);
+		CyclicGroup cyclicGroup = ECZModPrime.getInstance(ECZModPrimeParameters.SECP521r1);
 		Element generator = cyclicGroup.getDefaultGenerator();
 
 		// Create ElGamal encryption scheme
@@ -90,14 +94,14 @@ public class ElGamalECCExample {
 	public static void example2() throws Exception {
 
 		// Create cyclic group EC Fp (modulo 521 bits) and get default generator
-		ECZModPrime cyclicGroup = ECZModPrime.getInstance(SECECCParamsFp.secp521r1);
+		ECZModPrime cyclicGroup = ECZModPrime.getInstance(ECZModPrimeParameters.SECP521r1);
 		Element generator = cyclicGroup.getDefaultGenerator();
 
 		// Create ElGamal encryption scheme
 		ElGamalEncryptionScheme elGamal = ElGamalEncryptionScheme.getInstance(generator);
 
 		// Create encoder from Z_q to EC Fp
-		Encoder encoder = ZModPrimeToECZModPrime.getInstance(cyclicGroup,15);
+		Encoder encoder = ZModToECZModPrime.getInstance(cyclicGroup, 15);
 
 		// Create keys
 		Pair keyPair = elGamal.getKeyPairGenerator().generateKeyPair();
@@ -127,7 +131,7 @@ public class ElGamalECCExample {
 	public static void example3() throws Exception {
 
 		// Create cyclic group EC Fp (modulo 521 bits) and get default generator
-		CyclicGroup cyclicGroup = ECPolynomialField.getInstance(SECECCParamsF2m.sect113r1);
+		CyclicGroup cyclicGroup = ECPolynomialField.getInstance(ECPolynomialFieldParameters.SECT163r1);
 		Element generator = cyclicGroup.getDefaultGenerator();
 
 		// Create ElGamal encryption scheme
@@ -158,7 +162,7 @@ public class ElGamalECCExample {
 	public static void example4() throws Exception {
 
 		// Create cyclic group EC Fp (modulo 521 bits) and get default generator
-		ECPolynomialField cyclicGroup = ECPolynomialField.getInstance(SECECCParamsF2m.sect113r1);
+		ECPolynomialField cyclicGroup = ECPolynomialField.getInstance(ECPolynomialFieldParameters.SECT163r1);
 
 		Element generator = cyclicGroup.getDefaultGenerator();
 
@@ -166,7 +170,7 @@ public class ElGamalECCExample {
 		ElGamalEncryptionScheme elGamal = ElGamalEncryptionScheme.getInstance(generator);
 
 		// Create encoder from Z_q to EC Fp
-		Encoder encoder = ZModPrimeToECPolynomialField.getInstance(cyclicGroup.getZModOrder(), cyclicGroup,15);
+		Encoder encoder = ZModToECPolynomialField.getInstance(cyclicGroup, 15);
 
 		// Create keys
 		Pair keyPair = elGamal.getKeyPairGenerator().generateKeyPair();

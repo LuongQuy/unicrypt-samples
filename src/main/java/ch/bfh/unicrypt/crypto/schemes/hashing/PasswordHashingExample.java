@@ -39,42 +39,40 @@
  *
  * Redistributions of files must retain the above copyright notice.
  */
-package ch.bfh.unicrypt.crypto.schemes.commitment;
+package ch.bfh.unicrypt.crypto.schemes.hashing;
 
 import ch.bfh.unicrypt.Example;
-import ch.bfh.unicrypt.crypto.schemes.commitment.classes.DiscreteLogarithmCommitmentScheme;
-import ch.bfh.unicrypt.math.algebra.general.classes.BooleanElement;
+import ch.bfh.unicrypt.helper.array.classes.ByteArray;
+import ch.bfh.unicrypt.helper.math.Alphabet;
+import ch.bfh.unicrypt.math.algebra.concatenative.classes.ByteArrayElement;
+import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringElement;
+import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringMonoid;
+import ch.bfh.unicrypt.math.algebra.general.classes.FiniteByteArrayElement;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
-import ch.bfh.unicrypt.math.algebra.multiplicative.classes.GStarModSafePrime;
 
 /**
  *
- *
+ * @author Rolf Haenni <rolf.haenni@bfh.ch>
  */
-public class StandardCommitmentExample {
+public class PasswordHashingExample {
 
 	public static void example1() {
 
-		// Create cyclic group G_q (modulo 167) and wth generator=98
-		GStarModSafePrime cyclicGroup = GStarModSafePrime.getInstance(167);
-		Element generator = cyclicGroup.getElement(98);
+		StringMonoid passwordSpace = StringMonoid.getInstance(Alphabet.ALPHANUMERIC);
+		StringElement password = passwordSpace.getElement("SecretPassword");
 
-		// Create commitment scheme to be used
-		DiscreteLogarithmCommitmentScheme commitmentScheme = DiscreteLogarithmCommitmentScheme.getInstance(generator);
+		ByteArrayElement salt = ByteArrayElement.getInstance(ByteArray.getRandomInstance(10));
 
-		// Create message to commit
-		Element message = commitmentScheme.getMessageSpace().getElement(42);
+		PasswordHashingScheme scheme = PasswordHashingScheme.getInstance(passwordSpace);
 
-		// Create commitment
-		Element commitment = commitmentScheme.commit(message);
+		FiniteByteArrayElement hash = scheme.hash(password, salt);
+		Element result = scheme.check(password, salt, hash);
 
-		// Decommit
-		BooleanElement result = commitmentScheme.decommit(message, commitment);
-
-		Example.printLine("Cylic Group", cyclicGroup);
-		Example.printLine("Message", message);
-		Example.printLine("Commitment", commitment);
-		Example.printLine("Result", result);
+		Example.printLine(scheme);
+		Example.printLine("Message", password);
+		Example.printLine("Salt   ", salt);
+		Example.printLine("Hash   ", hash);
+		Example.printLine("Check  ", result);
 	}
 
 	public static void main(final String[] args) {

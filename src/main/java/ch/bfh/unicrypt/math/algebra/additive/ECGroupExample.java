@@ -42,66 +42,84 @@
 package ch.bfh.unicrypt.math.algebra.additive;
 
 import ch.bfh.unicrypt.Example;
-import ch.bfh.unicrypt.crypto.encoder.classes.ZModPrimeToECPolynomialField;
 import ch.bfh.unicrypt.math.algebra.additive.classes.ECPolynomialElement;
 import ch.bfh.unicrypt.math.algebra.additive.classes.ECPolynomialField;
 import ch.bfh.unicrypt.math.algebra.additive.classes.ECZModElement;
 import ch.bfh.unicrypt.math.algebra.additive.classes.ECZModPrime;
-import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZMod;
-import ch.bfh.unicrypt.math.algebra.params.classes.SECECCParamsF2m;
-import ch.bfh.unicrypt.math.algebra.params.classes.SECECCParamsFp;
-import ch.bfh.unicrypt.math.algebra.params.interfaces.StandardECPolynomialFieldParams;
-import ch.bfh.unicrypt.math.algebra.params.interfaces.StandardECZModParams;
+import ch.bfh.unicrypt.math.algebra.additive.parameters.ECPolynomialFieldParameters;
+import ch.bfh.unicrypt.math.algebra.additive.parameters.ECZModPrimeParameters;
 import java.math.BigInteger;
 
 /**
  *
- * @author Christian Lutz
- * <p>
+ * @author C. Lutz
+ * @author R. Haenni
  */
 public class ECGroupExample {
 
+	// Example with StandardECZModPrime
 	public static void example1() throws Exception {
-
-		// Example with StandardECZModPrime
-		for (StandardECZModParams params : SECECCParamsFp.values()) {
-
+		ECZModPrimeParameters[] allParams = {
+			ECZModPrimeParameters.SECP160k1,
+			ECZModPrimeParameters.SECP160r1,
+			ECZModPrimeParameters.SECP160r2,
+			ECZModPrimeParameters.SECP192k1,
+			ECZModPrimeParameters.SECP192r1,
+			ECZModPrimeParameters.SECP224k1,
+			ECZModPrimeParameters.SECP224r1,
+			ECZModPrimeParameters.SECP256k1,
+			ECZModPrimeParameters.SECP256r1,
+			ECZModPrimeParameters.SECP384r1,
+			ECZModPrimeParameters.SECP521r1
+		};
+		for (ECZModPrimeParameters params : allParams) {
 			ECZModPrime ec = ECZModPrime.getInstance(params);
-			ECZModElement generator = ec.getDefaultGenerator();
-			ec.getRandomElement();
-			BigInteger order = ec.getOrder();
-			Example.printLine(params.toString());
 			Example.printLine(ec);
-			Example.printLine(generator.selfApply(order)); // Result should be
-			// Infinity element
+
+			// Result should be infinity element
+			ECZModElement generator = ec.getDefaultGenerator();
+			BigInteger order = ec.getOrder();
+			Example.printLine(generator.selfApply(order));
 		}
 	}
 
 	public static void example2() throws Exception {
-		ECPolynomialField ec = ECPolynomialField.getInstance(SECECCParamsF2m.sect113r1);
+		ECPolynomialField ec = ECPolynomialField.getInstance(ECPolynomialFieldParameters.SECT113r1);
 		ECPolynomialElement r = ec.getRandomElement();
 		Example.printLine(r.getY());
 		Example.printLine(r.invert().getY());
 		Example.printLine(r.getY());
 		Example.printLine(ec.getDefaultGenerator());
 		Example.printLine(ec.getDefaultGenerator().invert());
-
 	}
 
+	// Example with StandardECPolynomialField
 	public static void example3() throws Exception {
-		// Example with StandardECPolynomialField
-
-		for (StandardECPolynomialFieldParams params : SECECCParamsF2m.values()) {
+		ECPolynomialFieldParameters[] allParams = {
+			ECPolynomialFieldParameters.SECT113r1,
+			ECPolynomialFieldParameters.SECT163k1,
+			ECPolynomialFieldParameters.SECT163r1,
+			ECPolynomialFieldParameters.SECT163r2,
+			ECPolynomialFieldParameters.SECT193r1,
+			ECPolynomialFieldParameters.SECT193r2,
+			ECPolynomialFieldParameters.SECT233k1,
+			ECPolynomialFieldParameters.SECT233r1,
+			ECPolynomialFieldParameters.SECT239k1,
+			ECPolynomialFieldParameters.SECT283k1,
+			ECPolynomialFieldParameters.SECT409k1,
+			ECPolynomialFieldParameters.SECT409r1,
+			ECPolynomialFieldParameters.SECT571k1,
+			ECPolynomialFieldParameters.SECT571r1
+		};
+		for (ECPolynomialFieldParameters params : allParams) {
 			ECPolynomialField ec = ECPolynomialField.getInstance(params);
 			ECPolynomialElement generator = ec.getDefaultGenerator();
-
 
 			ECPolynomialElement m = ec.getRandomElement();
 			ECPolynomialElement m_generator = m.add(generator);
 
 			BigInteger order = ec.getOrder();
 
-			Example.printLine(params.toString());
 			Example.printLine("Message" + m.selfApply(order));
 			Example.printLine("Message plus Generator" + m_generator.add(generator).selfApply(order));
 			Example.printLine("Gen " + generator.selfApply(order));

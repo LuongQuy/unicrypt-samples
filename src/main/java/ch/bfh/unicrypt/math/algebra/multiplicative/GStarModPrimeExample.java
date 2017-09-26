@@ -68,12 +68,13 @@ public class GStarModPrimeExample {
 		// Select and apply default generator
 		Element generator = group.getDefaultGenerator();
 		Element result = group.power(generator, 5);
+		Element root = group.nthRoot(result, 5);
 
 		Example.printLine("Group", group);
 		Example.printLine("Order", order);
 		Example.printLine("Co-Factor", coFactor);
 		Example.printLines("Elements 10, 13, 10*13", e1, e2, e12);
-		Example.printLines("Generator and power", generator, result);
+		Example.printLines("Generator, power, root", generator, result, root);
 		Example.printLine("All Elements:");
 		for (Element element : group.getElements()) {
 			Example.printLine(element);

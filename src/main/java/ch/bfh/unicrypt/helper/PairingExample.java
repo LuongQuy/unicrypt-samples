@@ -39,42 +39,68 @@
  *
  * Redistributions of files must retain the above copyright notice.
  */
-package ch.bfh.unicrypt.crypto.schemes.commitment;
+package ch.bfh.unicrypt.helper;
 
 import ch.bfh.unicrypt.Example;
-import ch.bfh.unicrypt.crypto.schemes.commitment.classes.DiscreteLogarithmCommitmentScheme;
-import ch.bfh.unicrypt.math.algebra.general.classes.BooleanElement;
-import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
-import ch.bfh.unicrypt.math.algebra.multiplicative.classes.GStarModSafePrime;
+import ch.bfh.unicrypt.helper.aggregator.classes.BigIntegerAggregator;
+import ch.bfh.unicrypt.helper.aggregator.interfaces.Aggregator;
+import ch.bfh.unicrypt.helper.math.MathUtil;
+import ch.bfh.unicrypt.helper.tree.Tree;
+import java.math.BigInteger;
 
 /**
  *
- *
+ * @author Rolf Haenni <rolf.haenni@bfh.ch>
  */
-public class StandardCommitmentExample {
+public class PairingExample {
 
 	public static void example1() {
 
-		// Create cyclic group G_q (modulo 167) and wth generator=98
-		GStarModSafePrime cyclicGroup = GStarModSafePrime.getInstance(167);
-		Element generator = cyclicGroup.getElement(98);
+		// Perform pairing and unpairing
+		BigInteger p = MathUtil.pair(4, 5);
+		BigInteger[] u = MathUtil.unpair(p);
 
-		// Create commitment scheme to be used
-		DiscreteLogarithmCommitmentScheme commitmentScheme = DiscreteLogarithmCommitmentScheme.getInstance(generator);
+		Example.printLine("Paired value", p);
+		Example.printLines("Unpaired values", u);
+	}
 
-		// Create message to commit
-		Element message = commitmentScheme.getMessageSpace().getElement(42);
+	public static void example2() {
 
-		// Create commitment
-		Element commitment = commitmentScheme.commit(message);
+		// Perform pairing and unpairing of multiple values
+		BigInteger p = MathUtil.pairWithSize(12, 29, 8);
+		BigInteger[] u = MathUtil.unpairWithSize(p);
 
-		// Decommit
-		BooleanElement result = commitmentScheme.decommit(message, commitment);
+		Example.printLine("Paired values", p);
+		Example.printLine("Unpaired values", u);
+	}
 
-		Example.printLine("Cylic Group", cyclicGroup);
-		Example.printLine("Message", message);
-		Example.printLine("Commitment", commitment);
-		Example.printLine("Result", result);
+	public static void example3() {
+
+		// Create some a tree of integers
+		Tree<BigInteger> l1 = Tree.getInstance(new BigInteger("12"));
+		Tree<BigInteger> l2 = Tree.getInstance(new BigInteger("4"));
+		Tree<BigInteger> l3 = Tree.getInstance(new BigInteger("5"));
+		Tree<BigInteger> l4 = Tree.getInstance(new BigInteger("8"));
+		Tree<BigInteger> node = Tree.getInstance(l2, l3);
+		Tree<BigInteger> tree = Tree.getInstance(l1, node, l4);
+
+		// Perform pairing and unpairing using a the default aggregator
+		Aggregator<BigInteger> aggregator = BigIntegerAggregator.getInstance();
+		BigInteger result = aggregator.aggregate(tree);
+		Tree<BigInteger> t = aggregator.disaggregate(result);
+
+		Example.printLine("Paired values", result);
+		Example.printLine("Unpaired values", t);
+	}
+
+	public static void example4() {
+
+		// Perform folding and unfolding
+		BigInteger f = MathUtil.fold(-29);
+		BigInteger u = MathUtil.unfold(f);
+
+		Example.printLine("Folded value", f);
+		Example.printLine("Unfolded value", u);
 	}
 
 	public static void main(final String[] args) {

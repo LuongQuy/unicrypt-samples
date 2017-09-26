@@ -42,6 +42,7 @@
 package ch.bfh.unicrypt.math;
 
 import ch.bfh.unicrypt.Example;
+import ch.bfh.unicrypt.UniCryptException;
 import ch.bfh.unicrypt.helper.math.Alphabet;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringElement;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringMonoid;
@@ -106,15 +107,15 @@ public class MathExample {
 		Set zMod = ZMod.getInstance(23);
 
 		// Option 1: Non-Generic Type
-		Element e1 = zMod.getElementFrom(5);
+		Element e1 = zMod.getElement(5);
 		Example.printLine(e1);
 
 		// Option 2: Generic Type
-		Element<BigInteger> e2 = zMod.getElementFrom(7);
+		Element<BigInteger> e2 = zMod.getElement(7);
 		Example.printLine(e2);
 
 		// Option 3: Specific Type (casting required)
-		ZModElement e3 = (ZModElement) zMod.getElementFrom(9);
+		ZModElement e3 = (ZModElement) zMod.getElement(9);
 		Example.printLine(e3);
 	}
 
@@ -123,15 +124,15 @@ public class MathExample {
 		Set<BigInteger> zMod = ZMod.getInstance(23);
 
 		// Option 1: Non-Generic Type
-		Element e1 = zMod.getElementFrom(5);
+		Element e1 = zMod.getElement(BigInteger.valueOf(5));
 		Example.printLine(e1);
 
 		// Option 2: Generic Type
-		Element<BigInteger> e2 = zMod.getElementFrom(7);
+		Element<BigInteger> e2 = zMod.getElement(BigInteger.valueOf(7));
 		Example.printLine(e2);
 
 		// Option 3: Specific Type (casting required)
-		ZModElement e3 = (ZModElement) zMod.getElementFrom(9);
+		ZModElement e3 = (ZModElement) zMod.getElement(BigInteger.valueOf(9));
 		Example.printLine(e3);
 	}
 
@@ -158,10 +159,14 @@ public class MathExample {
 		BigInteger[] bigs = {};
 		bigs = arrayBigInteger.toArray(bigs);
 
-		PolynomialElement irreduciblePolynom = ring.getElement(bigs);
-		PolynomialElement p1 = irreduciblePolynom;
-		Example.printLine(irreduciblePolynom);
-		Example.printLine(irreduciblePolynom.isIrreducible());
+		PolynomialElement irreduciblePolynom;
+		try {
+			irreduciblePolynom = ring.getElementFrom(bigs);
+			PolynomialElement p1 = irreduciblePolynom;
+			Example.printLine(irreduciblePolynom);
+			Example.printLine(irreduciblePolynom.isIrreducible());
+		} catch (UniCryptException ex) {
+		}
 
 	}
 

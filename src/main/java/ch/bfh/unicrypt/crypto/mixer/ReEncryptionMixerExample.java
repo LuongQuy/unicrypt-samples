@@ -45,7 +45,7 @@ import ch.bfh.unicrypt.Example;
 import ch.bfh.unicrypt.crypto.mixer.classes.ReEncryptionMixer;
 import ch.bfh.unicrypt.crypto.mixer.interfaces.Mixer;
 import ch.bfh.unicrypt.crypto.schemes.encryption.classes.ElGamalEncryptionScheme;
-import ch.bfh.unicrypt.helper.factorization.SafePrime;
+import ch.bfh.unicrypt.helper.prime.SafePrime;
 import ch.bfh.unicrypt.math.algebra.general.classes.Pair;
 import ch.bfh.unicrypt.math.algebra.general.classes.PermutationElement;
 import ch.bfh.unicrypt.math.algebra.general.classes.ProductGroup;

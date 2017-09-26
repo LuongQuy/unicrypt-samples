@@ -39,42 +39,39 @@
  *
  * Redistributions of files must retain the above copyright notice.
  */
-package ch.bfh.unicrypt.crypto.schemes.commitment;
+package ch.bfh.unicrypt.helper;
 
 import ch.bfh.unicrypt.Example;
-import ch.bfh.unicrypt.crypto.schemes.commitment.classes.DiscreteLogarithmCommitmentScheme;
-import ch.bfh.unicrypt.math.algebra.general.classes.BooleanElement;
-import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
-import ch.bfh.unicrypt.math.algebra.multiplicative.classes.GStarModSafePrime;
+import ch.bfh.unicrypt.helper.array.classes.ByteArray;
+import ch.bfh.unicrypt.helper.hash.HashAlgorithm;
 
 /**
  *
- *
+ * @author Rolf Haenni <rolf.haenni@bfh.ch>
  */
-public class StandardCommitmentExample {
+public class HashAlgoritmExample {
 
 	public static void example1() {
 
-		// Create cyclic group G_q (modulo 167) and wth generator=98
-		GStarModSafePrime cyclicGroup = GStarModSafePrime.getInstance(167);
-		Element generator = cyclicGroup.getElement(98);
+		HashAlgorithm algorithm = HashAlgorithm.SHA1;
+		String name = algorithm.getAlgorithmName();
+		int bitLength = algorithm.getBitLength();
 
-		// Create commitment scheme to be used
-		DiscreteLogarithmCommitmentScheme commitmentScheme = DiscreteLogarithmCommitmentScheme.getInstance(generator);
+		ByteArray input1 = ByteArray.getInstance("01");
+		ByteArray input2 = ByteArray.getInstance("7F");
+		ByteArray input3 = ByteArray.getInstance("FE|FF");
+		ByteArray input4 = ByteArray.getInstance("48|65|6C|6C|6F");
 
-		// Create message to commit
-		Element message = commitmentScheme.getMessageSpace().getElement(42);
+		ByteArray hash1 = algorithm.getHashValue(input1);
+		ByteArray hash2 = algorithm.getHashValue(input2);
+		ByteArray hash3 = algorithm.getHashValue(input3);
+		ByteArray hash4 = algorithm.getHashValue(input4);
+		ByteArray hash23 = algorithm.getHashValue(hash2.append(hash3));
+		ByteArray hash1234 = algorithm.getHashValue(hash1.append(hash23).append(hash4));
 
-		// Create commitment
-		Element commitment = commitmentScheme.commit(message);
-
-		// Decommit
-		BooleanElement result = commitmentScheme.decommit(message, commitment);
-
-		Example.printLine("Cylic Group", cyclicGroup);
-		Example.printLine("Message", message);
-		Example.printLine("Commitment", commitment);
-		Example.printLine("Result", result);
+		Example.printLine("Name     ", name);
+		Example.printLine("BitLenght", bitLength);
+		Example.printLines("Hash Values", hash1, hash2, hash3, hash4, hash23, hash1234);
 	}
 
 	public static void main(final String[] args) {

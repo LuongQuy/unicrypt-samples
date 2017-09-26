@@ -42,6 +42,7 @@
 package ch.bfh.unicrypt.helper;
 
 import ch.bfh.unicrypt.Example;
+import ch.bfh.unicrypt.UniCryptException;
 import ch.bfh.unicrypt.helper.aggregator.classes.ByteArrayAggregator;
 import ch.bfh.unicrypt.helper.aggregator.interfaces.Aggregator;
 import ch.bfh.unicrypt.helper.array.classes.ByteArray;
@@ -66,7 +67,7 @@ import java.nio.charset.Charset;
  *
  * @author Rolf Haenni <rolf.haenni@bfh.ch>
  */
-public class ConverterMethodExample {
+public class ConvertMethodExample {
 
 	public static void example1() {
 
@@ -99,46 +100,53 @@ public class ConverterMethodExample {
 		// Converting the element to byte array (forth and back)
 		Example.printLabelLine("CONVERSION TO BYTE ARRAY");
 
-		ByteArray byteArray;
-		byteArray = element.convertToByteArray();
-		Example.printLine(set.getElementFrom(byteArray), byteArray);
+		try {
+			ByteArray byteArray;
+			byteArray = element.convertToByteArray();
+			Example.printLine(set.getElementFrom(byteArray), byteArray);
 
-		byteArray = element.convertTo(stringConverter);
-		Example.printLine(set.getElementFrom(byteArray, stringConverter), byteArray);
+			byteArray = element.convertTo(stringConverter);
+			Example.printLine(set.getElementFrom(byteArray, stringConverter), byteArray);
 
-		byteArray = element.convertTo(convertMethod1, aggregator);
-		Example.printLine(set.getElementFrom(byteArray, convertMethod1, aggregator), byteArray);
+			byteArray = element.convertTo(convertMethod1, aggregator);
+			Example.printLine(set.getElementFrom(byteArray, convertMethod1, aggregator), byteArray);
 
-		byteArray = element.convertTo(convertMethod2, aggregator);
-		Example.printLine(set.getElementFrom(byteArray, convertMethod2, aggregator), byteArray);
+			byteArray = element.convertTo(convertMethod2, aggregator);
+			Example.printLine(set.getElementFrom(byteArray, convertMethod2, aggregator), byteArray);
 
-		byteArray = element.convertTo(convertMethod3, aggregator);
-		Example.printLine(set.getElementFrom(byteArray, convertMethod3, aggregator), byteArray);
+			byteArray = element.convertTo(convertMethod3, aggregator);
+			Example.printLine(set.getElementFrom(byteArray, convertMethod3, aggregator), byteArray);
 
-		byteArray = element.convertTo(convertMethod4, aggregator);
-		Example.printLine(set.getElementFrom(byteArray, convertMethod4, aggregator), byteArray);
+			byteArray = element.convertTo(convertMethod4, aggregator);
+			Example.printLine(set.getElementFrom(byteArray, convertMethod4, aggregator), byteArray);
+		} catch (UniCryptException ex) {
+		}
 
 		// Converting the element to byte tree (forth and back)
 		Example.printLabelLine("CONVERSION TO BYTE TREE");
 
-		Tree<ByteArray> tree;
-		tree = element.convertTo(ConvertMethod.getInstance());
-		Example.printLine(set.getElementFrom(tree, ConvertMethod.getInstance()), tree);
+		try {
+			Tree<ByteArray> tree;
+			tree = element.convertTo(ConvertMethod.getInstance());
+			Example.printLine(set.getElementFrom(tree, ConvertMethod.getInstance()), tree);
 
-		byteArray = element.convertTo(stringConverter);
-		Example.printLine(set.getElementFrom(byteArray, stringConverter), byteArray);
+			ByteArray byteArray = element.convertTo(stringConverter);
+			Example.printLine(set.getElementFrom(byteArray, stringConverter), byteArray);
 
-		tree = element.convertTo(convertMethod1);
-		Example.printLine(set.getElementFrom(tree, convertMethod1), tree);
+			tree = element.convertTo(convertMethod1);
+			Example.printLine(set.getElementFrom(tree, convertMethod1), tree);
 
-		tree = element.convertTo(convertMethod2);
-		Example.printLine(set.getElementFrom(tree, convertMethod2), tree);
+			tree = element.convertTo(convertMethod2);
+			Example.printLine(set.getElementFrom(tree, convertMethod2), tree);
 
-		tree = element.convertTo(convertMethod3);
-		Example.printLine(set.getElementFrom(tree, convertMethod3), tree);
+			tree = element.convertTo(convertMethod3);
+			Example.printLine(set.getElementFrom(tree, convertMethod3), tree);
 
-		tree = element.convertTo(convertMethod4);
-		Example.printLine(set.getElementFrom(tree, convertMethod4), tree);
+			tree = element.convertTo(convertMethod4);
+			Example.printLine(set.getElementFrom(tree, convertMethod4), tree);
+		} catch (UniCryptException ex) {
+		}
+
 	}
 
 	public static void example2() {
@@ -173,28 +181,34 @@ public class ConverterMethodExample {
 		// Converting the tuple to byte array forth and back
 		Example.printLabelLine("CONVERSION TO BYTE ARRAY");
 
-		ByteArray byteArray;
-		byteArray = tuple.convertToByteArray();
-		Example.printLine(productSet.getElementFrom(byteArray), byteArray);
+		try {
+			ByteArray byteArray;
+			byteArray = tuple.convertToByteArray();
+			Example.printLine(productSet.getElementFrom(byteArray), byteArray);
 
-		byteArray = tuple.convertTo(convertMethod1, ByteArrayAggregator.getInstance());
-		Example.printLine(productSet.getElementFrom(byteArray, convertMethod1, ByteArrayAggregator.getInstance()), byteArray);
+			byteArray = tuple.convertTo(convertMethod1, ByteArrayAggregator.getInstance());
+			Example.printLine(productSet.getElementFrom(byteArray, convertMethod1, ByteArrayAggregator.getInstance()), byteArray);
 
-		byteArray = tuple.convertTo(convertMethod2, ByteArrayAggregator.getInstance());
-		Example.printLine(productSet.getElementFrom(byteArray, convertMethod2, ByteArrayAggregator.getInstance()), byteArray);
+			byteArray = tuple.convertTo(convertMethod2, ByteArrayAggregator.getInstance());
+			Example.printLine(productSet.getElementFrom(byteArray, convertMethod2, ByteArrayAggregator.getInstance()), byteArray);
+		} catch (UniCryptException ex) {
+		}
 
 		// Converting the tuple to byte tree forth and back
 		Example.printLabelLine("CONVERSION TO BYTE TREE");
 
-		Tree<ByteArray> byteTree;
-		byteTree = tuple.convertTo(ConvertMethod.getInstance());
-		Example.printLine(productSet.getElementFrom(byteTree, ConvertMethod.getInstance()), byteTree);
+		try {
+			Tree<ByteArray> byteTree;
+			byteTree = tuple.convertTo(ConvertMethod.getInstance());
+			Example.printLine(productSet.getElementFrom(byteTree, ConvertMethod.getInstance()), byteTree);
 
-		byteTree = tuple.convertTo(convertMethod1);
-		Example.printLine(productSet.getElementFrom(byteTree, convertMethod1), byteTree);
+			byteTree = tuple.convertTo(convertMethod1);
+			Example.printLine(productSet.getElementFrom(byteTree, convertMethod1), byteTree);
 
-		byteTree = tuple.convertTo(convertMethod2);
-		Example.printLine(productSet.getElementFrom(byteTree, convertMethod2), byteTree);
+			byteTree = tuple.convertTo(convertMethod2);
+			Example.printLine(productSet.getElementFrom(byteTree, convertMethod2), byteTree);
+		} catch (UniCryptException ex) {
+		}
 
 	}
 

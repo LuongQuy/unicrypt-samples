@@ -5,6 +5,7 @@ import ch.bfh.unicrypt.crypto.proofsystem.challengegenerator.interfaces.SigmaCha
 import ch.bfh.unicrypt.crypto.proofsystem.classes.ElGamalEncryptionValidityProofSystem;
 import ch.bfh.unicrypt.crypto.schemes.encryption.classes.ElGamalEncryptionScheme;
 import ch.bfh.unicrypt.helper.math.Alphabet;
+import ch.bfh.unicrypt.helper.random.RandomOracle;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringElement;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringMonoid;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZMod;
@@ -13,8 +14,6 @@ import ch.bfh.unicrypt.math.algebra.general.classes.Subset;
 import ch.bfh.unicrypt.math.algebra.general.classes.Tuple;
 import ch.bfh.unicrypt.math.algebra.multiplicative.classes.GStarModElement;
 import ch.bfh.unicrypt.math.algebra.multiplicative.classes.GStarModSafePrime;
-import ch.bfh.unicrypt.random.classes.PseudoRandomOracle;
-import ch.bfh.unicrypt.random.interfaces.RandomOracle;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -37,9 +36,9 @@ public class ValidityElGamalSerialization {
 
 		DiscreteLogarithmKeyGenerator egkpg = DiscreteLogarithmKeyGenerator.getInstance(gQ);
 
-		RandomOracle r1 = PseudoRandomOracle.getInstance();
+		RandomOracle r1 = RandomOracle.getInstance();
 
-		RandomOracle r2 = PseudoRandomOracle.getInstance();
+		RandomOracle r2 = RandomOracle.getInstance();
 
 		ZModElement privateKey = egkpg.generatePrivateKey();
 		GStarModElement publicKey = (GStarModElement) egkpg.generatePublicKey(privateKey);
@@ -54,7 +53,7 @@ public class ValidityElGamalSerialization {
 		possibleMessages[2] = gQ.getDefaultGenerator().power(2);
 		possibleMessages[3] = gQ.getDefaultGenerator().power(3);
 
-		SigmaChallengeGenerator scg = ElGamalEncryptionValidityProofSystem.createNonInteractiveChallengeGenerator(elGamal, possibleMessages.length, proverId, r1);
+		SigmaChallengeGenerator scg = ElGamalEncryptionValidityProofSystem.createNonInteractiveChallengeGenerator(elGamal, possibleMessages.length, proverId);
 
 		Subset plaintexts = Subset.getInstance(gQ, possibleMessages);
 

@@ -42,14 +42,15 @@
 package ch.bfh.unicrypt.crypto.schemes.hashing;
 
 import ch.bfh.unicrypt.Example;
-import ch.bfh.unicrypt.crypto.schemes.hashing.classes.FixedByteArrayHashingScheme;
 import ch.bfh.unicrypt.helper.math.Alphabet;
+import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringElement;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringMonoid;
 import ch.bfh.unicrypt.math.algebra.dualistic.classes.Z;
+import ch.bfh.unicrypt.math.algebra.dualistic.classes.ZElement;
+import ch.bfh.unicrypt.math.algebra.general.classes.FiniteByteArrayElement;
 import ch.bfh.unicrypt.math.algebra.general.classes.ProductSet;
 import ch.bfh.unicrypt.math.algebra.general.classes.Tuple;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
-import java.math.BigInteger;
 
 /**
  *
@@ -60,17 +61,17 @@ public class HashingExample {
 	public static void example1() {
 
 		StringMonoid stringSet = StringMonoid.getInstance(Alphabet.LOWER_CASE);
-		Element<String> stringElement = stringSet.getElement("message");
+		StringElement stringElement = stringSet.getElement("message");
 
-		Z bigIntegerSet = Z.getInstance();
-		Element<BigInteger> bigIntegerElement = bigIntegerSet.getElement(5);
+		Z z = Z.getInstance();
+		ZElement zElement = z.getElement(5);
 
-		ProductSet messageSpace = ProductSet.getInstance(stringSet, bigIntegerSet);
-		Tuple message = messageSpace.getElement(stringElement, bigIntegerElement);
+		ProductSet messageSpace = ProductSet.getInstance(stringSet, z);
+		Tuple message = messageSpace.getElement(stringElement, zElement);
 
-		FixedByteArrayHashingScheme scheme = FixedByteArrayHashingScheme.getInstance(messageSpace);
+		HashingScheme<ProductSet> scheme = HashingScheme.getInstance(messageSpace);
 
-		Element hash = scheme.hash(message);
+		FiniteByteArrayElement hash = scheme.hash(message);
 		Element result = scheme.check(message, hash);
 
 		Example.printLine(scheme);

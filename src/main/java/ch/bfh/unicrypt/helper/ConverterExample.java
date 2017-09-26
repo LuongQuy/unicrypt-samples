@@ -39,42 +39,60 @@
  *
  * Redistributions of files must retain the above copyright notice.
  */
-package ch.bfh.unicrypt.crypto.schemes.commitment;
+package ch.bfh.unicrypt.helper;
 
 import ch.bfh.unicrypt.Example;
-import ch.bfh.unicrypt.crypto.schemes.commitment.classes.DiscreteLogarithmCommitmentScheme;
-import ch.bfh.unicrypt.math.algebra.general.classes.BooleanElement;
-import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
-import ch.bfh.unicrypt.math.algebra.multiplicative.classes.GStarModSafePrime;
+import ch.bfh.unicrypt.helper.array.classes.ByteArray;
+import ch.bfh.unicrypt.helper.converter.classes.bytearray.BigIntegerToByteArray;
+import ch.bfh.unicrypt.helper.converter.classes.bytearray.StringToByteArray;
+import java.math.BigInteger;
 
 /**
  *
- *
+ * @author Rolf Haenni <rolf.haenni@bfh.ch>
  */
-public class StandardCommitmentExample {
+public class ConverterExample {
 
 	public static void example1() {
 
-		// Create cyclic group G_q (modulo 167) and wth generator=98
-		GStarModSafePrime cyclicGroup = GStarModSafePrime.getInstance(167);
-		Element generator = cyclicGroup.getElement(98);
+		// Create the default ByteOrder.BIG_ENDIAN converter
+		BigIntegerToByteArray converter = BigIntegerToByteArray.getInstance();
 
-		// Create commitment scheme to be used
-		DiscreteLogarithmCommitmentScheme commitmentScheme = DiscreteLogarithmCommitmentScheme.getInstance(generator);
+		// Convert various integers
+		ByteArray b1 = converter.convert(1);
+		ByteArray b2 = converter.convert(127);
+		ByteArray b3 = converter.convert(-257);
 
-		// Create message to commit
-		Element message = commitmentScheme.getMessageSpace().getElement(42);
+		// Reconvert the byte arrays
+		BigInteger i1 = converter.reconvert(b1);
+		BigInteger i2 = converter.reconvert(b2);
+		BigInteger i3 = converter.reconvert(b3);
 
-		// Create commitment
-		Element commitment = commitmentScheme.commit(message);
+		// Show results
+		Example.printLines("ByteArray", b1, b2, b3);
+		Example.printLines("BigInteger", i1, i2, i3);
 
-		// Decommit
-		BooleanElement result = commitmentScheme.decommit(message, commitment);
+	}
 
-		Example.printLine("Cylic Group", cyclicGroup);
-		Example.printLine("Message", message);
-		Example.printLine("Commitment", commitment);
-		Example.printLine("Result", result);
+	public static void example2() {
+
+		// Create the default UTF-8 converter
+		StringToByteArray converter = StringToByteArray.getInstance();
+
+		// Convert various strings
+		ByteArray s1 = converter.convert("");
+		ByteArray s2 = converter.convert("Hello");
+		ByteArray s3 = converter.convert("Voilà");
+
+		// Reconvert the byte arrays
+		String i1 = converter.reconvert(s1);
+		String i2 = converter.reconvert(s2);
+		String i3 = converter.reconvert(s3);
+
+		// Show results
+		Example.printLines("ByteArray", s1, s2, s3);
+		Example.printLines("String", i1, i2, i3);
+
 	}
 
 	public static void main(final String[] args) {

@@ -42,6 +42,7 @@
 package ch.bfh.unicrypt.helper;
 
 import ch.bfh.unicrypt.Example;
+import ch.bfh.unicrypt.UniCryptException;
 import ch.bfh.unicrypt.helper.aggregator.classes.ByteArrayAggregator;
 import ch.bfh.unicrypt.helper.array.classes.ByteArray;
 import ch.bfh.unicrypt.helper.converter.classes.ConvertMethod;
@@ -152,10 +153,13 @@ public class ByteArrayTreeExample {
 		// Reconstruct tuple from byte array
 		ProductSet set = tuple.getSet();
 		Tree<ByteArray> recTree = Tree.getInstance(byteArray, ByteArrayAggregator.getInstance());
-		Tuple recTuple = set.getElementFrom(recTree, ConvertMethod.getInstance());
-
-		Example.printLines("Tuples", tuple, recTuple);
-		Example.printLines("Trees", tree, recTree);
+		Tuple recTuple;
+		try {
+			recTuple = set.getElementFrom(recTree, ConvertMethod.getInstance());
+			Example.printLines("Tuples", tuple, recTuple);
+			Example.printLines("Trees", tree, recTree);
+		} catch (UniCryptException ex) {
+		}
 	}
 
 	public static void example5() {
@@ -173,11 +177,15 @@ public class ByteArrayTreeExample {
 		// Reconstruct tuple from byte array
 		ProductSet set = pair.getSet();
 		Tree<ByteArray> recTree = Tree.getInstance(byteArray, ByteArrayAggregator.getInstance());
-		Tuple recPair = set.getElementFrom(recTree, ConvertMethod.getInstance());
+		Tuple recPair;
+		try {
+			recPair = set.getElementFrom(recTree, ConvertMethod.getInstance());
+			Example.printLine("Pair", pair);
+			Example.printLines("Tree/ByteArray", tree, byteArray);
+			Example.printLines("Recovered Tree/Pair", recTree, recPair);
+		} catch (UniCryptException ex) {
+		}
 
-		Example.printLine("Pair", pair);
-		Example.printLines("Tree/ByteArray", tree, byteArray);
-		Example.printLines("Recovered Tree/Pair", recTree, recPair);
 	}
 
 	public static void main(String[] args) {

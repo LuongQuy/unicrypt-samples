@@ -49,8 +49,10 @@ import ch.bfh.unicrypt.crypto.proofsystem.classes.PermutationCommitmentProofSyst
 import ch.bfh.unicrypt.crypto.proofsystem.classes.ReEncryptionShuffleProofSystem;
 import ch.bfh.unicrypt.crypto.schemes.commitment.classes.PermutationCommitmentScheme;
 import ch.bfh.unicrypt.crypto.schemes.encryption.classes.ElGamalEncryptionScheme;
-import ch.bfh.unicrypt.helper.factorization.SafePrime;
 import ch.bfh.unicrypt.helper.math.Alphabet;
+import ch.bfh.unicrypt.helper.prime.SafePrime;
+import ch.bfh.unicrypt.helper.random.RandomOracle;
+import ch.bfh.unicrypt.helper.random.deterministic.DeterministicRandomByteSequence;
 import ch.bfh.unicrypt.math.algebra.concatenative.classes.StringMonoid;
 import ch.bfh.unicrypt.math.algebra.general.classes.Pair;
 import ch.bfh.unicrypt.math.algebra.general.classes.PermutationElement;
@@ -58,12 +60,8 @@ import ch.bfh.unicrypt.math.algebra.general.classes.PermutationGroup;
 import ch.bfh.unicrypt.math.algebra.general.classes.ProductGroup;
 import ch.bfh.unicrypt.math.algebra.general.classes.Triple;
 import ch.bfh.unicrypt.math.algebra.general.classes.Tuple;
-import ch.bfh.unicrypt.math.algebra.general.interfaces.CyclicGroup;
 import ch.bfh.unicrypt.math.algebra.general.interfaces.Element;
 import ch.bfh.unicrypt.math.algebra.multiplicative.classes.GStarModSafePrime;
-import ch.bfh.unicrypt.random.classes.PseudoRandomOracle;
-import ch.bfh.unicrypt.random.classes.ReferenceRandomByteSequence;
-import ch.bfh.unicrypt.random.interfaces.RandomOracle;
 
 /**
  *
@@ -79,11 +77,11 @@ public class CompleteShuffleExample {
 		// P R E P A R E
 		//---------------
 		// Create cyclic group and get generator
-		final CyclicGroup G_q = GStarModSafePrime.getInstance(SafePrime.getRandomInstance(160));
-		final Element g = G_q.getIndependentGenerator(0, ReferenceRandomByteSequence.getInstance());
+		final GStarModSafePrime G_q = GStarModSafePrime.getInstance(SafePrime.getRandomInstance(160));
+		final Element g = G_q.getIndependentGenerators(DeterministicRandomByteSequence.getInstance()).get(0);
 
 		// Set size
-		final int size = 100000;
+		final int size = 100;
 
 		// Create ElGamal keys and encryption system
 		ElGamalEncryptionScheme es = ElGamalEncryptionScheme.getInstance(g);
@@ -125,20 +123,20 @@ public class CompleteShuffleExample {
 		PermutationCommitmentProofSystem pcps = PermutationCommitmentProofSystem.getInstance(G_q, size);
 
 		// Create permutation commitment proof
-		Pair proofPermutation = pcps.generate(Pair.getInstance(permutation, permutationCommitmentRandomizations), permutationCommitment);
+		Tuple proofPermutation = pcps.generate(Pair.getInstance(permutation, permutationCommitmentRandomizations), permutationCommitment);
 
 		// 2. Shuffle Proof
 		//------------------
 		System.out.println("Shuffle Proof...");
 		// Create shuffle proof generator
-		ReEncryptionShuffleProofSystem sps = ReEncryptionShuffleProofSystem.getInstance(G_q, size, es, publicKey);
+		ReEncryptionShuffleProofSystem sps = ReEncryptionShuffleProofSystem.getInstance(size, es, publicKey);
 
 		// Compose private and public input
 		Triple privateInput = Triple.getInstance(permutation, permutationCommitmentRandomizations, randomizations);
 		Triple publicInput = Triple.getInstance(permutationCommitment, ciphertexts, shuffledCiphertexts);
 
 		// Create shuffle proof
-		Triple proofShuffle = sps.generate(privateInput, publicInput);
+		Tuple proofShuffle = sps.generate(privateInput, publicInput);
 
 		// V E R I F Y
 		//-------------
@@ -164,15 +162,15 @@ public class CompleteShuffleExample {
 		// P R E P A R E
 		//---------------
 		// Create random oracle and random reference string
-		final RandomOracle ro = PseudoRandomOracle.getInstance();
-		final ReferenceRandomByteSequence rrs = ReferenceRandomByteSequence.getInstance();
+		final RandomOracle ro = RandomOracle.getInstance();
+		final DeterministicRandomByteSequence rrs = DeterministicRandomByteSequence.getInstance();
 
 		// Create cyclic group and get generator
-		final CyclicGroup G_q = GStarModSafePrime.getInstance(SafePrime.getRandomInstance(160));
-		final Element g = G_q.getIndependentGenerator(0, rrs);
+		final GStarModSafePrime G_q = GStarModSafePrime.getInstance(SafePrime.getRandomInstance(160));
+		final Element g = G_q.getIndependentGenerators(rrs).get(0);
 
 		// Set size, prover-id and security parameters
-		final int size = 10;
+		final int size = 1000;
 		final Element proverId = StringMonoid.getInstance(Alphabet.BASE64).getElement("Shuffler");
 		final int ke = 60;
 		final int kc = 60;
@@ -215,27 +213,27 @@ public class CompleteShuffleExample {
 		Tuple permutationCommitment = pcs.commit(permutation, permutationCommitmentRandomizations);
 
 		// Create permutation commitment proof generator
-		SigmaChallengeGenerator scg = PermutationCommitmentProofSystem.createNonInteractiveSigmaChallengeGenerator(G_q, size, kc, proverId, ro);
-		ChallengeGenerator ecg = PermutationCommitmentProofSystem.createNonInteractiveEValuesGenerator(G_q, size, ke, ro);
+		SigmaChallengeGenerator scg = PermutationCommitmentProofSystem.createNonInteractiveSigmaChallengeGenerator(kc, proverId);
+		ChallengeGenerator ecg = PermutationCommitmentProofSystem.createNonInteractiveEValuesGenerator(ke, size);
 		PermutationCommitmentProofSystem pcps = PermutationCommitmentProofSystem.getInstance(scg, ecg, G_q, size, kr, rrs);
 
 		// Create permutation commitment proof
-		Pair proofPermutation = pcps.generate(Pair.getInstance(permutation, permutationCommitmentRandomizations), permutationCommitment);
+		Tuple proofPermutation = pcps.generate(Pair.getInstance(permutation, permutationCommitmentRandomizations), permutationCommitment);
 
 		// 2. Shuffle Proof
 		//------------------
 		System.out.println("Shuffle Proof...");
 		// Create shuffle proof generator
-		SigmaChallengeGenerator scgS = ReEncryptionShuffleProofSystem.createNonInteractiveSigmaChallengeGenerator(G_q, es, size, kc, proverId, ro);
-		ChallengeGenerator ecgS = ReEncryptionShuffleProofSystem.createNonInteractiveEValuesGenerator(G_q, es, size, ke, ro);
-		ReEncryptionShuffleProofSystem sps = ReEncryptionShuffleProofSystem.getInstance(scgS, ecgS, G_q, size, es, publicKey, kr, rrs);
+		SigmaChallengeGenerator scgS = ReEncryptionShuffleProofSystem.createNonInteractiveSigmaChallengeGenerator(kc, proverId);
+		ChallengeGenerator ecgS = ReEncryptionShuffleProofSystem.createNonInteractiveEValuesGenerator(ke, size);
+		ReEncryptionShuffleProofSystem sps = ReEncryptionShuffleProofSystem.getInstance(scgS, ecgS, size, es, publicKey, kr, rrs);
 
 		// Compose private and public input
 		Triple privateInput = Triple.getInstance(permutation, permutationCommitmentRandomizations, randomizations);
 		Triple publicInput = Triple.getInstance(permutationCommitment, ciphertexts, shuffledCiphertexts);
 
 		// Create shuffle proof
-		Triple proofShuffle = sps.generate(privateInput, publicInput);
+		Tuple proofShuffle = sps.generate(privateInput, publicInput);
 
 		// V E R I F Y
 		//-------------
